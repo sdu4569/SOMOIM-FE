@@ -24,7 +24,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">First pull request</p>
+      <p className="read-the-docs">Pull Request</p>
     </div>
   );
 }
