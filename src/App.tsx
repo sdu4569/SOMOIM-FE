@@ -24,7 +24,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">Pull Request</p>
+      <p className="read-the-docs text-red-500 text-3xl">Pull Request</p>
     </div>
   );
 }
