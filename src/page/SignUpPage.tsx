@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const MainPage = () => {
+const SignUpPage = () => {
   return (
     <>
       <h2>SignUp</h2>
@@ -11,4 +11,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default SignUpPage;
