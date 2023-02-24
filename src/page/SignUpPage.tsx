@@ -3,6 +3,7 @@ import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import PageHeader from "../components/PageHeader";
+import { Link } from "react-router-dom";
 
 const SignUpPage = () => {
   const {
@@ -21,7 +22,7 @@ const SignUpPage = () => {
     <>
       <PageHeader title="회원가입" />
       <div>
-        <form className="space-y-2" action="" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-4" action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-x-2 w-full flex">
             <input
               type="text"
@@ -70,13 +71,15 @@ const SignUpPage = () => {
               {...register("birthday", { required: true })}
               className="w-1/2 rounded-md bg-gray-300 text-black outline-none p-4"
             />
-            <input
-              type="text"
-              onClick={() => console.log("onlocationclick")}
-              {...register("location", { required: true })}
-              placeholder="지역"
-              className="w-1/2 rounded-md bg-gray-300 text-black outline-none p-4"
-            />
+            <Link to={"/region"} className="w-1/2">
+              <input
+                type="text"
+                onClick={() => console.log("onlocationclick")}
+                {...register("location", { required: true })}
+                placeholder="지역"
+                className="w-full rounded-md bg-gray-300 text-black outline-none p-4"
+              />
+            </Link>
           </div>
           <Button className="w-full focus:ring-2 ring-offset-2 focus:ring-blue-500">
             가입하기

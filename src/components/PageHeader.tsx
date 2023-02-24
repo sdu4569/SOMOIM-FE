@@ -3,20 +3,25 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 interface PageHeaderProps {
   back?: boolean;
+  onBack?: any;
   title: string;
-  onNext?: () => void;
   next?: string;
 }
 
 export default function PageHeader({
   back,
+  onBack,
   title,
-  onNext,
   next,
 }: PageHeaderProps) {
   const navigate = useNavigate();
-  const onBackClick = () => {
-    navigate(-1);
+  const onBackClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation();
+    if (onBack) {
+      onBack();
+    } else {
+      navigate(-1);
+    }
   };
   return (
     <header className="mb-4 flex items-center justify-between">
@@ -30,12 +35,13 @@ export default function PageHeader({
         )}
         <h2 className="text-2xl text-black">{title}</h2>
       </div>
-      <button
-        onClick={onNext}
-        className="text-xl bg-transparent text-black p-0 border-none focus:outline-none"
-      >
-        {next}
-      </button>
+      {next && (
+        <input
+          type="submit"
+          value={next}
+          className="cursor-pointer text-xl bg-transparent text-black p-0 border-none focus:outline-none"
+        />
+      )}
     </header>
   );
 }
