@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import AuthPage from "./page/AuthPage";
+import InterestDetailPage from "./page/InterestDetailPage";
 import InterestPage from "./page/InterestPage";
 import MainPage from "./page/MainPage";
 import RegionPage from "./page/RegionPage";
@@ -13,6 +14,7 @@ const PageNavigator = () => {
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/region" element={<RegionPage />} />
+      <Route path="/interest/detail" element={<InterestDetailPage />} />
     </Routes>
   );
 };
