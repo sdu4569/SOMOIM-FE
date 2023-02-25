@@ -2,36 +2,37 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
-    extend: {},
-    minWidth: {
-      0: "0px",
-      full: "100%",
-      min: "min-content",
-      max: "max-content",
-      fit: "fit-content",
+
+    extend: {
+      animation: {
+        "fade-in": "fade-in 0.5s ease-in-out",
+        "slide-up": "slide-up 0.5s ease-in-out",
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+        "slide-up": {
+          "0%": { transform: "translateY(100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+           minWidth: {
       80: "80px",
       100: "100px",
     },
     minHeight: {
-      0: "0px",
-      full: "100%",
-      screen: "100vh",
-      min: "min-content",
-      max: "max-content",
-      fit: "fit-content",
+
       45: "45px",
     },
     fontSize: {
-      sm: "0.8rem",
-      base: "1rem",
-      xl: "1.25rem",
-      "2xl": "1.563rem",
-      "3xl": "1.953rem",
-      "4xl": "2.441rem",
-      "5xl": "3.052rem",
+
       10: "10px",
       16: "16px",
     },
+      },
+
+
   },
   plugins: [],
 };
