@@ -37,7 +37,7 @@ const MainPage = () => {
           번호 인증
         </h2>
       </header>
-      <body>
+      <div>
         <p className="max-w-4xl m-auto pl-3 text-sm mb-2 ">
           전화번호를 입력하세요.
         </p>
@@ -73,7 +73,7 @@ const MainPage = () => {
             다음
           </button>
         </form>
-      </body>
+      </div>
     </div>
   );
 };

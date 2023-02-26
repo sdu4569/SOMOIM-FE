@@ -24,7 +24,7 @@ export default function PageHeader({
     }
   };
   return (
-    <header className="mb-4 flex items-center justify-between">
+    <header className="absolute flex items-center left-0 right-0 top-0 justify-between p-4 bg-white z-50">
       <div className="flex space-x-4 items-center">
         {back && (
           <FontAwesomeIcon

@@ -50,7 +50,7 @@ const RegionPage = () => {
       )}
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <PageHeader back title="내 지역" next="저장" />
-        <section>
+        <section className="mt-12">
           <header className="my-8">
             <span className="text-black text-xl">
               집, 직장 인근의 클럽을 찾습니다.
