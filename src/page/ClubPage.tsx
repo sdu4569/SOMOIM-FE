@@ -1,9 +1,15 @@
-import { faPen, faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronRight,
+  faPen,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PageHeader from "../components/PageHeader";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import BottomTabNavigator from "../components/BottomTabNavigator";
 
 const tabs = ["추천클럽", "신규클럽"];
 const routes = ["recommend", "new"];
@@ -20,7 +26,20 @@ export default function ClubPage() {
   }, [location]);
   return (
     <div className="h-full overflow-scroll pt-14 pb-16">
-      <PageHeader title="클럽" />
+      <PageHeader>
+        <Link to="/region" className="flex space-x-2 items-center">
+          <h2 className="text-2xl translate-y-[2px]">내 지역</h2>
+          <FontAwesomeIcon icon={faChevronRight} />
+        </Link>
+        <div className="flex space-x-8 items-center">
+          <Link to="/search">
+            <FontAwesomeIcon icon={faSearch} size="lg" />
+          </Link>
+          <Link to="/notification">
+            <FontAwesomeIcon icon={faBell} size="xl" />
+          </Link>
+        </div>
+      </PageHeader>
       <div className="bg-pink-300 h-32 relative p-4 flex flex-col space-y-2 rounded-md">
         <h2 className="text-xl">
           {location.pathname.includes("recommend")
@@ -34,7 +53,9 @@ export default function ClubPage() {
           <span className="text-sm">
             {location.pathname.includes("recommend")
               ? "설정한 관심사에 맞춰 추천드려요."
-              : "새롭게 오픈한 클럽의 첫 멤버가 되어 보세요."}
+              : location.pathname.includes("new")
+              ? "새롭게 오픈한 클럽의 첫 멤버가 되어 보세요."
+              : null}
           </span>
         </h4>
       </div>
@@ -60,6 +81,7 @@ export default function ClubPage() {
         </nav>
         <Outlet />
       </section>
+      <BottomTabNavigator />
     </div>
   );
 }
