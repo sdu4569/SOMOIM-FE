@@ -2,6 +2,7 @@ import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Overlay from "./Overlay";
 
 export default function ClubBoard() {
@@ -42,7 +43,7 @@ export default function ClubBoard() {
         <section>
           <ul className="flex flex-col divide-gray-200">
             {[0, 1, 2, 3].map((i) => (
-              <li className="py-2 border-b-4 border-gray-200">
+              <li key={i} className="py-2 border-b-4 border-gray-200">
                 <header className="flex justify-between items-center">
                   <div className="flex space-x-2 items-center">
                     <div className="w-8 h-8 rounded-full bg-gray-500"></div>
@@ -78,9 +79,12 @@ export default function ClubBoard() {
           </ul>
         </section>
       </div>
-      <div className="absolute w-16 h-16 rounded-full bg-blue-500 bottom-8 right-8 flex justify-center items-center z-10">
+      <Link
+        to={"write"}
+        className="absolute w-16 h-16 rounded-full bg-blue-500 bottom-8 right-8 flex justify-center items-center z-10"
+      >
         <FontAwesomeIcon icon={faPlus} className="text-white" size="lg" />
-      </div>
+      </Link>
     </>
   );
 }

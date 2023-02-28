@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import ClubDetailInfo from "../page/ClubDetailInfo";
 import ClubBoard from "./ClubBoard";
 import BottomTabNavigator from "./BottomTabNavigator";
+import ClubChat from "./ClubChat";
 
 enum Tabs {
   INFO,
@@ -60,7 +61,7 @@ export default function ClubDetail() {
             0: <ClubDetailInfo />,
             1: <ClubBoard />,
             2: <a>사진첩</a>,
-            3: <a>채팅</a>,
+            3: <ClubChat />,
           }[selectedTab]
         }
       </section>

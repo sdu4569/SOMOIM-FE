@@ -10,6 +10,7 @@ import SignUpPage from "./page/SignUpPage";
 import RegionSelect from "./components/RegionSelect";
 import ClubDetail from "./components/ClubDetail";
 import BottomTabNavigator from "./components/BottomTabNavigator";
+import ClubBoardWrite from "./components/ClubBoardWrite";
 
 const PageNavigator = () => {
   return (
@@ -29,7 +30,8 @@ const PageNavigator = () => {
         <Route path="new" element={<div className="min-h-screen" />} />
         <Route path="*" element={<div>404</div>} />
       </Route>
-      <Route path="/clubs/:id" element={<ClubDetail />} />
+      <Route path="/clubs/:id" element={<ClubDetail />}></Route>
+      <Route path="/clubs/:id/write" element={<ClubBoardWrite />} />
       <Route path="/activity" element={<BottomTabNavigator />} />
       <Route path="/more" element={<BottomTabNavigator />} />
       <Route path="*" element={<div>404</div>} />
