@@ -2,28 +2,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 interface PageHeaderProps {
-  back?: boolean;
-  onBack?: any;
-  title: string;
-  next?: string;
+  children?: React.ReactNode;
+  className?: string;
 }
 
-export default function PageHeader({
-  back,
-  onBack,
-  title,
-  next,
-}: PageHeaderProps) {
-  const navigate = useNavigate();
-  const onBackClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    e.stopPropagation();
-    if (onBack) {
-      onBack();
-    } else {
-      navigate(-1);
-    }
-  };
+export default function PageHeader({ children, className }: PageHeaderProps) {
   return (
+/*
     <header className="mb-4 flex items-center justify-between ml-2">
       <div className="flex space-x-4 items-center">
         {back && (
@@ -42,6 +27,11 @@ export default function PageHeader({
           className="cursor-pointer text-xl bg-transparent text-black p-0 border-none focus:outline-none"
         />
       )}
+      */
+    <header
+      className={`absolute flex items-center left-0 right-0 top-0 justify-between p-4 bg-white z-10 ${className}`}
+    >
+      {children}
     </header>
   );
 }

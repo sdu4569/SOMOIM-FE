@@ -33,8 +33,12 @@ const MainPage = () => {
 
   return (
     <div>
-      <PageHeader title="번호 인증" />
-      <main>
+      <header>
+        <h2 className="max-w-4xl text-xl m-auto pl-3 mb-5 mt-5 font-bold">
+          번호 인증
+        </h2>
+      </header>
+      <div>
         <p className="max-w-4xl m-auto pl-3 text-sm mb-2 ">
           전화번호를 입력하세요.
         </p>
@@ -70,7 +74,7 @@ const MainPage = () => {
             다음
           </button>
         </form>
-      </main>
+      </div>
     </div>
   );
 };

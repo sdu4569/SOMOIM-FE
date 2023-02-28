@@ -20,8 +20,10 @@ const SignUpPage = () => {
 
   return (
     <>
-      <PageHeader title="회원가입" />
-      <div>
+      <PageHeader>
+        <h2 className="text-2xl">회원가입</h2>
+      </PageHeader>
+      <div className="mt-14">
         <form className="space-y-4" action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-x-2 w-full flex">
             <input
