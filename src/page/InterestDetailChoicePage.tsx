@@ -61,7 +61,7 @@ const InterestDetailChoicePage = () => {
   console.log(checkedList);
   return (
     <div className="relative">
-      <PageHeader back={true} title="상세 관심사 선택" />
+      <PageHeader children={"상세 관심사 선택"} />
       <form onSubmit={onSubmit}>
         <div className="flex flex-col flex-wrap">
           {detailList.map((item, idx) => {

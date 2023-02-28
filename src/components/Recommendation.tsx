@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Club from "./Club";
+import RecommendClub from "./RecommendClub";
 import UserChoiceInterest from "./UserChoiceInterst";
 const Recommendation = () => {
   const userChoice = UserChoiceInterest();
@@ -22,7 +21,7 @@ const Recommendation = () => {
                 </span>
               </button>
             </Link>
-            <Club interest={item.interest} />
+            <RecommendClub interest={item.interest} />
           </div>
         );
       })}

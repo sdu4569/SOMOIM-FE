@@ -10,7 +10,7 @@ const UpdateDetailPage = () => {
 
   return (
     <>
-      <PageHeader title="상세 관심사" back={true} />
+      <PageHeader children="상세 관심사" />
       <Link to={"/interest"}>
         <Button children="관심사 선택" className="w-full" />
       </Link>
