@@ -18,17 +18,26 @@ module.exports = {
         },
       },
       minWidth: {
+        60: "60px",
         80: "80px",
         100: "100px",
+      },
+      width: {
+        70: "70px",
       },
       minHeight: {
         45: "45px",
       },
+      maxHeight: {
+        120: "120px",
+        240: "240px",
+      },
       fontSize: {
         10: "10px",
-        16: "16px",
+        12: "12px",
+        14: "14px",
       },
     },
+    plugins: [],
   },
-  plugins: [],
 };

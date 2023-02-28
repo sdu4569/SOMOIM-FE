@@ -1,5 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import AuthPage from "./page/AuthPage";
+
+import MyActivityPage from "./page/MyActivityPage";
+import UpdateDetailPage from "./page/UpdateDetailPage";
+import InterestSearchPage from "./page/InterestSearchPage";
 import ClubPage from "./page/ClubPage";
 import InterestDetailPage from "./page/InterestDetailPage";
 import InterestPage from "./page/InterestPage";
@@ -19,6 +23,10 @@ const PageNavigator = () => {
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/interest" element={<InterestPage />} />
+      <Route path="/:id" element={<InterestSearchPage />} />
+      <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
+      <Route path="/activity" element={<MyActivityPage />} />
+      <Route path="/update_detail" element={<UpdateDetailPage />} />
       <Route path="/region" element={<RegionPage />}>
         <Route path="home" element={<RegionSelect />} />
         <Route path="work" element={<RegionSelect />} />
@@ -32,7 +40,6 @@ const PageNavigator = () => {
       </Route>
       <Route path="/clubs/:id" element={<ClubDetail />}></Route>
       <Route path="/clubs/:id/write" element={<ClubBoardWrite />} />
-      <Route path="/activity" element={<BottomTabNavigator />} />
       <Route path="/more" element={<BottomTabNavigator />} />
       <Route path="*" element={<div>404</div>} />
     </Routes>

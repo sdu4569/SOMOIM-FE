@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PageHeader from "../components/PageHeader";
 
 const MainPage = () => {
   const [value, setValue] = useState("");
