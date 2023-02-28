@@ -2,7 +2,6 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
-
     extend: {
       animation: {
         "fade-in": "fade-in 0.5s ease-in-out",
@@ -17,22 +16,28 @@ module.exports = {
           "0%": { transform: "translateY(100%)" },
           "100%": { transform: "translateY(0)" },
         },
-           minWidth: {
-      80: "80px",
-      100: "100px",
-    },
-    minHeight: {
-
-      45: "45px",
-    },
-    fontSize: {
-
-      10: "10px",
-      16: "16px",
-    },
       },
-
-
+      minWidth: {
+        60: "60px",
+        80: "80px",
+        100: "100px",
+      },
+      width: {
+        70: "70px",
+      },
+      minHeight: {
+        45: "45px",
+      },
+      maxHeight: {
+        120: "120px",
+        240: "240px",
+      },
+      fontSize: {
+        10: "10px",
+        12: "12px",
+        14: "14px",
+      },
+    },
+    plugins: [],
   },
-  plugins: [],
 };

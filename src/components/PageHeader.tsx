@@ -24,16 +24,16 @@ export default function PageHeader({
     }
   };
   return (
-    <header className="mb-4 flex items-center justify-between">
+    <header className="mb-4 flex items-center justify-between ml-2">
       <div className="flex space-x-4 items-center">
         {back && (
           <FontAwesomeIcon
             icon={faArrowLeft}
-            className="text-black text-2xl cursor-pointer"
+            className="text-black text-xl cursor-pointer"
             onClick={onBackClick}
           />
         )}
-        <h2 className="text-2xl text-black">{title}</h2>
+        <h2 className="text-xl text-black">{title}</h2>
       </div>
       {next && (
         <input
