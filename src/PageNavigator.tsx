@@ -5,16 +5,16 @@ import MyActivityPage from "./page/MyActivityPage";
 import UpdateDetailPage from "./page/UpdateDetailPage";
 import InterestSearchPage from "./page/InterestSearchPage";
 import ClubPage from "./page/ClubPage";
+import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
 import InterestPage from "./page/InterestPage";
 import MainPage from "./page/MainPage";
-import ClubList from "./components/ClubList";
 import RegionPage from "./page/RegionPage";
 import SignUpPage from "./page/SignUpPage";
 import RegionSelect from "./components/RegionSelect";
 import ClubDetail from "./components/ClubDetail";
 import BottomTabNavigator from "./components/BottomTabNavigator";
 import ClubBoardWrite from "./components/ClubBoardWrite";
-import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
+import ClubsList from "./components/ClubsList";
 
 const PageNavigator = () => {
   return (
@@ -32,9 +32,8 @@ const PageNavigator = () => {
         <Route path="work" element={<RegionSelect />} />
         <Route path="interested" element={<RegionSelect />} />
       </Route>
-
       <Route path="/clubs" element={<ClubPage />}>
-        <Route path="recommend" element={<ClubList />} />
+        <Route path="recommend" element={<ClubsList />} />
         <Route path="new" element={<div className="min-h-screen" />} />
         <Route path="*" element={<div>404</div>} />
       </Route>
