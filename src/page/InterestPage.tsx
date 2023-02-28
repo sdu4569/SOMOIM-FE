@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 
@@ -46,8 +46,19 @@ const InterestPage = () => {
 
   return (
     <>
-      <div className="relative">
-        <PageHeader children="관심사 선택" />
+      <PageHeader>
+        <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
+        <Link
+          to={"/interest/detail"}
+          state={checkedList}
+          onClick={clickHandler}
+        >
+          <button type="submit" id="button" className="text-xl">
+            다음
+          </button>
+        </Link>
+      </PageHeader>
+      <div className="mt-12 relative">
         <form>
           <div className="flex justify-evenly flex-wrap">
             {InterestList.map((item, idx) => {
@@ -74,19 +85,6 @@ const InterestPage = () => {
               );
             })}
           </div>
-          <Link
-            to={"/interest/detail"}
-            state={checkedList}
-            onClick={clickHandler}
-          >
-            <button
-              type="submit"
-              id="button"
-              className="mr-2 absolute text-xl top-0 right-0 peer-checked:"
-            >
-              다음
-            </button>
-          </Link>
         </form>
       </div>
     </>

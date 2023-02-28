@@ -1,6 +1,5 @@
 import PageHeader from "../components/PageHeader";
-import UpdateInterestButton from "../components/UpdateInterestButton";
-import Recommendation from "../components/Recommendation";
+
 import { useLocation } from "react-router-dom";
 import { InterestList } from "../components/InterestList";
 
@@ -15,7 +14,9 @@ const InterestSearchPage = () => {
       {interest.map((item, idx) => {
         return (
           <div key={idx}>
-            <PageHeader children={item.title} className="mb-2" />
+            <PageHeader className="mb-2">
+              <h2 className="text-xl">{item.title}</h2>
+            </PageHeader>
             <main className="ml-2 mr-2 mt-12">
               <div className="flex flex-wrap">
                 <p className="border-solid border-gray-300 border p-2 rounded-lg text-12 mb-3 mr-3 ">

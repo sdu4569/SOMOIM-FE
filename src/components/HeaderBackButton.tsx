@@ -7,7 +7,7 @@ export default function HeaderBackButton() {
   return (
     <FontAwesomeIcon
       icon={faArrowLeft}
-      className="text-black text-2xl cursor-pointer"
+      className="text-black text-xl cursor-pointer"
       onClick={() => navigate(-1)}
     />
   );
