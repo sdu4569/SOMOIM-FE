@@ -6,8 +6,11 @@ import Recommendation from "../components/Recommendation";
 const MyActivityPage = () => {
   return (
     <div>
-      <PageHeader title="내활동" />
-      <main className="ml-2 mr-2">
+      <PageHeader>
+        <h2 className="text-xl">내활동</h2>
+      </PageHeader>
+
+      <main className="ml-2 mr-2 mt-12">
         <h2 className="text-14 text-blue-500 font-semibold mb-5">
           클럽에 가입해 보세요!
         </h2>

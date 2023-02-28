@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 
@@ -45,49 +45,49 @@ const InterestPage = () => {
   };
 
   return (
-    <div className="relative">
-      <PageHeader title="관심사 선택" />
-      <form>
-        <div className="flex justify-evenly flex-wrap">
-          {InterestList.map((item, idx) => {
-            return (
-              <div key={idx} className="min-w-80 mb-3 ">
-                <input
-                  type="checkbox"
-                  id={item.title}
-                  checked={checkedList.includes(item.title)}
-                  onChange={(e) => checkHandler(e, item.title)}
-                  className="hidden peer"
-                />
-                <label
-                  htmlFor={item.title}
-                  className="[&>img]:peer-checked:border-blue-500"
-                >
-                  <img
-                    src={item.image}
-                    className="border-2 border-solid rounded m-auto mb-2 w-12 bg-gray-200"
-                  />
-                  <div className="text-12 text-center">{item.title}</div>
-                </label>
-              </div>
-            );
-          })}
-        </div>
+    <>
+      <PageHeader>
+        <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
         <Link
           to={"/interest/detail"}
           state={checkedList}
           onClick={clickHandler}
         >
-          <button
-            type="submit"
-            id="button"
-            className="mr-2 absolute text-xl top-0 right-0 peer-checked:"
-          >
+          <button type="submit" id="button" className="text-xl">
             다음
           </button>
         </Link>
-      </form>
-    </div>
+      </PageHeader>
+      <div className="mt-12 relative">
+        <form>
+          <div className="flex justify-evenly flex-wrap">
+            {InterestList.map((item, idx) => {
+              return (
+                <div key={idx} className="min-w-80 mb-3 ">
+                  <input
+                    type="checkbox"
+                    id={item.title}
+                    checked={checkedList.includes(item.title)}
+                    onChange={(e) => checkHandler(e, item.title)}
+                    className="hidden peer"
+                  />
+                  <label
+                    htmlFor={item.title}
+                    className="[&>img]:peer-checked:border-blue-500"
+                  >
+                    <img
+                      src={item.image}
+                      className="border-2 border-solid rounded m-auto mb-2 w-12 bg-gray-200"
+                    />
+                    <div className="text-12 text-center">{item.title}</div>
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

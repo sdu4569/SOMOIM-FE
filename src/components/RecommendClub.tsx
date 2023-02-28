@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { testClubList } from "./testClubList";
 
-const Club = (e: any) => {
+const RecommendClub = (e: any) => {
   const recommendClubList = testClubList.filter((item) => {
     return item.interest == e.interest;
   });
@@ -40,4 +39,4 @@ const Club = (e: any) => {
   );
 };
 
-export default Club;
+export default RecommendClub;
