@@ -1,3 +1,5 @@
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
 const routes = [
@@ -22,15 +24,15 @@ const routes = [
     name: "클럽 리스트",
   },
   {
-    path: "/club/1",
+    path: "/clubs/1",
     name: "클럽 상세",
   },
   {
-    path: "/club/1/post/1",
+    path: "/clubs/1/post/1",
     name: "클럽 게시글",
   },
   {
-    path: "/club/1/write",
+    path: "/clubs/1/write",
     name: "클럽 게시글 작성",
   },
   {
@@ -50,11 +52,16 @@ const routes = [
 const MainPage = () => {
   return (
     <>
-      <h2>Main</h2>
-      <ul>
+      <ul className="flex flex-col space-y-8">
         {routes.map((route) => (
           <li key={route.path}>
-            <Link to={route.path}>{route.name}</Link>
+            <Link
+              to={route.path}
+              className="p-2 rounded-md border flex space-x-2 items-center w-max"
+            >
+              <p className="translate-y-[2px]">{route.name}</p>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </Link>
           </li>
         ))}
       </ul>
