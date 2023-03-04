@@ -1,5 +1,4 @@
 {
-  "homepage": "https://sdu4569.github.io/5-FE",
   "name": "team-project",
   "private": false,
   "version": "0.0.0",
@@ -7,9 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
