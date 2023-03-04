@@ -1,12 +1,15 @@
 {
+  "homepage": "https://sdu4569.github.io/5-FE",
   "name": "team-project",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
@@ -15,6 +18,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "autoprefixer": "^10.4.13",
     "framer-motion": "^10.0.0",
+    "gh-pages": "^5.0.0",
     "postcss": "^8.4.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
