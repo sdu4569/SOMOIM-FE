@@ -9,7 +9,7 @@ interface LayoutProps {
 export default function Layout({ children, className }: LayoutProps) {
   return (
     <div
-      className={`bg-white w-[400px] h-[740px] overflow-hidden rounded-md relative p-4 ${className}`}
+      className={`bg-white w-[400px] h-[740px] overflow-hidden rounded-md relative scrollbar-hide p-4 ${className}`}
     >
       {children}
     </div>

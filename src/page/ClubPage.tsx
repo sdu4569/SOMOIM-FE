@@ -28,7 +28,7 @@ export default function ClubPage() {
     <div className="h-full overflow-scroll pt-14 pb-16">
       <PageHeader>
         <Link to="/region" className="flex space-x-2 items-center">
-          <h2 className="text-2xl translate-y-[2px]">내 지역</h2>
+          <h2 className="text-2xl ">내 지역</h2>
           <FontAwesomeIcon icon={faChevronRight} />
         </Link>
         <div className="flex space-x-8 items-center">

@@ -61,17 +61,15 @@ export default function ClubBoard() {
                   <div className="flex space-x-4">
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faThumbsUp} />
-                      <p className="text-sm translate-y-[2px]">좋아요 1</p>
+                      <p className="text-sm ">좋아요 1</p>
                     </div>
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faMessage} />
-                      <p className="text-sm translate-y-[2px]">댓글 1</p>
+                      <p className="text-sm ">댓글 1</p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-sm translate-y-[2px]">
-                      가입인사
-                    </p>
+                    <p className="text-gray-500 text-sm ">가입인사</p>
                   </div>
                 </div>
               </li>

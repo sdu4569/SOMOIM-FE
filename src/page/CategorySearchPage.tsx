@@ -21,7 +21,7 @@ export default function CategorySearchPage() {
       <PageHeader className="flex-col space-y-4">
         <div className="flex w-full items-center space-x-4">
           <HeaderBackButton />
-          <h1 className="translate-y-[2px]">카테고리명</h1>
+          <h1 className="">카테고리명</h1>
         </div>
         <div className="bg-red-500py-2 w-full">
           <input

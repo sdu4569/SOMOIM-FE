@@ -59,7 +59,7 @@ const MainPage = () => {
               to={route.path}
               className="p-2 rounded-md border flex space-x-2 items-center w-max"
             >
-              <p className="translate-y-[2px]">{route.name}</p>
+              <p>{route.name}</p>
               <FontAwesomeIcon icon={faArrowRight} />
             </Link>
           </li>

@@ -14,7 +14,7 @@ export default function () {
       <PageHeader className="!bg-gray-300">
         <div className="flex space-x-2 items-center">
           <HeaderBackButton />
-          <h1 className="text-lg translate-y-[2px]">게시글</h1>
+          <h1 className="text-lg ">게시글</h1>
         </div>
         <div className="flex items-center">
           <FontAwesomeIcon icon={faEllipsisV} />
@@ -24,7 +24,7 @@ export default function () {
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
             <div className="w-10 aspect-square rounded-full bg-blue-500"></div>
-            <div className="flex flex-col h-full justify-between translate-y-[2px] text-sm">
+            <div className="flex flex-col h-full justify-between  text-sm">
               <div className="flex space-x-1">
                 <p>포마</p>
                 <p className="font-semibold text-blue-500">클럽장</p>
@@ -49,7 +49,7 @@ export default function () {
               like ? "text-blue-500" : "text-black"
             }`}
           >
-            <FontAwesomeIcon icon={faThumbsUp} className="-translate-y-[2px]" />
+            <FontAwesomeIcon icon={faThumbsUp} className="-" />
             <p>좋아요</p>
           </button>
           <button className="border rounded-md p-2 text-sm border-black flex justify-center space-x-1 items-center">
@@ -59,7 +59,7 @@ export default function () {
         </div>
         <div className="border-y border-gray-300 mt-4 flex justify-between items-center pl-2">
           <div className="flex space-x-2 items-center">
-            <FontAwesomeIcon icon={faThumbsUp} className="-translate-y-[2px]" />
+            <FontAwesomeIcon icon={faThumbsUp} className="-" />
             <p className="py-3 text-sm">제일 먼저 좋아요를 눌러주세요!</p>
           </div>
           <div className="flex items-center">
@@ -84,10 +84,7 @@ export default function () {
                 <div className="text-sm text-gray-500 divide-black flex items-center">
                   <p className="pr-1">좋아요 3</p>
                   <div className="flex space-x-1 items-center pl-1">
-                    <FontAwesomeIcon
-                      icon={faThumbsUp}
-                      className="-translate-y-[2px]"
-                    />
+                    <FontAwesomeIcon icon={faThumbsUp} className="-" />
                     <p className="">좋아요</p>
                   </div>
                 </div>

@@ -52,19 +52,15 @@ export default function ClubDetailInfo({
               <div className="flex-1 flex flex-col justify-between text-sm">
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faCalendar} className="w-4" />
-                  <p className="h-full translate-y-[3px]">
-                    3월 6일 (월) 오후 8:00
-                  </p>
+                  <p className="h-full ">3월 6일 (월) 오후 8:00</p>
                 </span>
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faLocationDot} className="w-4" />
-                  <p className="h-full translate-y-[3px]">
-                    온라인(줌링크 문의주세요!)
-                  </p>
+                  <p className="h-full ">온라인(줌링크 문의주세요!)</p>
                 </span>
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faWonSign} className="w-4" />
-                  <p className="h-full translate-y-[3px]">0원</p>
+                  <p className="h-full ">0원</p>
                 </span>
               </div>
             </div>
@@ -91,19 +87,15 @@ export default function ClubDetailInfo({
               <div className="flex-1 flex flex-col justify-between text-sm">
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faCalendar} className="w-4" />
-                  <p className="h-full translate-y-[3px]">
-                    3월 6일 (월) 오후 8:00
-                  </p>
+                  <p className="h-full ">3월 6일 (월) 오후 8:00</p>
                 </span>
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faLocationDot} className="w-4" />
-                  <p className="h-full translate-y-[3px]">
-                    온라인(줌링크 문의주세요!)
-                  </p>
+                  <p className="h-full ">온라인(줌링크 문의주세요!)</p>
                 </span>
                 <span className="flex space-x-2 items-center">
                   <FontAwesomeIcon icon={faWonSign} className="w-4" />
-                  <p className="h-full translate-y-[3px]">0원</p>
+                  <p className="h-full ">0원</p>
                 </span>
               </div>
             </div>
