@@ -1,5 +1,9 @@
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faEllipsisV, faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faEllipsisV,
+  faShareNodes,
+  faHeart as solidHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import HeaderBackButton from "./HeaderBackButton";
@@ -7,8 +11,8 @@ import PageHeader from "./PageHeader";
 import { motion } from "framer-motion";
 import ClubDetailInfo from "../page/ClubDetailInfo";
 import ClubBoard from "./ClubBoard";
-import BottomTabNavigator from "./BottomTabNavigator";
 import ClubChat from "./ClubChat";
+import ClubGallery from "../page/ClubGallery";
 
 enum Tabs {
   INFO,
@@ -20,6 +24,7 @@ enum Tabs {
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
+  const [like, setLike] = useState<boolean>(false);
   const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
   return (
     <div className="h-full overflow-scroll">
@@ -31,7 +36,11 @@ export default function ClubDetail() {
           </h1>
         </div>
         <div className="flex space-x-6 items-center ml-2">
-          <FontAwesomeIcon icon={faHeart} size="xl" />
+          <FontAwesomeIcon
+            icon={like ? solidHeart : regularHeart}
+            size="xl"
+            onClick={() => setLike((prev) => !prev)}
+          />
           <FontAwesomeIcon icon={faShareNodes} size="xl" />
           <FontAwesomeIcon icon={faEllipsisV} size="xl" />
         </div>
@@ -58,9 +67,9 @@ export default function ClubDetail() {
       <section className="mt-20">
         {
           {
-            0: <ClubDetailInfo />,
+            0: <ClubDetailInfo like={like} setLike={setLike} />,
             1: <ClubBoard />,
-            2: <a>사진첩</a>,
+            2: <ClubGallery />,
             3: <ClubChat />,
           }[selectedTab]
         }

@@ -15,6 +15,9 @@ import ClubDetail from "./components/ClubDetail";
 import BottomTabNavigator from "./components/BottomTabNavigator";
 import ClubBoardWrite from "./components/ClubBoardWrite";
 import ClubsList from "./components/ClubsList";
+import ClubPost from "./page/ClubPost";
+import SearchPage from "./page/SearchPage";
+import CategorySearchPage from "./page/CategorySearchPage";
 
 const PageNavigator = () => {
   return (
@@ -37,9 +40,12 @@ const PageNavigator = () => {
         <Route path="new" element={<div className="min-h-screen" />} />
         <Route path="*" element={<div>404</div>} />
       </Route>
-      <Route path="/clubs/:id" element={<ClubDetail />}></Route>
-      <Route path="/clubs/:id/write" element={<ClubBoardWrite />} />
+      <Route path="/clubs/:clubId" element={<ClubDetail />}></Route>
+      <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
       <Route path="/more" element={<BottomTabNavigator />} />
+      <Route path="/search" element={<SearchPage />} />
+      <Route path="/search/:category" element={<CategorySearchPage />} />
       <Route path="*" element={<div>404</div>} />
     </Routes>
   );

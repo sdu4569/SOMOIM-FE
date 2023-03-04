@@ -1,9 +1,23 @@
-import { faCalendar, faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faLocationDot, faWonSign } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendar,
+  faHeart as regularHeart,
+} from "@fortawesome/free-regular-svg-icons";
+import {
+  faLocationDot,
+  faWonSign,
+  faHeart as solidHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 
-export default function ClubDetailInfo() {
+export default function ClubDetailInfo({
+  like,
+  setLike,
+}: {
+  like: boolean;
+  setLike: any;
+}) {
   return (
     <div className="flex flex-col space-y-4 pb-12">
       <div className="h-32 bg-red-500 flex justify-center items-center">
@@ -144,8 +158,12 @@ export default function ClubDetailInfo() {
         </ul>
       </section>
       <BottomTabNavigator className="space-x-4 px-4 py-2">
-        <div className="">
-          <FontAwesomeIcon icon={faHeart} size="2xl" className="text-red-500" />
+        <div className="" onClick={() => setLike((prev: boolean) => !prev)}>
+          <FontAwesomeIcon
+            icon={like ? solidHeart : regularHeart}
+            size="2xl"
+            className="text-red-500"
+          />
         </div>
         <div className="flex-1 flex justify-center items-center h-full border rounded-lg bg-blue-500 text-white">
           <p>가입하기</p>
