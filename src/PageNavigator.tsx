@@ -21,6 +21,7 @@ import CategorySearchPage from "./page/CategorySearchPage";
 import ClubEditPage from "./page/ClubEditPage";
 import CreateActivity from "./page/CreateActivityPage";
 import CreateClub from "./page/CreateClubPage";
+import GalleryPost from "./page/GalleryPost";
 
 const PageNavigator = () => {
   return (
@@ -51,6 +52,7 @@ const PageNavigator = () => {
         element={<CreateActivity />}
       />
       <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
       <Route path="/more" element={<BottomTabNavigator />} />
       <Route path="/search" element={<SearchPage />} />

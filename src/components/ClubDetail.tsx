@@ -39,8 +39,6 @@ export default function ClubDetail() {
             size="xl"
             onClick={() => setLike((prev) => !prev)}
           />
-          <FontAwesomeIcon icon={faShareNodes} size="xl" />
-          <FontAwesomeIcon icon={faEllipsisV} size="xl" />
         </div>
       </PageHeader>
       <nav className="w-full flex items-center absolute h-8 top-16 left-0 right-0 px-4 bg-white z-[100]">
