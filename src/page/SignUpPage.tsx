@@ -21,7 +21,7 @@ const SignUpPage = () => {
   return (
     <>
       <PageHeader>
-        <h2 className="text-2xl">회원가입</h2>
+        <h2 className="text-xl">회원가입</h2>
       </PageHeader>
       <div className="mt-14">
         <form className="space-y-4" action="" onSubmit={handleSubmit(onSubmit)}>

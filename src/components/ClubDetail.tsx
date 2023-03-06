@@ -31,7 +31,7 @@ export default function ClubDetail() {
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
-          <h1 className="text-2xl whitespace-nowrap truncate ">클럽 이름</h1>
+          <h1 className="text-xl whitespace-nowrap truncate ">클럽 이름</h1>
         </div>
         <div className="flex space-x-6 items-center ml-2">
           <FontAwesomeIcon
