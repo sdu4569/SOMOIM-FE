@@ -47,12 +47,24 @@ const routes = [
     path: "/more",
     name: "더보기",
   },
+  {
+    path: "/clubs/1/edit",
+    name: "클럽 수정",
+  },
+  {
+    path: "/clubs/1/createActivity",
+    name: "클럽 액티비티 생성",
+  },
+  {
+    path: "/clubs/create",
+    name: "클럽 생성",
+  },
 ];
 
 const MainPage = () => {
   return (
     <>
-      <ul className="flex flex-col space-y-8">
+      <ul className="flex flex-col space-y-4 overflow-scroll h-full">
         {routes.map((route) => (
           <li key={route.path}>
             <Link
