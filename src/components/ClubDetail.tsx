@@ -1,14 +1,14 @@
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisV, faShareNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HeaderBackButton from "./HeaderBackButton";
 import PageHeader from "./PageHeader";
 import { motion } from "framer-motion";
 import ClubDetailInfo from "../page/ClubDetailInfo";
 import ClubBoard from "./ClubBoard";
-import BottomTabNavigator from "./BottomTabNavigator";
 import ClubChat from "./ClubChat";
+import { useLocation } from "react-router-dom";
 
 enum Tabs {
   INFO,
@@ -20,6 +20,28 @@ enum Tabs {
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
+  const location = useLocation();
+
+  useEffect(() => {
+    let array = [];
+    const getStorage = localStorage.getItem("recentClub");
+    if (getStorage !== null) {
+      array = JSON.parse(getStorage);
+
+      if (
+        array.filter((item: any) => item.id == location.state.id).length !== 0
+      ) {
+        return;
+      } else {
+        array.unshift(location.state);
+        localStorage.setItem("recentClub", JSON.stringify(array));
+      }
+    } else {
+      array.unshift(location.state);
+      localStorage.setItem("recentClub", JSON.stringify(array));
+    }
+  }, []);
+
   const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
   return (
     <div className="h-full overflow-scroll">

@@ -1,14 +1,19 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import { InterestList } from "../components/InterestList";
 import HeaderBackButton from "../components/HeaderBackButton";
+import getUserChoiceInterest from "../util/getUserChoiceInterest";
 
 const InterestDetailChoicePage = () => {
   const location = useLocation();
   const detailList = InterestList.filter((item) =>
     location.state.includes(item.title)
   );
+  const userChoice = getUserChoiceInterest()
+    .map((item: any) => item.detail)
+    .flat();
+
   const navigate = useNavigate();
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
@@ -48,7 +53,6 @@ const InterestDetailChoicePage = () => {
         };
       });
       localStorage.setItem("userChoice", JSON.stringify(userChoiceList));
-      console.log("checkedList:", checkedList);
       navigate("/activity");
     },
     [checkedList]
@@ -68,8 +72,13 @@ const InterestDetailChoicePage = () => {
     }
   };
 
+  if (userChoice.length !== 0) {
+    useEffect(() => {
+      setCheckedList(userChoice);
+    }, []);
+  }
   return (
-    <>
+    <div className="h-full pt-14 pb-16 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
@@ -81,9 +90,9 @@ const InterestDetailChoicePage = () => {
           저장
         </button>
       </PageHeader>
-      <div className="relative mt-12">
-        <form onSubmit={onSubmit} ref={formRef}>
-          <div className="flex flex-col flex-wrap">
+      <div className="relative">
+        <form onSubmit={onSubmit} ref={formRef} className="overflow-auto">
+          <div className="flex flex-col flex-wrap ">
             {detailList.map((item, idx) => {
               return (
                 <div key={idx} className="min-w-80 mb-3 relative">
@@ -121,7 +130,7 @@ const InterestDetailChoicePage = () => {
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

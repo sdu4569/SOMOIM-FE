@@ -12,9 +12,13 @@ import RegionPage from "./page/RegionPage";
 import SignUpPage from "./page/SignUpPage";
 import RegionSelect from "./components/RegionSelect";
 import ClubDetail from "./components/ClubDetail";
-import BottomTabNavigator from "./components/BottomTabNavigator";
 import ClubBoardWrite from "./components/ClubBoardWrite";
 import ClubsList from "./components/ClubsList";
+import ClubSearchPage from "./page/ClubSearchPage";
+import MorePage from "./page/MorePage";
+import UpdateUserPage from "./page/UpdateUserPage";
+import RecentClubPage from "./page/RecentClubPage";
+import InterestClubPage from "./page/InterestClubPage";
 
 const PageNavigator = () => {
   return (
@@ -24,9 +28,11 @@ const PageNavigator = () => {
       <Route path="/signup" element={<SignUpPage />} />
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/:id" element={<InterestSearchPage />} />
+      <Route path="/search" element={<ClubSearchPage />} />
       <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
       <Route path="/activity" element={<MyActivityPage />} />
       <Route path="/update_detail" element={<UpdateDetailPage />} />
+      <Route path="/update_user" element={<UpdateUserPage />} />
       <Route path="/region" element={<RegionPage />}>
         <Route path="home" element={<RegionSelect />} />
         <Route path="work" element={<RegionSelect />} />
@@ -39,7 +45,9 @@ const PageNavigator = () => {
       </Route>
       <Route path="/clubs/:id" element={<ClubDetail />}></Route>
       <Route path="/clubs/:id/write" element={<ClubBoardWrite />} />
-      <Route path="/more" element={<BottomTabNavigator />} />
+      <Route path="/more" element={<MorePage />} />
+      <Route path="/recent_club" element={<RecentClubPage />} />
+      <Route path="/interest_club" element={<InterestClubPage />} />
       <Route path="*" element={<div>404</div>} />
     </Routes>
   );

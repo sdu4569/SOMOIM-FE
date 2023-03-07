@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import RecommendClub from "./RecommendClub";
-import UserChoiceInterest from "./UserChoiceInterst";
+import UserChoiceInterest from "../util/getUserChoiceInterest";
 const Recommendation = () => {
   const userChoice = UserChoiceInterest();
   return (
     <>
-      {userChoice.map((item, idx) => {
+      {userChoice.map((item: any, idx: number) => {
         return (
           <div
             className="mt-6 border-t pt-4 border-solid border-gray-400"
