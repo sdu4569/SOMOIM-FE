@@ -19,7 +19,7 @@ export default function RegionSelect() {
       <PageHeader>
         <div className="flex items-center space-x-4">
           <HeaderBackButton />
-          <h2 className="text-2xl">{regionObj[region]} 지역 선택</h2>
+          <h2 className="text-xl">{regionObj[region]} 지역 선택</h2>
         </div>
       </PageHeader>
       <input

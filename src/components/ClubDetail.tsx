@@ -41,7 +41,7 @@ export default function ClubDetail() {
           />
         </div>
       </PageHeader>
-      <nav className="w-full flex items-center absolute h-8 top-16 left-0 right-0 px-4 bg-white z-[100]">
+      <nav className="w-full flex items-center absolute h-8 top-14 left-0 right-0 px-4 bg-white z-[100]">
         <ul className="flex space-x-4 w-full">
           {tabs.map((tab, i) => (
             <li
@@ -60,7 +60,7 @@ export default function ClubDetail() {
           ))}
         </ul>
       </nav>
-      <section className="mt-20">
+      <section className="mt-[72px]">
         {
           {
             0: <ClubDetailInfo like={like} setLike={setLike} />,
