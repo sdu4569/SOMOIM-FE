@@ -26,7 +26,7 @@ const UpdateUserButton = () => {
           <img
             src={Images.location}
             alt="지역 마크"
-            className="mr-1 w-10 inline-block"
+            className="mr-1 w-[10px] inline-block"
           />
           <span className="text-10">{userInfo.city}</span>
         </div>

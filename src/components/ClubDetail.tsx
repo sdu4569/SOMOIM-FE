@@ -27,7 +27,7 @@ export default function ClubDetail() {
     const getStorage = localStorage.getItem("recentClub");
     if (getStorage !== null) {
       array = JSON.parse(getStorage);
-
+      //중복 클럽 여부
       if (
         array.filter((item: any) => item.id == location.state.id).length !== 0
       ) {
