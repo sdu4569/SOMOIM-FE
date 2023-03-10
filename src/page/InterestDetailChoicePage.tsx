@@ -78,7 +78,7 @@ const InterestDetailChoicePage = () => {
     }, []);
   }
   return (
-    <div className="h-full pt-14 pb-16 overflow-auto">
+    <div className="h-full pt-20 pb-16 px-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />

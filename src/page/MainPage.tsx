@@ -8,7 +8,7 @@ const routes = [
     name: "인증",
   },
   {
-    path: "/signup",
+    path: "/signup/register",
     name: "회원가입",
   },
   {

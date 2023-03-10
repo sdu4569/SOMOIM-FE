@@ -8,7 +8,7 @@ export default function ClubChat() {
     chatList.current?.scrollIntoView();
   });
   return (
-    <div>
+    <div className="p-4">
       <ul className="mb-[48px] flex flex-col space-y-4 p-2 overflow-scroll">
         <li className="flex justify-center items-center">
           <div className="bg-gray-400 text-gray-300 px-2 py-1 rounded-full text-center w-min">

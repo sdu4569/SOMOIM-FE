@@ -17,7 +17,7 @@ const category = [
 
 export default function CategorySearchPage() {
   return (
-    <div className="h-full overflow-y-scroll">
+    <div className="h-full overflow-y-scroll p-4">
       <PageHeader className="flex-col space-y-4">
         <div className="flex w-full items-center space-x-4">
           <HeaderBackButton />

@@ -85,7 +85,7 @@ const ClubSearchPage = () => {
 
   if (filterList.length !== 0) {
     return (
-      <div className="h-full pt-14 pb-16 overflow-auto">
+      <div className="h-full pt-20 pb-16 px-4 overflow-auto">
         <PageHeader className="mb-2">
           <div className="flex items-center space-x-4 h-full overflow-hidden  relative">
             <HeaderBackButton />
@@ -156,7 +156,7 @@ const ClubSearchPage = () => {
     );
   } else if (filterList.length == 0 && text !== "") {
     return (
-      <div className="h-full pt-14 pb-16 overflow-auto">
+      <div className="h-full pt-20 pb-16 px-4 overflow-auto">
         <PageHeader className="mb-2">
           <div className="flex items-center space-x-4 h-full overflow-hidden">
             <HeaderBackButton />
@@ -217,7 +217,7 @@ const ClubSearchPage = () => {
   }
 
   return (
-    <div className="h-full pt-14 pb-16 overflow-auto">
+    <div className="h-full pt-20 pb-16 px-4 overflow-auto">
       <PageHeader className="mb-2">
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />

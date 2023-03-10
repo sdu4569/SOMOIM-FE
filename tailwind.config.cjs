@@ -43,6 +43,12 @@ module.exports = {
       aspectRatio: {
         "twenty-nine": "20 / 9",
       },
+      backgroundColor: {
+        kakao: "#FEE500",
+      },
+      borderColor: {
+        kakao: "#FEE500",
+      },
     },
     plugins: [],
   },

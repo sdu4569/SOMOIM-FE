@@ -15,7 +15,6 @@ import ClubChat from "./ClubChat";
 import ClubGallery from "../page/ClubGallery";
 import { useLocation } from "react-router-dom";
 
-
 enum Tabs {
   INFO,
   BOARD,
@@ -26,30 +25,29 @@ enum Tabs {
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
-
   const [like, setLike] = useState<boolean>(false);
 
   const location = useLocation();
 
-  useEffect(() => {
-    let array = [];
-    const getStorage = localStorage.getItem("recentClub");
-    if (getStorage !== null) {
-      array = JSON.parse(getStorage);
-      //중복 클럽 여부
-      if (
-        array.filter((item: any) => item.id == location.state.id).length !== 0
-      ) {
-        return;
-      } else {
-        array.unshift(location.state);
-        localStorage.setItem("recentClub", JSON.stringify(array));
-      }
-    } else {
-      array.unshift(location.state);
-      localStorage.setItem("recentClub", JSON.stringify(array));
-    }
-  }, []);
+  // useEffect(() => {
+  //   let array = [];
+  //   const getStorage = localStorage.getItem("recentClub");
+  //   if (getStorage !== null) {
+  //     array = JSON.parse(getStorage);
+  //     //중복 클럽 여부
+  //     if (
+  //       array.filter((item: any) => item.id == location.state.id).length !== 0
+  //     ) {
+  //       return;
+  //     } else {
+  //       array.unshift(location.state);
+  //       localStorage.setItem("recentClub", JSON.stringify(array));
+  //     }
+  //   } else {
+  //     array.unshift(location.state);
+  //     localStorage.setItem("recentClub", JSON.stringify(array));
+  //   }
+  // }, []);
 
   const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
   return (

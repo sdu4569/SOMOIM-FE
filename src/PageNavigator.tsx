@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import AuthPage from "./page/AuthPage";
 
 import MyActivityPage from "./page/MyActivityPage";
@@ -26,14 +26,24 @@ import MorePage from "./page/MorePage";
 import UpdateUserPage from "./page/UpdateUserPage";
 import RecentClubPage from "./page/RecentClubPage";
 import InterestClubPage from "./page/InterestClubPage";
-
+import Landing from "./page/Landing";
+import LogIn from "./page/LogIn";
+import SignupLayout from "./page/signup/SignupLayout";
+import Register from "./page/signup/register/Register";
+import RegisterProfile from "./page/signup/profile/RegisterProfile";
+import { AnimatePresence } from "framer-motion";
 
 const PageNavigator = () => {
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
+      <Route path="/landing" element={<Landing />} />
+      <Route path="/signin" element={<LogIn />} />
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/signup" element={<SignupLayout />}>
+        <Route path="register" element={<Register />} />
+        <Route path="profile" element={<RegisterProfile />} />
+      </Route>
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/:id" element={<InterestSearchPage />} />
       <Route path="/search" element={<ClubSearchPage />} />

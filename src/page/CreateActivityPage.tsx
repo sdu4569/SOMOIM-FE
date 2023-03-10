@@ -23,7 +23,7 @@ export default function CreateActivity() {
   const { register, handleSubmit } = useForm<CreateActivityForm>();
 
   return (
-    <div className="overflow-scroll h-full">
+    <div className="overflow-scroll h-full p-4">
       <PageHeader className="!bg-gray-300">
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />
