@@ -1,25 +1,25 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import UserChoiceInterest from "./UserChoiceInterst";
+import getUserChoiceInterest from "../util/getUserChoiceInterest";
 
 const UpdateInterestButton = () => {
-  const userChoice = UserChoiceInterest();
+  const userChoice = getUserChoiceInterest();
   return (
-    <Link to={"/update_detail"} state={userChoice} className="relative">
-      <button className="w-full mt-5 flex justify-start">
-        {userChoice.map((item, idx) => {
+    <Link to={"/update_detail"} state={userChoice}>
+      <button className="w-full mt-5 relative">
+        {userChoice.map((item: any, idx: number) => {
           return (
             <img
               src={item.image}
               key={idx}
-              className="inline-block w-8 mr-3 bg-gray-200"
+              className="inline-block w-8 mr-3 bg-gray-200 float-left"
             />
           );
         })}
+        <div className="text-12 inline-block absolute top-2.5 right-0  underline text-gray-400 ">
+          편집
+        </div>
       </button>
-      <div className="text-12 inline-block absolute top-2.5 right-0 underline text-gray-400 ">
-        편집
-      </div>
     </Link>
   );
 };

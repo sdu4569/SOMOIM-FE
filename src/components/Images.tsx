@@ -20,4 +20,11 @@ export const Images = {
   down: "https://cdn-icons-png.flaticon.com/512/152/152415.png",
   up: "https://cdn-icons-png.flaticon.com/512/3106/3106683.png",
   check: "https://cdn-icons-png.flaticon.com/512/2732/2732655.png",
+  delete: "https://cdn-icons-png.flaticon.com/512/1828/1828945.png",
+  location: "https://cdn-icons-png.flaticon.com/512/2838/2838912.png",
+  user: "https://cdn-icons-png.flaticon.com/512/2815/2815428.png",
+  clubImage: "http://placehold.it/100",
+  search: "https://cdn-icons-png.flaticon.com/512/1296/1296902.png",
+  rightArrow: "https://cdn-icons-png.flaticon.com/512/2989/2989988.png",
+  heart: "https://cdn-icons-png.flaticon.com/512/2107/2107845.png",
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import PageHeader from "../components/PageHeader";
 
 const MainPage = () => {
   const [value, setValue] = useState("");
@@ -10,6 +9,11 @@ const MainPage = () => {
   };
   const onChangeAuth = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAuth(e.target.value.replace(/[^0-9]/g, ""));
+  };
+
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    console.log(value);
   };
 
   useEffect(() => {
@@ -42,7 +46,10 @@ const MainPage = () => {
         <p className="max-w-4xl m-auto pl-3 text-sm mb-2 ">
           전화번호를 입력하세요.
         </p>
-        <form className="flex justify-between max-w-4xl m-auto pl-3 pr-3 min-h-45 mb-4">
+        <form
+          onSubmit={onSubmit}
+          className="flex justify-between max-w-4xl m-auto pl-3 pr-3 min-h-45 mb-4"
+        >
           <input
             type="text"
             onChange={onChange}

@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   theme: {
@@ -24,6 +25,8 @@ module.exports = {
       },
       width: {
         70: "70px",
+        150: "150px",
+        200: "200px",
       },
       minHeight: {
         45: "45px",
