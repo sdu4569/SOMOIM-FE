@@ -9,12 +9,10 @@ export default function ClubBoardWrite() {
       <PageHeader className="">
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />
-          <h1 className="text-2xl whitespace-nowrap truncate translate-y-[2px]">
-            게시글 작성
-          </h1>
+          <h1 className="text-xl whitespace-nowrap truncate ">게시글 작성</h1>
         </div>
         <div className="flex items-center">
-          <p className="translate-y-[2px]">완료</p>
+          <p className="">완료</p>
         </div>
       </PageHeader>
       <section className="mt-12 flex flex-col">

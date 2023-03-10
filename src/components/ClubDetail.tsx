@@ -1,5 +1,9 @@
-import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faEllipsisV, faShareNodes } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faEllipsisV,
+  faShareNodes,
+  faHeart as solidHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import HeaderBackButton from "./HeaderBackButton";
@@ -8,7 +12,9 @@ import { motion } from "framer-motion";
 import ClubDetailInfo from "../page/ClubDetailInfo";
 import ClubBoard from "./ClubBoard";
 import ClubChat from "./ClubChat";
+import ClubGallery from "../page/ClubGallery";
 import { useLocation } from "react-router-dom";
+
 
 enum Tabs {
   INFO,
@@ -20,6 +26,9 @@ enum Tabs {
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
+
+  const [like, setLike] = useState<boolean>(false);
+
   const location = useLocation();
 
   useEffect(() => {
@@ -48,17 +57,17 @@ export default function ClubDetail() {
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
-          <h1 className="text-2xl whitespace-nowrap truncate translate-y-[2px]">
-            클럽 이름
-          </h1>
+          <h1 className="text-xl whitespace-nowrap truncate ">클럽 이름</h1>
         </div>
         <div className="flex space-x-6 items-center ml-2">
-          <FontAwesomeIcon icon={faHeart} size="xl" />
-          <FontAwesomeIcon icon={faShareNodes} size="xl" />
-          <FontAwesomeIcon icon={faEllipsisV} size="xl" />
+          <FontAwesomeIcon
+            icon={like ? solidHeart : regularHeart}
+            size="xl"
+            onClick={() => setLike((prev) => !prev)}
+          />
         </div>
       </PageHeader>
-      <nav className="w-full flex items-center absolute h-8 top-16 left-0 right-0 px-4 bg-white z-[100]">
+      <nav className="w-full flex items-center absolute h-8 top-14 left-0 right-0 px-4 bg-white z-[100]">
         <ul className="flex space-x-4 w-full">
           {tabs.map((tab, i) => (
             <li
@@ -77,12 +86,12 @@ export default function ClubDetail() {
           ))}
         </ul>
       </nav>
-      <section className="mt-20">
+      <section className="mt-[72px]">
         {
           {
-            0: <ClubDetailInfo />,
+            0: <ClubDetailInfo like={like} setLike={setLike} />,
             1: <ClubBoard />,
-            2: <a>사진첩</a>,
+            2: <ClubGallery />,
             3: <ClubChat />,
           }[selectedTab]
         }

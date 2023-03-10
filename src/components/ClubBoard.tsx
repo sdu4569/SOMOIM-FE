@@ -3,6 +3,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import FloatButton from "./FloatButton";
 import Overlay from "./Overlay";
 
 export default function ClubBoard() {
@@ -61,17 +62,15 @@ export default function ClubBoard() {
                   <div className="flex space-x-4">
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faThumbsUp} />
-                      <p className="text-sm translate-y-[2px]">좋아요 1</p>
+                      <p className="text-sm ">좋아요 1</p>
                     </div>
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faMessage} />
-                      <p className="text-sm translate-y-[2px]">댓글 1</p>
+                      <p className="text-sm ">댓글 1</p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-sm translate-y-[2px]">
-                      가입인사
-                    </p>
+                    <p className="text-gray-500 text-sm ">가입인사</p>
                   </div>
                 </div>
               </li>
@@ -79,12 +78,11 @@ export default function ClubBoard() {
           </ul>
         </section>
       </div>
-      <Link
-        to={"write"}
-        className="absolute w-16 h-16 rounded-full bg-blue-500 bottom-8 right-8 flex justify-center items-center z-10"
-      >
-        <FontAwesomeIcon icon={faPlus} className="text-white" size="lg" />
-      </Link>
+      <div className="absolute bottom-8 right-8">
+        <FloatButton to="write">
+          <FontAwesomeIcon icon={faPlus} className="text-white" size="lg" />
+        </FloatButton>
+      </div>
     </>
   );
 }

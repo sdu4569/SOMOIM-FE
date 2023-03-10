@@ -14,11 +14,19 @@ import RegionSelect from "./components/RegionSelect";
 import ClubDetail from "./components/ClubDetail";
 import ClubBoardWrite from "./components/ClubBoardWrite";
 import ClubsList from "./components/ClubsList";
+import ClubPost from "./page/ClubPost";
+import SearchPage from "./page/SearchPage";
+import CategorySearchPage from "./page/CategorySearchPage";
+import ClubEditPage from "./page/ClubEditPage";
+import CreateActivity from "./page/CreateActivityPage";
+import CreateClub from "./page/CreateClubPage";
+import GalleryPost from "./page/GalleryPost";
 import ClubSearchPage from "./page/ClubSearchPage";
 import MorePage from "./page/MorePage";
 import UpdateUserPage from "./page/UpdateUserPage";
 import RecentClubPage from "./page/RecentClubPage";
 import InterestClubPage from "./page/InterestClubPage";
+
 
 const PageNavigator = () => {
   return (
@@ -43,11 +51,22 @@ const PageNavigator = () => {
         <Route path="new" element={<div className="min-h-screen" />} />
         <Route path="*" element={<div>404</div>} />
       </Route>
-      <Route path="/clubs/:id" element={<ClubDetail />}></Route>
-      <Route path="/clubs/:id/write" element={<ClubBoardWrite />} />
+
+      <Route path="/clubs/create" element={<CreateClub />}></Route>
+      <Route path="/clubs/:clubId" element={<ClubDetail />}></Route>
+      <Route path="/clubs/:clubId/edit" element={<ClubEditPage />} />
+      <Route
+        path="/clubs/:clubId/createActivity"
+        element={<CreateActivity />}
+      />
+      <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
+      <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
+      <Route path="/search/:category" element={<CategorySearchPage />} />
       <Route path="/more" element={<MorePage />} />
       <Route path="/recent_club" element={<RecentClubPage />} />
       <Route path="/interest_club" element={<InterestClubPage />} />
+
       <Route path="*" element={<div>404</div>} />
     </Routes>
   );

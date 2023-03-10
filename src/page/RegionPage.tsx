@@ -24,7 +24,7 @@ const RegionPage = () => {
         <PageHeader>
           <div className="flex items-center space-x-4">
             <HeaderBackButton />
-            <h2 className="text-2xl">내 지역</h2>
+            <h2 className="text-xl">내 지역</h2>
           </div>
           <div>
             <span className="text-lg">저장</span>
@@ -32,19 +32,19 @@ const RegionPage = () => {
         </PageHeader>
         <section className="mt-12">
           <header className="my-8">
-            <span className="text-black text-xl">
+            <span className="text-black text-lg">
               집, 직장 인근의 클럽을 찾습니다.
             </span>
           </header>
-          <ul className="flex flex-col space-y-4">
+          <ul className="flex flex-col space-y-4 text-lg">
             <li>
               <label htmlFor="home" className="flex justify-between space-x-4">
                 <div className="flex space-x-2 items-center">
                   <FontAwesomeIcon
                     icon={faHouseUser}
-                    className="text-black text-xl w-10"
+                    className="text-black w-10"
                   />
-                  <span className="text-black text-xl w-20">집</span>
+                  <span className="text-black w-20">집</span>
                 </div>
                 <Link to={"home"} className="flex-1">
                   <input
@@ -62,9 +62,9 @@ const RegionPage = () => {
                 <div className="flex space-x-2 items-center">
                   <FontAwesomeIcon
                     icon={faBriefcase}
-                    className="text-black text-xl w-10"
+                    className="text-black w-10"
                   />
-                  <span className="text-black text-xl w-20">직장</span>
+                  <span className="text-black w-20">직장</span>
                 </div>
                 <Link to={"work"} className="flex-1">
                   <input
@@ -83,11 +83,8 @@ const RegionPage = () => {
                 className="flex justify-between space-x-4"
               >
                 <div className="flex space-x-2 items-center">
-                  <FontAwesomeIcon
-                    icon={faStar}
-                    className="text-black text-xl w-10"
-                  />
-                  <span className="text-black text-xl w-20">관심지역</span>
+                  <FontAwesomeIcon icon={faStar} className="text-black w-10" />
+                  <span className="text-black w-20">관심지역</span>
                 </div>
                 <Link to={"interested"} className="flex-1">
                   <input

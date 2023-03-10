@@ -1,10 +1,14 @@
 interface OverlayPorps {
+  onClick?: () => void;
   children?: React.ReactNode;
 }
 
-export default function Overlay({ children }: OverlayPorps) {
+export default function Overlay({ children, onClick }: OverlayPorps) {
   return (
-    <div className="absolute w-full h-full bg-black opacity-30 inset-0 z-[100]">
+    <div
+      onClick={onClick}
+      className="absolute w-full h-full bg-black bg-opacity-50 flex justify-center items-center inset-0 z-[100]"
+    >
       {children}
     </div>
   );

@@ -1,6 +1,7 @@
 import {
   faChevronRight,
   faPen,
+  faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
@@ -10,6 +11,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import BottomTabNavigator from "../components/BottomTabNavigator";
+import FloatButton from "../components/FloatButton";
 
 const tabs = ["추천클럽", "신규클럽"];
 const routes = ["recommend", "new"];
@@ -28,15 +30,12 @@ export default function ClubPage() {
     <div className="h-full overflow-scroll pt-14 pb-16">
       <PageHeader>
         <Link to="/region" className="flex space-x-2 items-center">
-          <h2 className="text-2xl translate-y-[2px]">내 지역</h2>
+          <h2 className="text-lg">내 지역</h2>
           <FontAwesomeIcon icon={faChevronRight} />
         </Link>
         <div className="flex space-x-8 items-center">
           <Link to="/search">
             <FontAwesomeIcon icon={faSearch} size="lg" />
-          </Link>
-          <Link to="/notification">
-            <FontAwesomeIcon icon={faBell} size="xl" />
           </Link>
         </div>
       </PageHeader>
@@ -81,6 +80,12 @@ export default function ClubPage() {
         </nav>
         <Outlet />
       </section>
+      <div className="absolute bottom-20 right-8">
+        <FloatButton to="create" className="">
+          <FontAwesomeIcon icon={faPlus} />
+          <p className="text-sm">개설</p>
+        </FloatButton>
+      </div>
       <BottomTabNavigator />
     </div>
   );
