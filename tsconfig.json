@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "server/config/sens"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
