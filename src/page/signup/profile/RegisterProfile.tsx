@@ -28,7 +28,6 @@ export default function RegisterProfile() {
   const onSubmit = (data: RegisterProfileFormData) => {
     console.log(data);
     navigate("/signup/interest", {
-      replace: true,
       state: {
         ...location.state,
         ...data,

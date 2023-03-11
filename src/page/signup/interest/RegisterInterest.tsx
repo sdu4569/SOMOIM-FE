@@ -5,6 +5,7 @@ import PageHeader from "../../../components/PageHeader";
 import { InterestList } from "../../../libs/InterestList";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "../../../libs/variants";
+import HeaderBackButton from "../../../components/HeaderBackButton";
 
 interface InterestFormData {
   selectedInterests: string[];
@@ -82,7 +83,10 @@ export default function RegisterInterest() {
     <motion.div variants={pageSlideIn} initial="initial" animate="animate">
       <form className="pt-16 px-4" onSubmit={handleSubmit(onSubmit)}>
         <PageHeader>
-          <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
+          <div className="flex items-center space-x-2">
+            <HeaderBackButton />
+            <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
+          </div>
           <button type="submit" className="text-xl">
             다음
           </button>
