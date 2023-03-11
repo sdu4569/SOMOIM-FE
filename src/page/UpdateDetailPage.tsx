@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
 import getUserChoiceInterest from "../util/getUserChoiceInterest";
 

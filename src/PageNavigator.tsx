@@ -32,6 +32,7 @@ import SignupLayout from "./page/signup/SignupLayout";
 import Register from "./page/signup/register/Register";
 import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import { AnimatePresence } from "framer-motion";
+import RegisterInterest from "./page/signup/interest/RegisterInterest";
 
 const PageNavigator = () => {
   return (
@@ -43,6 +44,7 @@ const PageNavigator = () => {
       <Route path="/signup" element={<SignupLayout />}>
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<RegisterProfile />} />
+        <Route path="interest" element={<RegisterInterest />} />
       </Route>
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/:id" element={<InterestSearchPage />} />

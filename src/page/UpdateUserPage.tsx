@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
 
 const UpdateUserPage = () => {

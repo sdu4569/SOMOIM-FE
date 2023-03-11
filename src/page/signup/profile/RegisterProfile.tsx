@@ -25,6 +25,7 @@ export default function RegisterProfile() {
   const navigate = useNavigate();
   const onSubmit = (data: RegisterProfileFormData) => {
     console.log(data);
+    navigate("/signup/interest");
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);

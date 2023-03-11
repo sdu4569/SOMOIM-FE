@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Images } from "./Images";
+import { Images } from "../libs/Images";
 
 const userInfo = {
   userName: "서동욱",

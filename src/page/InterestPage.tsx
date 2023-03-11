@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 
-import { InterestList } from "../components/InterestList";
+import { InterestList } from "../libs/InterestList";
 import getUserChoiceInterest from "../util/getUserChoiceInterest";
 import HeaderBackButton from "../components/HeaderBackButton";
 

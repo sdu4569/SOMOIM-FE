@@ -2,7 +2,7 @@ import PageHeader from "../components/PageHeader";
 import ClubSearch from "../components/ClubSearch";
 import UpdateInterestButton from "../components/UpdateInterestButton";
 import Recommendation from "../components/Recommendation";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 import { Link } from "react-router-dom";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
-import { InterestList } from "../components/InterestList";
+import { InterestList } from "../libs/InterestList";
 import HeaderBackButton from "../components/HeaderBackButton";
 import getUserChoiceInterest from "../util/getUserChoiceInterest";
 
