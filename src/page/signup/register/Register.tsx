@@ -71,7 +71,6 @@ export default function Register() {
     <motion.div
       initial={{ opacity: 0, translateX: 100 }}
       animate={{ opacity: 1, translateX: 0 }}
-      exit={{ opacity: 0, translateX: -100 }}
       transition={{ type: "tween", ease: "easeInOut" }}
       className="flex items-center h-full w-full justify-center"
       key={location.pathname}
