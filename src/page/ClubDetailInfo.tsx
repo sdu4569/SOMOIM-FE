@@ -15,10 +15,10 @@ import Overlay from "../components/Overlay";
 
 export default function ClubDetailInfo({
   like,
-  setLike,
+  handleClick,
 }: {
   like: boolean;
-  setLike: any;
+  handleClick: any;
 }) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   return (
@@ -159,7 +159,7 @@ export default function ClubDetailInfo({
           </ul>
         </section>
         <BottomTabNavigator className="space-x-4 px-4 py-2">
-          <div className="" onClick={() => setLike((prev: boolean) => !prev)}>
+          <div className="" onClick={handleClick}>
             <FontAwesomeIcon
               icon={like ? solidHeart : regularHeart}
               size="2xl"

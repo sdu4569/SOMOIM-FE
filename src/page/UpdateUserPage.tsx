@@ -67,23 +67,28 @@ const UpdateUserPage = () => {
         </button>
       </PageHeader>
       <form method="post" ref={formRef} className="ml-1">
-        <label htmlFor="file" className="button">
+        <label htmlFor="file" className="inline-block w-14 h-14">
           <img
             src={userInfo.userImage}
             alt="유저 이미지"
             className="w-14 h-14 cursor-pointer rounded-full bg-gray-200"
             id="previewImage"
-          ></img>
+          />
+          <img
+            src={Images.camera}
+            alt="유저 프로필 변경"
+            className="w-5 cursor-pointer rounded-full relative top-[-20px] left-[36px] "
+          />
         </label>
         <input type="file" name="file" id="file" className="hidden" />
         <div className="mt-4 h-10 relative">
           <input
             type="text"
-            className="inline-block w-200 h-10 pl-3 rounded-md bg-gray-200 mr-3"
+            className="inline-block w-[200px] h-10 pl-3 rounded-md bg-gray-200 mr-3"
             placeholder="이름"
             defaultValue={userInfo.userName}
           />
-          <div className="inline-block w-150 absolute top-0 h-10 border-2 border-solid rounded-md border-gray-300">
+          <div className="inline-block w-[150px] absolute top-0 h-10 border-2 border-solid rounded-md border-gray-300">
             <div className="relative">
               <input
                 type="radio"
@@ -125,7 +130,7 @@ const UpdateUserPage = () => {
         <div className="mt-4 h-10 relative">
           <input
             type="date"
-            className="w-150 h-10 pl-3 mr-3 rounded-md bg-gray-200"
+            className="w-[150px] h-10 pl-3 mr-3 rounded-md bg-gray-200"
             value={birthday}
             onChange={handleChange}
           />
@@ -137,7 +142,7 @@ const UpdateUserPage = () => {
             />
             <input
               type="text"
-              className="w-200 h-10 pl-8 rounded-md bg-gray-200"
+              className="w-[200px] h-10 pl-8 rounded-md bg-gray-200"
               defaultValue={userInfo.city}
             />
           </Link>
@@ -147,9 +152,9 @@ const UpdateUserPage = () => {
             className="inline-block w-full mt-4 h-20 p-3 rounded-md bg-gray-200 overflow-hidden resize-none"
             placeholder="간략한 자기소개(학교,회사)&#13;&#10;한국대 경영학과 학생입니다."
             onChange={textareaChange}
-            maxLength={39}
+            maxLength={40}
           ></textarea>
-          <div className="absolute bottom-2 right-2 text-12 text-gray-400">
+          <div className="absolute bottom-2 right-2 text-[12px] text-gray-400">
             {userDescription.length} / 40자
           </div>
         </div>

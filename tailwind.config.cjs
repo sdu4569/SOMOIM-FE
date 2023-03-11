@@ -18,28 +18,6 @@ module.exports = {
           "100%": { transform: "translateY(0)" },
         },
       },
-      minWidth: {
-        60: "60px",
-        80: "80px",
-        100: "100px",
-      },
-      width: {
-        70: "70px",
-        150: "150px",
-        200: "200px",
-      },
-      minHeight: {
-        45: "45px",
-      },
-      maxHeight: {
-        120: "120px",
-        240: "240px",
-      },
-      fontSize: {
-        10: "10px",
-        12: "12px",
-        14: "14px",
-      },
       aspectRatio: {
         "twenty-nine": "20 / 9",
       },

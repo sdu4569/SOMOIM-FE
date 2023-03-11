@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 import FloatButton from "../components/FloatButton";
+import ClubSearch from "../components/ClubSearch";
 
 const tabs = ["추천클럽", "신규클럽"];
 const routes = ["recommend", "new"];
@@ -27,7 +28,7 @@ export default function ClubPage() {
     }
   }, [location]);
   return (
-    <div className="h-full overflow-scroll pt-14 pb-16">
+    <div className="h-full overflow-scroll pt-14 pb-16 ">
       <PageHeader>
         <Link to="/region" className="flex space-x-2 items-center">
           <h2 className="text-lg">내 지역</h2>
@@ -58,7 +59,10 @@ export default function ClubPage() {
           </span>
         </h4>
       </div>
-      <section className="mt-40">
+      <div className="bg-sky-200 rounded-md w-[350px] ml-auto mr-auto z-20 relative top-[-45px] pt-[10px] pb-[10px]">
+        <ClubSearch />
+      </div>
+      <section>
         <nav className="w-full bg-white flex items-center sticky z-[99] -top-2 h-8">
           <ul className="flex flex-1 justify-evenly">
             {tabs.map((tab, i) => (

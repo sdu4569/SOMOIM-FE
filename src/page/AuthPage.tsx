@@ -48,7 +48,7 @@ const MainPage = () => {
         </p>
         <form
           onSubmit={onSubmit}
-          className="flex justify-between max-w-4xl m-auto pl-3 pr-3 min-h-45 mb-4"
+          className="flex justify-between max-w-4xl m-auto pl-3 pr-3 min-h-[45px] mb-4"
         >
           <input
             type="text"
@@ -59,7 +59,7 @@ const MainPage = () => {
             placeholder="01012345678"
             className="border-solid border-2 rounded w-full mr-4 pl-2 bg-gray-100"
           ></input>
-          <button className="bg-blue-400 text-white rounded text-sm min-w-100 min-h-45 font-bold">
+          <button className="bg-blue-400 text-white rounded text-sm min-w-[100px] min-h-[45px] font-bold">
             번호 요청
           </button>
         </form>
@@ -71,12 +71,12 @@ const MainPage = () => {
             value={auth}
             maxLength={6}
             placeholder="인증번호를 입력하세요"
-            className="border-solid border-2 rounded w-full mr-4 pl-2 bg-gray-100 min-h-45 mb-4"
+            className="border-solid border-2 rounded w-full mr-4 pl-2 bg-gray-100 min-h-[45px] mb-4"
           ></input>
           <button
             id="button"
             disabled={true}
-            className="bg-blue-400 text-white rounded text-sm min-w-100 min-h-45 font-bold disabled:opacity-50"
+            className="bg-blue-400 text-white rounded text-sm min-w-[100px] min-h-[45px] font-bold disabled:opacity-50"
           >
             다음
           </button>

@@ -9,8 +9,9 @@ import { Images } from "../components/Images";
 
 const InterestSearchPage = () => {
   const location = useLocation();
+
   const interest = InterestList.filter(
-    (item) => item.interest == location.pathname.slice(1)
+    (item) => item.interest == location.pathname.slice(8)
   );
 
   const all = "전체";
@@ -20,7 +21,7 @@ const InterestSearchPage = () => {
   const [filterList, setfilterList] = useState<any[]>([]);
   const notFilterList = testClubList.filter(
     (item) =>
-      item.city == userCity && item.interest == location.pathname.slice(1)
+      item.city == userCity && item.interest == location.pathname.slice(8)
   );
   useEffect(() => {
     setDetailList([all, ...interest[0].detail]);
@@ -88,7 +89,7 @@ const InterestSearchPage = () => {
                   onChange={onChange}
                   value={text}
                   placeholder="클럽이나 커뮤니티를 검색하세요"
-                  className="bg-gray-200 rounded-md mb-5 w-full h-8 text-12 pl-3"
+                  className="bg-gray-200 rounded-md mb-5 w-full h-8 text-[12px] pl-3"
                   inputMode="text"
                   required
                 />
@@ -124,7 +125,7 @@ const InterestSearchPage = () => {
                       />
                       <label
                         htmlFor={detail}
-                        className="border-solid border-gray-300 border p-2 rounded-lg mr-2 text-12 peer-checked:border-blue-500 "
+                        className="border-solid border-gray-300 border p-2 rounded-lg mr-2 text-[12px] peer-checked:border-blue-500 "
                       >
                         {detail}
                       </label>
@@ -136,7 +137,7 @@ const InterestSearchPage = () => {
                 className="mt-4 border-t pt-4 border-solid border-gray-400"
                 key={idx}
               >
-                <p className="text-12 inline-block float-left font-semibold">
+                <p className="text-[12px] inline-block float-left font-semibold">
                   <span className="text-blue-500">{userCity}</span>의 클럽
                   리스트
                 </p>
@@ -149,13 +150,13 @@ const InterestSearchPage = () => {
                           alt="클럽 이미지"
                           className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
                         />
-                        <div className="text-12 absolute top-0 left-16">
+                        <div className="text-[12px] absolute top-0 left-16">
                           {item.clubTitle}
                         </div>
-                        <div className="text-10 absolute top-5 left-16 text-gray-400">
+                        <div className="text-[10px] absolute top-5 left-16 text-gray-400">
                           {item.clubDescription}
                         </div>
-                        <div className="text-10 absolute bottom-0 left-16">
+                        <div className="text-[10px] absolute bottom-0 left-16">
                           <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
                             {item.region}
                           </span>

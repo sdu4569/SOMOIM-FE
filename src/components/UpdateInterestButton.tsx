@@ -16,7 +16,7 @@ const UpdateInterestButton = () => {
             />
           );
         })}
-        <div className="text-12 inline-block absolute top-2.5 right-0  underline text-gray-400 ">
+        <div className="text-[12px] inline-block absolute top-2.5 right-0  underline text-gray-400 ">
           편집
         </div>
       </button>

@@ -73,7 +73,7 @@ const InterestPage = () => {
             <div className="flex justify-evenly flex-wrap">
               {InterestList.map((item, idx) => {
                 return (
-                  <div key={idx} className="min-w-80 mb-3 ">
+                  <div key={idx} className="min-w-[80px] mb-3 ">
                     <input
                       type="checkbox"
                       id={item.title}
@@ -89,7 +89,9 @@ const InterestPage = () => {
                         src={item.image}
                         className="border-2 border-solid rounded m-auto mb-2 w-12 bg-gray-200"
                       />
-                      <div className="text-12 text-center">{item.title}</div>
+                      <div className="text-[12px] text-center">
+                        {item.title}
+                      </div>
                     </label>
                   </div>
                 );
@@ -120,7 +122,7 @@ const InterestPage = () => {
           <div className="flex justify-evenly flex-wrap">
             {InterestList.map((item, idx) => {
               return (
-                <div key={idx} className="min-w-80 mb-3 ">
+                <div key={idx} className="min-w-[80px] mb-3 ">
                   <input
                     type="checkbox"
                     id={item.title}
@@ -136,7 +138,7 @@ const InterestPage = () => {
                       src={item.image}
                       className="border-2 border-solid rounded m-auto mb-2 w-12 bg-gray-200"
                     />
-                    <div className="text-12 text-center">{item.title}</div>
+                    <div className="text-[12px] text-center">{item.title}</div>
                   </label>
                 </div>
               );
