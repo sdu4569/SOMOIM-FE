@@ -1,7 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { Outlet, Route, Routes, useLocation } from "react-router-dom";
-import RegisterProfile from "./profile/RegisterProfile";
-import Register from "./register/Register";
+import { Outlet } from "react-router-dom";
 
 export default function SignupLayout() {
   return (

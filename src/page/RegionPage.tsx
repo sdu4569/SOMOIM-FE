@@ -5,8 +5,13 @@ import { faHouseUser, faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
 import HeaderBackButton from "../components/HeaderBackButton";
 import { Link, Outlet } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const RegionPage = () => {
+interface RegionPageProps {
+  closeModal?: () => void;
+}
+
+const RegionPage = ({ closeModal }: RegionPageProps) => {
   const {
     register,
     handleSubmit,
@@ -16,14 +21,12 @@ const RegionPage = () => {
   const onSubmit = (data: any) => {
     console.log(data);
   };
-
   return (
-    <>
-      <Outlet />
+    <div className="absolute bg-white h-full animate-slide-up">
       <form action="" onSubmit={handleSubmit(onSubmit)} className="p-4">
-        <PageHeader>
+        <PageHeader className="!z-50">
           <div className="flex items-center space-x-4">
-            <HeaderBackButton />
+            <HeaderBackButton onClick={closeModal} />
             <h2 className="text-xl">내 지역</h2>
           </div>
           <div>
@@ -100,7 +103,8 @@ const RegionPage = () => {
           </ul>
         </section>
       </form>
-    </>
+      {/* <Outlet /> */}
+    </div>
   );
 };
 

@@ -45,6 +45,11 @@ const PageNavigator = () => {
         <Route path="/signup" element={<SignupLayout />}>
           <Route path="register" element={<Register />} />
           <Route path="profile" element={<RegisterProfile />} />
+          <Route path="region" element={<RegionPage />}>
+            <Route path="home" element={<RegionSelect />} />
+            <Route path="work" element={<RegionSelect />} />
+            <Route path="interested" element={<RegionSelect />} />
+          </Route>
         </Route>
         <Route path="/interest" element={<InterestPage />} />
         <Route path="/:id" element={<InterestSearchPage />} />
