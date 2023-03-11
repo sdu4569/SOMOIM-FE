@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import HeaderBackButton from "../../../components/HeaderBackButton";
 import Overlay from "../../../components/Overlay";
@@ -17,6 +17,7 @@ interface RegisterFormData {
 }
 
 export default function Register() {
+  const location = useLocation();
   const [isMasked, setIsMasked] = useState<boolean>(true);
   const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
   const [submittedEmail, setSubmittedEmail] = useState<string>("");
@@ -73,6 +74,7 @@ export default function Register() {
       exit={{ opacity: 0, translateX: -100 }}
       transition={{ type: "tween", ease: "easeInOut" }}
       className="flex items-center h-full w-full justify-center"
+      key={location.pathname}
     >
       <AnimatePresence>
         {inVerifyOverlay && (

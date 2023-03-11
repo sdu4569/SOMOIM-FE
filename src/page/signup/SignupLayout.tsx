@@ -4,7 +4,6 @@ import RegisterProfile from "./profile/RegisterProfile";
 import Register from "./register/Register";
 
 export default function SignupLayout() {
-  const location = useLocation();
   return (
     <AnimatePresence>
       <Outlet />

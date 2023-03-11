@@ -20,7 +20,7 @@ const RegionPage = () => {
   return (
     <>
       <Outlet />
-      <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <form action="" onSubmit={handleSubmit(onSubmit)} className="p-4">
         <PageHeader>
           <div className="flex items-center space-x-4">
             <HeaderBackButton />

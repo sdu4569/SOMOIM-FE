@@ -34,51 +34,54 @@ import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import { AnimatePresence } from "framer-motion";
 
 const PageNavigator = () => {
+  const location = useLocation();
   return (
-    <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/landing" element={<Landing />} />
-      <Route path="/signin" element={<LogIn />} />
-      <Route path="/auth" element={<AuthPage />} />
-      <Route path="/signup" element={<SignupLayout />}>
-        <Route path="register" element={<Register />} />
-        <Route path="profile" element={<RegisterProfile />} />
-      </Route>
-      <Route path="/interest" element={<InterestPage />} />
-      <Route path="/:id" element={<InterestSearchPage />} />
-      <Route path="/search" element={<ClubSearchPage />} />
-      <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
-      <Route path="/activity" element={<MyActivityPage />} />
-      <Route path="/update_detail" element={<UpdateDetailPage />} />
-      <Route path="/update_user" element={<UpdateUserPage />} />
-      <Route path="/region" element={<RegionPage />}>
-        <Route path="home" element={<RegionSelect />} />
-        <Route path="work" element={<RegionSelect />} />
-        <Route path="interested" element={<RegionSelect />} />
-      </Route>
-      <Route path="/clubs" element={<ClubPage />}>
-        <Route path="recommend" element={<ClubsList />} />
-        <Route path="new" element={<div className="min-h-screen" />} />
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/signin" element={<LogIn />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route path="/signup" element={<SignupLayout />}>
+          <Route path="register" element={<Register />} />
+          <Route path="profile" element={<RegisterProfile />} />
+        </Route>
+        <Route path="/interest" element={<InterestPage />} />
+        <Route path="/:id" element={<InterestSearchPage />} />
+        <Route path="/search" element={<ClubSearchPage />} />
+        <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
+        <Route path="/activity" element={<MyActivityPage />} />
+        <Route path="/update_detail" element={<UpdateDetailPage />} />
+        <Route path="/update_user" element={<UpdateUserPage />} />
+        <Route path="/region" element={<RegionPage />}>
+          <Route path="home" element={<RegionSelect />} />
+          <Route path="work" element={<RegionSelect />} />
+          <Route path="interested" element={<RegionSelect />} />
+        </Route>
+        <Route path="/clubs" element={<ClubPage />}>
+          <Route path="recommend" element={<ClubsList />} />
+          <Route path="new" element={<div className="min-h-screen" />} />
+          <Route path="*" element={<div>404</div>} />
+        </Route>
+
+        <Route path="/clubs/create" element={<CreateClub />}></Route>
+        <Route path="/clubs/:clubId" element={<ClubDetail />}></Route>
+        <Route path="/clubs/:clubId/edit" element={<ClubEditPage />} />
+        <Route
+          path="/clubs/:clubId/createActivity"
+          element={<CreateActivity />}
+        />
+        <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+        <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
+        <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
+        <Route path="/search/:category" element={<CategorySearchPage />} />
+        <Route path="/more" element={<MorePage />} />
+        <Route path="/recent_club" element={<RecentClubPage />} />
+        <Route path="/interest_club" element={<InterestClubPage />} />
+
         <Route path="*" element={<div>404</div>} />
-      </Route>
-
-      <Route path="/clubs/create" element={<CreateClub />}></Route>
-      <Route path="/clubs/:clubId" element={<ClubDetail />}></Route>
-      <Route path="/clubs/:clubId/edit" element={<ClubEditPage />} />
-      <Route
-        path="/clubs/:clubId/createActivity"
-        element={<CreateActivity />}
-      />
-      <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
-      <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
-      <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
-      <Route path="/search/:category" element={<CategorySearchPage />} />
-      <Route path="/more" element={<MorePage />} />
-      <Route path="/recent_club" element={<RecentClubPage />} />
-      <Route path="/interest_club" element={<InterestClubPage />} />
-
-      <Route path="*" element={<div>404</div>} />
-    </Routes>
+      </Routes>
+    </AnimatePresence>
   );
 };
 
