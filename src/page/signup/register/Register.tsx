@@ -9,9 +9,10 @@ import Button from "../../../components/Button";
 import HeaderBackButton from "../../../components/HeaderBackButton";
 import Overlay from "../../../components/Overlay";
 import PageHeader from "../../../components/PageHeader";
+import { pageSlideIn } from "../../../libs/variants";
 
 interface RegisterFormData {
-  id: string;
+  email: string;
   password: string;
   confirmPassword: string;
 }
@@ -39,16 +40,16 @@ export default function Register() {
       setIsEmailVerified(false);
       return;
     }
-    const email = watch("id");
+    const email = watch("email");
     if (!email) {
-      setError("id", {
+      setError("email", {
         type: "required",
         message: "이메일을 입력해주세요.",
       });
       return;
     }
     if (!/^\S+@\S+$/.test(email)) {
-      setError("id", {
+      setError("email", {
         type: "pattern",
         message: "이메일 형식이 아닙니다.",
       });
@@ -58,20 +59,26 @@ export default function Register() {
     setInVerifyOverlay(true);
   };
   const onSubmit = () => {
-    // if (!isEmailVerified) {
-    //   setError("id", {
-    //     type: "manual",
-    //     message: "이메일 인증을 해주세요.",
-    //   });
-    //   return;
-    // }
-    navigate("/signup/profile");
+    if (!isEmailVerified) {
+      setError("email", {
+        type: "manual",
+        message: "이메일 인증을 해주세요.",
+      });
+      return;
+    }
+    navigate("/signup/profile", {
+      state: {
+        ...location.state,
+        email: watch("email"),
+        password: watch("password"),
+      },
+    });
   };
   return (
     <motion.div
-      initial={{ opacity: 0, translateX: 100 }}
-      animate={{ opacity: 1, translateX: 0 }}
-      transition={{ type: "tween", ease: "easeInOut" }}
+      variants={pageSlideIn}
+      initial="initial"
+      animate="animate"
       className="flex items-center h-full w-full justify-center"
       key={location.pathname}
     >
@@ -131,13 +138,13 @@ export default function Register() {
         <div className="rounded-md border w-full border-black p-4 flex flex-col space-y-8">
           <ul className="flex flex-col space-y-4">
             <li>
-              <label htmlFor="id" className="flex flex-col space-y-2">
+              <label htmlFor="email" className="flex flex-col space-y-2">
                 <div className="flex justify-between">
                   <div className="flex items-center space-x-2">
                     <p className="text-base">이메일</p>
-                    {errors.id && (
+                    {errors.email && (
                       <p className="text-red-500 text-sm">
-                        {errors.id.message}
+                        {errors.email.message}
                       </p>
                     )}
                   </div>
@@ -175,7 +182,7 @@ export default function Register() {
                   </button>
                 </div>
                 <input
-                  {...register("id", {
+                  {...register("email", {
                     required: "이메일을 입력해주세요.",
                     pattern: {
                       value: /^\S+@\S+$/i,
@@ -184,7 +191,7 @@ export default function Register() {
                   })}
                   disabled={isEmailVerified}
                   type="email"
-                  id="id"
+                  id="email"
                   className="w-full rounded-md bg-gray-300 p-4 outline-none"
                 />
               </label>

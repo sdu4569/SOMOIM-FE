@@ -1,9 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import PageHeader from "../../../components/PageHeader";
+import { pageSlideIn } from "../../../libs/variants";
 import RegionPage from "../../RegionPage";
 
 interface RegisterProfileFormData {
@@ -22,13 +23,42 @@ export default function RegisterProfile() {
     setValue,
   } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
+  const location = useLocation();
   const navigate = useNavigate();
   const onSubmit = (data: RegisterProfileFormData) => {
     console.log(data);
-    navigate("/signup/interest");
+    navigate("/signup/interest", {
+      replace: true,
+      state: {
+        ...location.state,
+        ...data,
+      },
+    });
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
+
+  useEffect(() => {
+    console.log(location.state);
+  }, []);
+
+  // protect from direct access
+  useEffect(() => {
+    if (!location.state) {
+      alert("잘못된 접근입니다.");
+      navigate("/", { replace: true });
+      return;
+    }
+
+    const { email, password } = location.state;
+
+    if (!email || !password) {
+      alert("잘못된 접근입니다.");
+      navigate("/", { replace: true });
+      return;
+    }
+  }, []);
+
   return (
     <>
       <AnimatePresence>
@@ -37,10 +67,9 @@ export default function RegisterProfile() {
         )}
       </AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, translateX: 100 }}
-        animate={{ opacity: 1, translateX: 0 }}
-        exit={{ opacity: 0, translateX: -100 }}
-        transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
+        variants={pageSlideIn}
+        initial="initial"
+        animate="animate"
         className="flex h-full w-full justify-center items-center"
       >
         <PageHeader>

@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../../../components/PageHeader";
 import { InterestList } from "../../../libs/InterestList";
+import { motion } from "framer-motion";
+import { pageSlideIn } from "../../../libs/variants";
 
 interface InterestFormData {
   selectedInterests: string[];
@@ -21,9 +23,8 @@ export default function RegisterInterest() {
   const navigate = useNavigate();
 
   const onSubmit = (data: InterestFormData) => {
-    console.log(data);
     navigate("detail", {
-      state: { ...location.state, selectedInterests: data.selectedInterests },
+      state: { ...location.state, interests: data.selectedInterests },
     });
   };
 
@@ -42,9 +43,44 @@ export default function RegisterInterest() {
     }
   }, [watch("selectedInterests")]);
 
+  useEffect(() => {
+    console.log(location.state);
+  }, []);
+
+  // protect from direct access
+  useEffect(() => {
+    if (!location.state) {
+      alert("잘못된 접근입니다.");
+      navigate("/", { replace: true });
+      return;
+    }
+
+    const {
+      email,
+      password,
+      name,
+      gender,
+      birthday,
+      location: locationState,
+    } = location.state;
+
+    if (
+      !email ||
+      !password ||
+      !name ||
+      !gender ||
+      !birthday ||
+      !locationState
+    ) {
+      alert("잘못된 접근입니다.");
+      navigate("/", { replace: true });
+      return;
+    }
+  }, []);
+
   return (
-    <div className="mt-16 px-4">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <motion.div variants={pageSlideIn} initial="initial" animate="animate">
+      <form className="pt-16 px-4" onSubmit={handleSubmit(onSubmit)}>
         <PageHeader>
           <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
           <button type="submit" className="text-xl">
@@ -66,13 +102,13 @@ export default function RegisterInterest() {
                   type="checkbox"
                   id={item.title}
                   className="hidden"
-                  value={item.title}
+                  value={item.interest}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
                     watch("selectedInterests") &&
-                    watch("selectedInterests").includes(item.title) &&
+                    watch("selectedInterests").includes(item.interest) &&
                     "border-blue-500"
                   }`}
                 />
@@ -82,6 +118,6 @@ export default function RegisterInterest() {
           })}
         </div>
       </form>
-    </div>
+    </motion.div>
   );
 }
