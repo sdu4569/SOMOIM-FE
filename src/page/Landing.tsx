@@ -1,9 +1,28 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../components/Button";
 import { fadeIn } from "../libs/variants";
 
+interface LogInFormData {
+  id: string;
+  password: string;
+}
+
 export default function Landing() {
+  const [isMasked, setIsMasked] = useState<boolean>(true);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<LogInFormData>();
+  const navigate = useNavigate();
+  const onSubmit = () => {
+    navigate("/");
+  };
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 100 }}
@@ -11,22 +30,86 @@ export default function Landing() {
       transition={{ duration: 0.5, ease: "easeInOut" }}
       className="flex justify-center items-center h-full"
     >
-      <div className="flex flex-col space-y-10">
+      <div className="flex flex-col space-y-10 w-full p-4">
         <h1 className="w-full text-center text-xl">소모임</h1>
         <ul className="flex flex-col">
           <li>
-            <ul className="flex flex-col space-y-4 pb-4 mb-4 border-b">
-              <Link
-                to={"/signin"}
-                className="rounded-md px-10 h-10 items-center justify-center flex text-center border border-black"
-              >
-                <p>이메일 & 비밀번호로 로그인</p>
-              </Link>
+            <ul className="flex flex-col items-center space-y-4 pb-4 mb-4 border-b">
+              <li className="w-full">
+                <form
+                  className="flex justify-center items-center h-full w-full"
+                  onSubmit={handleSubmit((data) => onSubmit())}
+                >
+                  <div className="rounded-md w-full flex flex-col space-y-4">
+                    <ul className="flex flex-col space-y-4">
+                      <li>
+                        <div className="flex items-center">
+                          {/* {errors.id && (
+                            <p className="text-red-500 text-sm">
+                              {errors.id.message}
+                            </p>
+                          )} */}
+                        </div>
+                        <input
+                          placeholder="이메일"
+                          {...register("id", {
+                            required: "이메일을 입력해주세요.",
+                            pattern: {
+                              value: /^\S+@\S+$/i,
+                              message: "이메일 형식이 아닙니다.",
+                            },
+                          })}
+                          type="email"
+                          id="id"
+                          className="w-full rounded-md bg-gray-100 p-4 outline-none"
+                        />
+                      </li>
+                      <li>
+                        <div className="relative">
+                          <div className="flex items-center">
+                            {/* {errors.password && (
+                              <p className="text-red-500 text-sm">
+                                {errors.password.message}
+                              </p>
+                            )} */}
+                          </div>
+                          <input
+                            placeholder="비밀번호"
+                            {...register("password", {
+                              required: "비밀번호를 입력해주세요.",
+                              minLength: {
+                                value: 8,
+                                message: "비밀번호는 8자 이상이어야 합니다.",
+                              },
+                              maxLength: {
+                                value: 20,
+                                message: "비밀번호는 20자 이하여야 합니다.",
+                              },
+                            })}
+                            type={isMasked ? "password" : "text"}
+                            id="password"
+                            className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
+                          />
+                          <FontAwesomeIcon
+                            onClick={() => setIsMasked((prev) => !prev)}
+                            icon={isMasked ? faEye : faEyeSlash}
+                            size="lg"
+                            className="absolute right-0 p-4 cursor-pointer"
+                          />
+                        </div>
+                      </li>
+                    </ul>
+                    <Button className="w-full">
+                      <p>로그인</p>
+                    </Button>
+                  </div>
+                </form>
+              </li>
               <Link
                 to={"/signup/register"}
-                className="rounded-md px-10 h-10 items-center justify-center flex text-center border border-black"
+                className="rounded-md px-4 h-10 items-center justify-center flex text-center w-min"
               >
-                <p>회원가입</p>
+                <p className="whitespace-nowrap">회원가입</p>
               </Link>
             </ul>
           </li>

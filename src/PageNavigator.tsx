@@ -44,11 +44,6 @@ const PageNavigator = () => {
       <Route path="/signup" element={<SignupLayout />}>
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<RegisterProfile />} />
-        <Route path="region" element={<RegionPage />}>
-          <Route path="home" element={<RegionSelect />} />
-          <Route path="work" element={<RegionSelect />} />
-          <Route path="interested" element={<RegionSelect />} />
-        </Route>
       </Route>
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/:id" element={<InterestSearchPage />} />
@@ -57,11 +52,7 @@ const PageNavigator = () => {
       <Route path="/activity" element={<MyActivityPage />} />
       <Route path="/update_detail" element={<UpdateDetailPage />} />
       <Route path="/update_user" element={<UpdateUserPage />} />
-      <Route path="/region" element={<RegionPage />}>
-        <Route path="home" element={<RegionSelect />} />
-        <Route path="work" element={<RegionSelect />} />
-        <Route path="interested" element={<RegionSelect />} />
-      </Route>
+      <Route path="/region" element={<RegionPage />} />
       <Route path="/clubs" element={<ClubPage />}>
         <Route path="recommend" element={<ClubsList />} />
         <Route path="new" element={<div className="min-h-screen" />} />
