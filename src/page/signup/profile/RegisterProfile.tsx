@@ -1,13 +1,8 @@
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
-import HeaderBackButton from "../../../components/HeaderBackButton";
-import Overlay from "../../../components/Overlay";
 import PageHeader from "../../../components/PageHeader";
 import RegionPage from "../../RegionPage";
 
@@ -24,7 +19,8 @@ export default function RegisterProfile() {
     register,
     formState: { errors },
     watch,
-  } = useForm<RegisterProfileFormData>();
+    setValue,
+  } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
   const navigate = useNavigate();
   const onSubmit = (data: RegisterProfileFormData) => {
@@ -34,7 +30,11 @@ export default function RegisterProfile() {
   const closeModal = () => setInRegionModal(false);
   return (
     <>
-      {inRegionModal && <RegionPage closeModal={closeModal} />}
+      <AnimatePresence>
+        {inRegionModal && (
+          <RegionPage setProfileLocation={setValue} closeModal={closeModal} />
+        )}
+      </AnimatePresence>
       <motion.div
         initial={{ opacity: 0, translateX: 100 }}
         animate={{ opacity: 1, translateX: 0 }}
@@ -42,7 +42,7 @@ export default function RegisterProfile() {
         transition={{ type: "tween", ease: "easeInOut", duration: 0.5 }}
         className="flex h-full w-full justify-center items-center"
       >
-        <PageHeader className={`${inRegionModal && "hidden"}`}>
+        <PageHeader>
           <div className="flex items-center space-x-2">
             <h1 className="text-lg">프로필 등록</h1>
           </div>
@@ -137,7 +137,7 @@ export default function RegisterProfile() {
               >
                 <p>지역</p>
                 <input
-                  onClick={() => setInRegionModal(true)}
+                  onFocus={() => setInRegionModal(true)}
                   {...register("location", {
                     required: true,
                   })}

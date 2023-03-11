@@ -34,7 +34,6 @@ import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import { AnimatePresence } from "framer-motion";
 
 const PageNavigator = () => {
-  const location = useLocation();
   return (
     <Routes>
       <Route path="/" element={<MainPage />} />
@@ -52,7 +51,6 @@ const PageNavigator = () => {
       <Route path="/activity" element={<MyActivityPage />} />
       <Route path="/update_detail" element={<UpdateDetailPage />} />
       <Route path="/update_user" element={<UpdateUserPage />} />
-      <Route path="/region" element={<RegionPage />} />
       <Route path="/clubs" element={<ClubPage />}>
         <Route path="recommend" element={<ClubsList />} />
         <Route path="new" element={<div className="min-h-screen" />} />
