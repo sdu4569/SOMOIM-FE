@@ -20,7 +20,7 @@ export default function GalleryPost() {
           <FontAwesomeIcon icon={faEllipsisV} />
         </div>
       </PageHeader>
-      <section className="mt-10 mb-12 h-full overflow-scroll">
+      <section className="mt-10 mb-12 h-full overflow-scroll p-4">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
             <div className="w-10 aspect-square rounded-full bg-blue-500"></div>

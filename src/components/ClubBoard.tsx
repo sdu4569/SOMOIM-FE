@@ -11,7 +11,7 @@ export default function ClubBoard() {
   const [inModal, setInModal] = useState(false);
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col p-4">
         <select
           onChange={(e) => setCategory(e.target.value)}
           name=""

@@ -21,7 +21,7 @@ export default function CreateClub() {
   };
 
   return (
-    <div className="overflow-scroll h-full">
+    <div className="overflow-scroll h-full p-4">
       <PageHeader>
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />

@@ -15,7 +15,7 @@ export default function ClubBoardWrite() {
           <p className="">완료</p>
         </div>
       </PageHeader>
-      <section className="mt-12 flex flex-col">
+      <section className="mt-12 flex flex-col p-4">
         <div className="flex border-y border-gray-200 items-center space-x-2">
           <input
             type="text"
