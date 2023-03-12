@@ -25,7 +25,7 @@ export default function RegisterInterest() {
 
   const onSubmit = (data: InterestFormData) => {
     navigate("detail", {
-      state: { ...location.state, interests: data.selectedInterests },
+      state: { interests: data.selectedInterests },
     });
   };
 
@@ -48,36 +48,7 @@ export default function RegisterInterest() {
     console.log(location.state);
   }, []);
 
-  // protect from direct access
-  useEffect(() => {
-    if (!location.state) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-
-    const {
-      email,
-      password,
-      name,
-      gender,
-      birthday,
-      location: locationState,
-    } = location.state;
-
-    if (
-      !email ||
-      !password ||
-      !name ||
-      !gender ||
-      !birthday ||
-      !locationState
-    ) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-  }, []);
+  // to do : prevent direct accesss
 
   return (
     <motion.div variants={pageSlideIn} initial="initial" animate="animate">
@@ -106,13 +77,13 @@ export default function RegisterInterest() {
                   type="checkbox"
                   id={item.title}
                   className="hidden"
-                  value={item.interest}
+                  value={item.title}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
                     watch("selectedInterests") &&
-                    watch("selectedInterests").includes(item.interest) &&
+                    watch("selectedInterests").includes(item.title) &&
                     "border-blue-500"
                   }`}
                 />

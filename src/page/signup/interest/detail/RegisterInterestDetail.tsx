@@ -31,67 +31,31 @@ export default function RegisterInterestDetail() {
   } = useForm<InterestDetailFormData>();
 
   const onSubmit = (data: any) => {
-    const userData = {
-      ...location.state,
-      interests: {
-        ...data,
-      },
-    };
-    console.log(userData);
+    const favorites = Object.entries(data).map((item) => {
+      return {
+        name: item[0],
+        detail: item[1] ? item[1] : [],
+      };
+    });
+    console.log(favorites);
   };
-
-  // protect from direct access
-  useEffect(() => {
-    if (!location.state) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-
-    const {
-      email,
-      password,
-      name,
-      gender,
-      birthday,
-      location: locationState,
-      interests,
-    } = location.state;
-
-    if (
-      !email ||
-      !password ||
-      !name ||
-      !gender ||
-      !birthday ||
-      !locationState ||
-      !interests ||
-      interests.length === 0
-    ) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-  }, []);
 
   useEffect(() => {
     console.log(location.state);
   }, []);
 
   useEffect(() => {
-    console.log(errors);
-  }, [errors]);
-
-  useEffect(() => {
     if (location.state && location.state.interests) {
       const { interests } = location.state;
       console.log(interests);
       const detailList = InterestList.filter((item) =>
-        interests.includes(item.interest)
+        interests.includes(item.title)
       );
       setDetailList(detailList);
     }
   }, [location.state, location.state.interests]);
+
+  // to do : prevent direct accesss
 
   return (
     <motion.div
@@ -128,15 +92,15 @@ export default function RegisterInterestDetail() {
                         htmlFor={detail}
                         className={`p-2 mr-2 mb-2 border-2 border-solid flex justify-center items-center rounded text-12
                         ${
-                          watch(interest.interest) &&
-                          watch(interest.interest).includes(detail)
+                          watch(interest.title) &&
+                          watch(interest.title).includes(detail)
                             ? "border-blue-500"
                             : "border-gray-300"
                         }
                         `}
                       >
                         <input
-                          {...register(interest.interest)}
+                          {...register(interest.title)}
                           value={detail}
                           type="checkbox"
                           id={detail}

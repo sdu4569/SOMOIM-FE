@@ -31,7 +31,9 @@ export default function Register() {
     clearErrors,
     watch,
   } = useForm<RegisterFormData>();
+
   const navigate = useNavigate();
+
   const onVerifyClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -66,14 +68,16 @@ export default function Register() {
       });
       return;
     }
+
+    // to do : create account
+
     navigate("/signup/profile", {
-      state: {
-        ...location.state,
-        email: watch("email"),
-        password: watch("password"),
-      },
+      replace: true,
     });
   };
+
+  // to do : prevent direct access
+
   return (
     <motion.div
       variants={pageSlideIn}

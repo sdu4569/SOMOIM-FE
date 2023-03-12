@@ -23,40 +23,16 @@ export default function RegisterProfile() {
     setValue,
   } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
-  const location = useLocation();
   const navigate = useNavigate();
   const onSubmit = (data: RegisterProfileFormData) => {
     console.log(data);
-    navigate("/signup/interest", {
-      state: {
-        ...location.state,
-        ...data,
-      },
-    });
+    // to do : edit profile api call
+    navigate("/signup/interest");
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
-  useEffect(() => {
-    console.log(location.state);
-  }, []);
-
-  // protect from direct access
-  useEffect(() => {
-    if (!location.state) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-
-    const { email, password } = location.state;
-
-    if (!email || !password) {
-      alert("잘못된 접근입니다.");
-      navigate("/", { replace: true });
-      return;
-    }
-  }, []);
+  // to do : prevent direct access
 
   return (
     <>

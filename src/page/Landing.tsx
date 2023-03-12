@@ -1,7 +1,7 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -115,9 +115,16 @@ export default function Landing() {
           </li>
           <li>
             <ul className="flex flex-col space-y-4">
-              <li className="rounded-md px-10 h-10 flex justify-center items-center text-center border border-kakao bg-kakao">
-                <p className="">카카오로 로그인</p>
-              </li>
+              <a
+                href={`https://kauth.kakao.com/oauth/authorize?client_id=${
+                  import.meta.env.VITE_KAKAO_CLIENT_ID
+                }&redirect_uri=${
+                  import.meta.env.VITE_KAKAO_REDIRECT_URI
+                }&response_type=code`}
+                className="rounded-md px-10 h-10 flex justify-center items-center text-center border border-kakao bg-kakao"
+              >
+                <p>카카오로 로그인</p>
+              </a>
               <li className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
