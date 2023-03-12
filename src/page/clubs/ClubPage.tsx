@@ -4,14 +4,13 @@ import {
   faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "../../components/PageHeader";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import BottomTabNavigator from "../components/BottomTabNavigator";
-import FloatButton from "../components/FloatButton";
+import BottomTabNavigator from "../../components/BottomTabNavigator";
+import FloatButton from "../../components/FloatButton";
 
 const tabs = ["추천클럽", "신규클럽"];
 const routes = ["recommend", "new"];
@@ -39,7 +38,7 @@ export default function ClubPage() {
           </Link>
         </div>
       </PageHeader>
-      <div className="h-full overflow-scroll py-16 px-4">
+      <div className="h-full overflow-scroll pt-16 pb-20 px-4">
         <div className="bg-pink-300 h-32 relative p-4 flex flex-col space-y-2 rounded-md">
           <h2 className="text-xl">
             {location.pathname.includes("recommend")

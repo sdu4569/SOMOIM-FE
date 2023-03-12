@@ -4,7 +4,7 @@ import AuthPage from "./page/AuthPage";
 import MyActivityPage from "./page/MyActivityPage";
 import UpdateDetailPage from "./page/UpdateDetailPage";
 import InterestSearchPage from "./page/InterestSearchPage";
-import ClubPage from "./page/ClubPage";
+import ClubPage from "./page/clubs/ClubPage";
 import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
 import InterestPage from "./page/InterestPage";
 import MainPage from "./page/MainPage";

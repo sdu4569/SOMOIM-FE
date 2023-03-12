@@ -1,4 +1,8 @@
-export default function ClubComponent() {
+interface ClubComponentProps {
+  data: any;
+}
+
+export default function ClubComponent({ data }: ClubComponentProps) {
   return (
     <div className="flex space-x-4">
       <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative">
@@ -7,8 +11,10 @@ export default function ClubComponent() {
         </div>
       </div>
       <div className="flex-1 flex flex-col justify-evenly">
-        <span className="">클럽 이름</span>
-        <span className="text-sm text-gray-500">클럽 설명</span>
+        <span className="">{data.title.substring(0, 10)}</span>
+        <span className="text-sm text-gray-500">
+          {data.body.substring(0, 30)}
+        </span>
         <div className="flex space-x-2 text-xs">
           <div className="flex divide-x-2 divide-gray-300 items-center">
             <span className="pr-1">지역</span>
