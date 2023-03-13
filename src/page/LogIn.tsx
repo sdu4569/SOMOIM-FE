@@ -61,7 +61,7 @@ export default function LogIn() {
                   })}
                   type="email"
                   id="id"
-                  className="w-full rounded-md bg-gray-300 p-4 outline-none"
+                  className="w-full rounded-md bg-gray-100 p-4 outline-none"
                 />
               </label>
             </li>
@@ -92,7 +92,7 @@ export default function LogIn() {
                   })}
                   type={isMasked ? "password" : "text"}
                   id="password"
-                  className="w-full rounded-md bg-gray-300 p-4 pr-14 outline-none"
+                  className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
                 />
                 <FontAwesomeIcon
                   onClick={() => setIsMasked((prev) => !prev)}

@@ -11,7 +11,7 @@ export default function GalleryPost() {
   const [like, setLike] = useState<boolean>(false);
   return (
     <>
-      <PageHeader className="!bg-gray-300">
+      <PageHeader className="!bg-gray-100">
         <div className="flex space-x-2 items-center">
           <HeaderBackButton />
           <h1 className="text-lg ">게시글</h1>
@@ -91,7 +91,7 @@ export default function GalleryPost() {
         <input
           type="text"
           placeholder="댓글을 입력해주세요."
-          className="bg-gray-300 p-4 rounded-lg flex-1 outline-none"
+          className="bg-gray-100 p-4 rounded-lg flex-1 outline-none"
         />
         <Button>전송</Button>
       </BottomTabNavigator>

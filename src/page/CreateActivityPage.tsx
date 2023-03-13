@@ -24,7 +24,7 @@ export default function CreateActivity() {
 
   return (
     <div className="overflow-scroll h-full p-4">
-      <PageHeader className="!bg-gray-300">
+      <PageHeader className="!bg-gray-100">
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />
           <h1>C.A 스케줄 추가</h1>
@@ -36,7 +36,7 @@ export default function CreateActivity() {
             <input
               type="text"
               id="name"
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               placeholder="C.A 제목을 입력하세요."
               {...register("name")}
             />
@@ -49,7 +49,7 @@ export default function CreateActivity() {
                   placeholder="12월 31일 (일)"
                   type="text"
                   id="date"
-                  className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+                  className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                   {...register("date")}
                 />
               </label>
@@ -59,7 +59,7 @@ export default function CreateActivity() {
                   placeholder="오후 7:00"
                   type="text"
                   id="time"
-                  className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+                  className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                   {...register("time")}
                 />
               </label>
@@ -76,7 +76,7 @@ export default function CreateActivity() {
               placeholder="위치를 입력하세요."
               type="text"
               id="location"
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               {...register("location")}
             />
           </label>
@@ -86,7 +86,7 @@ export default function CreateActivity() {
               placeholder="식사비 15000원"
               type="text"
               id="money"
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               {...register("money")}
             />
           </label>
@@ -98,7 +98,7 @@ export default function CreateActivity() {
             <input
               defaultValue={20}
               type="number"
-              className="p-2 none rounded-md bg-gray-300 outline-none w-16 appearance-none text-center"
+              className="p-2 none rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
             />
           </label>
           <Button className="w-full">C.A 스케줄 추가</Button>

@@ -31,7 +31,7 @@ export default function ClubEditPage() {
 
   return (
     <div className="overflow-scroll h-full p-4">
-      <PageHeader className="!bg-gray-300">
+      <PageHeader className="!bg-gray-100">
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />
           <h1>클럽 수정</h1>
@@ -47,7 +47,7 @@ export default function ClubEditPage() {
             <input
               type="text"
               id="category"
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               {...register("category")}
             />
           </label>
@@ -59,7 +59,7 @@ export default function ClubEditPage() {
             <input
               type="text"
               id="location"
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               {...register("location")}
             />
           </label>
@@ -92,7 +92,7 @@ export default function ClubEditPage() {
               type="text"
               id="clubName"
               placeholder="클럽명을 입력해주세요."
-              className="rounded-md p-2 bg-gray-300 flex-1 outline-none"
+              className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               {...register("clubName")}
             />
           </label>
@@ -101,7 +101,7 @@ export default function ClubEditPage() {
             cols={30}
             rows={8}
             placeholder="클럽 소개글을 작성해주세요."
-            className="resize-none outline-none bg-gray-300 rounded-md p-4"
+            className="resize-none outline-none bg-gray-100 rounded-md p-4"
             {...register("description")}
           ></textarea>
           <label className="flex items-center justify-between">
@@ -112,7 +112,7 @@ export default function ClubEditPage() {
             <input
               defaultValue={300}
               type="number"
-              className="p-2 none rounded-md bg-gray-300 outline-none w-16 appearance-none text-center"
+              className="p-2 none rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
             />
           </label>
           <div className="flex flex-col space-y-2">

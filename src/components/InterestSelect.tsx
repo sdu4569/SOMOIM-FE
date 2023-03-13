@@ -1,23 +1,26 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import PageHeader from "../../../components/PageHeader";
-import { InterestList } from "../../../libs/InterestList";
 import { motion } from "framer-motion";
-import { pageSlideIn } from "../../../libs/variants";
-import HeaderBackButton from "../../../components/HeaderBackButton";
+import { pageSlideIn } from "../libs/variants";
+import PageHeader from "./PageHeader";
+import HeaderBackButton from "./HeaderBackButton";
+import { InterestList } from "../libs/InterestList";
 
-interface RegisterInterestProps {
-  onComplete?: (data: InterestFormData) => void;
+interface InterestSelectProps {
+  onComplete: (data: InterestFormData) => void;
+  closeModal: () => void;
+  maxSelect: number;
 }
 
 export interface InterestFormData {
   selectedInterests: string[];
 }
 
-export default function RegisterInterest({
+export default function InterestSelect({
   onComplete,
-}: RegisterInterestProps) {
+  closeModal,
+  maxSelect,
+}: InterestSelectProps) {
   const {
     register,
     handleSubmit,
@@ -25,15 +28,6 @@ export default function RegisterInterest({
     setValue,
     watch,
   } = useForm<InterestFormData>();
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const onSubmit = (data: InterestFormData) => {
-    navigate("detail", {
-      state: { interests: data.selectedInterests },
-    });
-  };
 
   useEffect(() => {
     if (errors.selectedInterests) {
@@ -44,29 +38,18 @@ export default function RegisterInterest({
   useEffect(() => {
     const selectedInterests = watch("selectedInterests");
 
-    if (selectedInterests && selectedInterests.length > 7) {
-      alert("관심사는 최대 7개까지 선택할 수 있습니다.");
-      setValue("selectedInterests", selectedInterests.slice(0, 7));
+    if (selectedInterests && selectedInterests.length > maxSelect) {
+      alert(`최대 ${maxSelect}개까지 선택해주세요.`);
+      setValue("selectedInterests", selectedInterests.slice(0, maxSelect));
     }
   }, [watch("selectedInterests")]);
 
-  useEffect(() => {
-    console.log(location.state);
-  }, []);
-
-  // to do : prevent direct accesss
-
   return (
     <motion.div variants={pageSlideIn} initial="initial" animate="animate">
-      <form
-        className="pt-16 px-4"
-        onSubmit={
-          onComplete ? handleSubmit(onComplete) : handleSubmit(onSubmit)
-        }
-      >
+      <form className="pt-16 px-4" onSubmit={handleSubmit(onComplete)}>
         <PageHeader>
           <div className="flex items-center space-x-2">
-            <HeaderBackButton />
+            <HeaderBackButton onClick={closeModal} />
             <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
           </div>
           <button type="submit" className="text-xl">

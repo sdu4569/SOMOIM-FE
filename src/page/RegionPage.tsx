@@ -6,11 +6,11 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import HeaderBackButton from "../components/HeaderBackButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
-import RegionSelect, { Region } from "../components/RegionSelect";
+import RegionSelect from "../components/RegionSelect";
 
 interface RegionPageProps {
   closeModal: () => void;
-  setProfileLocation: any;
+  setInputValue: any;
 }
 
 interface RegionFormData {
@@ -19,14 +19,22 @@ interface RegionFormData {
   interested?: string;
 }
 
-const RegionPage = ({ closeModal, setProfileLocation }: RegionPageProps) => {
+const regionObj = {
+  home: "집",
+  work: "직장(활동지역)",
+  interested: "관심지역",
+};
+
+type Region = "home" | "work" | "interested";
+
+const RegionPage = ({ closeModal, setInputValue }: RegionPageProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const { register, handleSubmit, setValue, watch } = useForm<RegionFormData>({
     shouldFocusError: false,
   });
 
   const onSubmit = (data: RegionFormData) => {
-    setProfileLocation("location", watch("home"));
+    setInputValue("location", watch("home"));
     closeModal();
   };
 
@@ -47,7 +55,8 @@ const RegionPage = ({ closeModal, setProfileLocation }: RegionPageProps) => {
           <RegionSelect
             setValue={setValue}
             closeModal={() => setInRegionSearchModal(false)}
-            region={selectedRegion}
+            title={regionObj[selectedRegion]}
+            inputId={selectedRegion}
           />
         )}
       </AnimatePresence>
@@ -101,7 +110,7 @@ const RegionPage = ({ closeModal, setProfileLocation }: RegionPageProps) => {
                     placeholder="필수"
                     disabled={inRegionSearchModal}
                     onFocus={onInputFocus}
-                    className="rounded-md bg-gray-300 text-black outline-none p-4 w-full"
+                    className="rounded-md bg-gray-100 text-black outline-none p-4 w-full"
                   />
                 </label>
               </li>
@@ -124,7 +133,7 @@ const RegionPage = ({ closeModal, setProfileLocation }: RegionPageProps) => {
                     placeholder="권장"
                     disabled={inRegionSearchModal}
                     onFocus={onInputFocus}
-                    className="rounded-md bg-gray-300 text-black outline-none p-4 w-full"
+                    className="rounded-md bg-gray-100 text-black outline-none p-4 w-full"
                   />
                 </label>
               </li>
@@ -147,7 +156,7 @@ const RegionPage = ({ closeModal, setProfileLocation }: RegionPageProps) => {
                     placeholder="선택"
                     disabled={inRegionSearchModal}
                     onFocus={onInputFocus}
-                    className="rounded-md bg-gray-300 text-black outline-none p-4 w-full"
+                    className="rounded-md bg-gray-100 text-black outline-none p-4 w-full"
                   />
                 </label>
               </li>

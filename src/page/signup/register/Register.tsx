@@ -99,7 +99,7 @@ export default function Register() {
               </div>
               <input
                 type="text"
-                className="p-4 bg-gray-300 rounded-md outline-none"
+                className="p-4 bg-gray-100 rounded-md outline-none"
               />
               <div className="w-full flex justify-between space-x-2">
                 <Button
@@ -196,7 +196,7 @@ export default function Register() {
                   disabled={isEmailVerified}
                   type="email"
                   id="email"
-                  className="w-full rounded-md bg-gray-300 p-4 outline-none"
+                  className="w-full rounded-md bg-gray-100 p-4 outline-none"
                 />
               </label>
             </li>
@@ -227,7 +227,7 @@ export default function Register() {
                   })}
                   type={isMasked ? "password" : "text"}
                   id="password"
-                  className="w-full rounded-md bg-gray-300 p-4 pr-14 outline-none"
+                  className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
                 />
                 <FontAwesomeIcon
                   onClick={() => setIsMasked((prev) => !prev)}
@@ -262,7 +262,7 @@ export default function Register() {
                   })}
                   type={isMasked ? "password" : "text"}
                   id="confirmPassword"
-                  className="w-full rounded-md bg-gray-300 p-4 pr-14 outline-none"
+                  className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
                 />
                 <FontAwesomeIcon
                   onClick={() => setIsMasked((prev) => !prev)}

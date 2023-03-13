@@ -15,7 +15,7 @@ import ClubPost from "./page/ClubPost";
 import CategorySearchPage from "./page/CategorySearchPage";
 import ClubEditPage from "./page/ClubEditPage";
 import CreateActivity from "./page/CreateActivityPage";
-import CreateClub from "./page/CreateClubPage";
+import CreateClub from "./page/clubs/create/CreateClubPage";
 import GalleryPost from "./page/GalleryPost";
 import ClubSearchPage from "./page/ClubSearchPage";
 import MorePage from "./page/MorePage";

@@ -1,11 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import HeaderBackButton from "../../../../components/HeaderBackButton";
-import PageHeader from "../../../../components/PageHeader";
-import { InterestList } from "../../../../libs/InterestList";
 import { motion } from "framer-motion";
-import { pageSlideIn } from "../../../../libs/variants";
 import { useForm } from "react-hook-form";
+import { InterestList } from "../libs/InterestList";
+import { pageSlideIn } from "../libs/variants";
+import PageHeader from "./PageHeader";
+import HeaderBackButton from "./HeaderBackButton";
+import { InterestWithDetails } from "../libs/types";
+
+interface InterestDetailSelectProps {
+  onComplete: (data: InterestWithDetails[]) => void;
+  closeModal: () => void;
+  interests: string[];
+}
 
 interface Interest {
   title: string;
@@ -18,10 +25,12 @@ interface InterestDetailFormData {
   [key: string]: string[];
 }
 
-export default function RegisterInterestDetail() {
+export default function InterestDetailSelect({
+  onComplete,
+  closeModal,
+  interests,
+}: InterestDetailSelectProps) {
   const [detailList, setDetailList] = useState<Interest[]>([]);
-  const location = useLocation();
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -37,25 +46,17 @@ export default function RegisterInterestDetail() {
         detail: item[1] ? item[1] : [],
       };
     });
-    console.log(favorites);
+
+    onComplete(favorites);
   };
 
   useEffect(() => {
-    console.log(location.state);
-  }, []);
-
-  useEffect(() => {
-    if (location.state && location.state.interests) {
-      const { interests } = location.state;
-      console.log(interests);
-      const detailList = InterestList.filter((item) =>
-        interests.includes(item.title)
-      );
-      setDetailList(detailList);
-    }
-  }, [location.state, location.state.interests]);
-
-  // to do : prevent direct accesss
+    console.log(interests);
+    const detailList = InterestList.filter((item) =>
+      interests.includes(item.title)
+    );
+    setDetailList(detailList);
+  }, [interests]);
 
   return (
     <motion.div
@@ -67,7 +68,7 @@ export default function RegisterInterestDetail() {
       <form onSubmit={handleSubmit(onSubmit)} className="pt-16 px-4 pb-10">
         <PageHeader>
           <div className="flex items-center space-x-2">
-            <HeaderBackButton />
+            <HeaderBackButton onClick={closeModal} />
             <h1 className="text-xl whitespace-nowrap truncate">
               상세 관심사 선택
             </h1>
