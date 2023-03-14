@@ -30,6 +30,7 @@ import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import RegisterInterest from "./page/signup/interest/RegisterInterest";
 import RegisterInterestDetail from "./page/signup/interest/detail/RegisterInterestDetail";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
+import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 
 const PageNavigator = () => {
   return (
@@ -73,6 +74,7 @@ const PageNavigator = () => {
       <Route path="/interest_club" element={<InterestClubPage />} />
 
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
+      <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
       <Route path="*" element={<div>404</div>} />
     </Routes>
