@@ -28,7 +28,7 @@ export default function ClubPage() {
     }
   }, [location]);
   return (
-    <div className="h-full overflow-scroll pt-14 pb-16 ">
+    <div className="h-full overflow-scroll pt-12 pb-16 ">
       <PageHeader>
         <Link to="/region" className="flex space-x-2 items-center">
           <h2 className="text-lg">내 지역</h2>
@@ -59,7 +59,7 @@ export default function ClubPage() {
           </span>
         </h4>
       </div>
-      <div className="bg-sky-200 rounded-md w-[350px] ml-auto mr-auto z-20 relative top-[-45px] pt-[10px] pb-[10px]">
+      <div className="bg-sky-200 rounded-md w-[350px] ml-auto mr-auto relative -top-[45px] pt-[10px] pb-[10px]">
         <ClubSearch />
       </div>
       <section>

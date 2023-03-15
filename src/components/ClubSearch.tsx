@@ -52,7 +52,7 @@ const ClubSearch = () => {
       </a>
       <a href="#" className="btn_close text-[10px] w-11 m-auto hidden">
         감추기
-        <img src={Images.up} alt="아래 화살표" className="w-2 float-right" />
+        <img src={Images.up} alt="위 화살표" className="w-2 float-right" />
       </a>
     </>
   );

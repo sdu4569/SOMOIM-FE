@@ -28,4 +28,5 @@ export const Images = {
   rightArrow: "https://cdn-icons-png.flaticon.com/512/2989/2989988.png",
   heart: "https://cdn-icons-png.flaticon.com/512/2107/2107845.png",
   camera: "https://cdn-icons-png.flaticon.com/512/3687/3687416.png",
+  preview: "https://cdn-icons-png.flaticon.com/512/45/45010.png",
 };
