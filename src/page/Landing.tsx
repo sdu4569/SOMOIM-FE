@@ -43,13 +43,7 @@ export default function Landing() {
                   <div className="rounded-md w-full flex flex-col space-y-4">
                     <ul className="flex flex-col space-y-4">
                       <li>
-                        <div className="flex items-center">
-                          {/* {errors.id && (
-                            <p className="text-red-500 text-sm">
-                              {errors.id.message}
-                            </p>
-                          )} */}
-                        </div>
+                        <div className="flex items-center"></div>
                         <input
                           placeholder="이메일"
                           {...register("id", {
@@ -66,13 +60,7 @@ export default function Landing() {
                       </li>
                       <li>
                         <div className="relative">
-                          <div className="flex items-center">
-                            {/* {errors.password && (
-                              <p className="text-red-500 text-sm">
-                                {errors.password.message}
-                              </p>
-                            )} */}
-                          </div>
+                          <div className="flex items-center"></div>
                           <input
                             placeholder="비밀번호"
                             {...register("password", {
