@@ -7,6 +7,7 @@ export default function GoogleCallback() {
   useEffect(() => {
     const code = new URLSearchParams(location.search).get("code");
     console.log(code);
+    console.log(new URLSearchParams(location.pathname));
   });
   return (
     <div className="w-full h-full flex justify-center items-center">
