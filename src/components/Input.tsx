@@ -6,7 +6,7 @@ interface InputProps {
 export default function Input({ className, ...rest }: InputProps) {
   return (
     <input
-      className={`rounded-md bg-gray-300 text-black outline-none p-4 ${className}`}
+      className={`rounded-md bg-gray-100 text-black outline-none p-4 ${className}`}
       {...rest}
     />
   );

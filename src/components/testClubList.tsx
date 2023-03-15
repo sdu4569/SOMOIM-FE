@@ -1,4 +1,4 @@
-import { Images } from "./Images";
+import { Images } from "../libs/Images";
 
 export const testClubList = [
   {

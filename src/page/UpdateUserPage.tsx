@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
 import useSWR from "swr";
 import axios from "axios";
@@ -99,7 +99,7 @@ const UpdateUserPage = () => {
   };
 
   return (
-    <div className="h-full pt-14 pb-16 overflow-auto">
+    <div className="h-full py-16 p-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />

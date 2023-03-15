@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { InterestList } from "./InterestList";
-import { Images } from "./Images";
+import { InterestList } from "../libs/InterestList";
+import { Images } from "../libs/Images";
 
 const ClubSearch = () => {
   useEffect(() => {

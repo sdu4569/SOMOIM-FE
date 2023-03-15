@@ -30,7 +30,7 @@ const SignUpPage = () => {
               type="text"
               {...register("name", { required: "이름을 입력해주세요." })}
               placeholder="이름"
-              className="flex-1 rounded-md bg-gray-300 text-black outline-none p-4"
+              className="flex-1 rounded-md bg-gray-100 text-black outline-none p-4"
             />
             <div className="flex rounded-md border-gray-300 font-bold text-gray-300 border">
               <label
@@ -71,7 +71,7 @@ const SignUpPage = () => {
             <input
               type="date"
               {...register("birthday", { required: true })}
-              className="w-1/2 rounded-md bg-gray-300 text-black outline-none p-4"
+              className="w-1/2 rounded-md bg-gray-100 text-black outline-none p-4"
             />
             <Link to={"/region"} className="w-1/2">
               <input
@@ -79,7 +79,7 @@ const SignUpPage = () => {
                 onClick={() => console.log("onlocationclick")}
                 {...register("location", { required: true })}
                 placeholder="지역"
-                className="w-full rounded-md bg-gray-300 text-black outline-none p-4"
+                className="w-full rounded-md bg-gray-100 text-black outline-none p-4"
               />
             </Link>
           </div>

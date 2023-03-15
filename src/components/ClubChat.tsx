@@ -8,7 +8,7 @@ export default function ClubChat() {
     chatList.current?.scrollIntoView();
   });
   return (
-    <div>
+    <div className="p-4">
       <ul className="mb-[48px] flex flex-col space-y-4 p-2 overflow-scroll">
         <li className="flex justify-center items-center">
           <div className="bg-gray-400 text-gray-300 px-2 py-1 rounded-full text-center w-min">
@@ -65,7 +65,7 @@ export default function ClubChat() {
       <BottomTabNavigator className="space-x-2 px-2">
         <input
           type="text"
-          className="bg-gray-300 p-4 rounded-lg flex-1 outline-none"
+          className="bg-gray-100 p-4 rounded-lg flex-1 outline-none"
         />
         <Button>전송</Button>
       </BottomTabNavigator>

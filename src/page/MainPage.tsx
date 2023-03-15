@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 
 const routes = [
   {
-    path: "/auth",
-    name: "인증",
+    path: "/landing",
+    name: "랜딩페이지",
   },
   {
-    path: "/signup",
+    path: "/signup/register",
     name: "회원가입",
   },
   {

@@ -1,11 +1,11 @@
 import PageHeader from "../components/PageHeader";
 
 import { Link, useLocation } from "react-router-dom";
-import { InterestList } from "../components/InterestList";
+import { InterestList } from "../libs/InterestList";
 import HeaderBackButton from "../components/HeaderBackButton";
 import { testClubList } from "../components/testClubList";
 import { useEffect, useState } from "react";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 
 const InterestSearchPage = () => {
   const location = useLocation();
@@ -73,7 +73,7 @@ const InterestSearchPage = () => {
     <>
       {interest.map((item, idx) => {
         return (
-          <div key={idx} className="h-full pt-14 pb-16 overflow-auto">
+          <div key={idx} className="h-full py-16 px-4 overflow-auto">
             <PageHeader className="mb-2 ml-1 ">
               <div className="flex items-center space-x-4 h-full overflow-hidden">
                 <HeaderBackButton />

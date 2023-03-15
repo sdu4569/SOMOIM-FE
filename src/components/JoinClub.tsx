@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 import { fetcher } from "../page/UpdateUserPage";
-import { Images } from "./Images";
+import { Images } from "../libs/Images";
 
 interface greetingFormData {
   greeting?: string;

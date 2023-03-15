@@ -11,7 +11,7 @@ export default function ClubPost() {
   const [like, setLike] = useState<boolean>(false);
   return (
     <>
-      <PageHeader className="!bg-gray-300">
+      <PageHeader className="!bg-gray-100">
         <div className="flex space-x-2 items-center">
           <HeaderBackButton />
           <h1 className="text-lg ">게시글</h1>
@@ -20,7 +20,7 @@ export default function ClubPost() {
           <FontAwesomeIcon icon={faEllipsisV} />
         </div>
       </PageHeader>
-      <section className="mt-10 mb-12 h-full overflow-scroll">
+      <section className="mt-10 mb-12 h-full overflow-scroll p-4">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
             <div className="w-10 aspect-square rounded-full bg-blue-500"></div>
@@ -97,7 +97,7 @@ export default function ClubPost() {
         <input
           type="text"
           placeholder="댓글을 입력해주세요."
-          className="bg-gray-300 p-4 rounded-lg flex-1 outline-none"
+          className="bg-gray-100 p-4 rounded-lg flex-1 outline-none"
         />
         <Button>전송</Button>
       </BottomTabNavigator>

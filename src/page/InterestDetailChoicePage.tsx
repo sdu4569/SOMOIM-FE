@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
-import { InterestList } from "../components/InterestList";
+import { InterestList } from "../libs/InterestList";
 import HeaderBackButton from "../components/HeaderBackButton";
 import getUserChoiceInterest from "../util/getUserChoiceInterest";
 
@@ -78,7 +78,7 @@ const InterestDetailChoicePage = () => {
     }, []);
   }
   return (
-    <div className="h-full pt-14 pb-16 overflow-auto">
+    <div className="h-full pt-20 pb-16 px-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />

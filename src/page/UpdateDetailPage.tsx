@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../components/Images";
+import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
 import getUserChoiceInterest from "../util/getUserChoiceInterest";
 
 const UpdateDetailPage = () => {
   const detail = getUserChoiceInterest().map((item: any) => item.detail);
   return (
-    <div className="h-full pt-14 pb-16 overflow-auto">
+    <div className="h-full py-16 px-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
