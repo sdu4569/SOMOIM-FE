@@ -15,7 +15,7 @@ import ClubPost from "./page/ClubPost";
 import CategorySearchPage from "./page/CategorySearchPage";
 import ClubEditPage from "./page/ClubEditPage";
 import CreateActivity from "./page/CreateActivityPage";
-import CreateClub from "./page/CreateClubPage";
+import CreateClub from "./page/clubs/create/CreateClubPage";
 import GalleryPost from "./page/GalleryPost";
 import ClubSearchPage from "./page/ClubSearchPage";
 import MorePage from "./page/MorePage";
@@ -30,6 +30,7 @@ import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import RegisterInterest from "./page/signup/interest/RegisterInterest";
 import RegisterInterestDetail from "./page/signup/interest/detail/RegisterInterestDetail";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
+import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 
 const PageNavigator = () => {
   return (
@@ -73,6 +74,7 @@ const PageNavigator = () => {
       <Route path="/interest_club" element={<InterestClubPage />} />
 
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
+      <Route path="/auth/google/callback" element={<GoogleCallback />} />
 
       <Route path="*" element={<div>404</div>} />
     </Routes>

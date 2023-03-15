@@ -38,7 +38,7 @@ export default function RegisterProfile() {
     <>
       <AnimatePresence>
         {inRegionModal && (
-          <RegionPage setProfileLocation={setValue} closeModal={closeModal} />
+          <RegionPage setInputValue={setValue} closeModal={closeModal} />
         )}
       </AnimatePresence>
       <motion.div
@@ -71,7 +71,7 @@ export default function RegisterProfile() {
                   })}
                   type="text"
                   id="name"
-                  className="p-4 bg-gray-300 rounded-md outline-none"
+                  className="p-4 bg-gray-100 rounded-md outline-none"
                 />
               </label>
               <label
@@ -133,7 +133,7 @@ export default function RegisterProfile() {
                   })}
                   type="date"
                   id="birthday"
-                  className="p-4 w-full h-full bg-gray-300 rounded-md outline-none"
+                  className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
               <label
@@ -149,7 +149,7 @@ export default function RegisterProfile() {
                   type="text"
                   disabled={inRegionModal}
                   id="location"
-                  className="p-4 w-full h-full bg-gray-300 rounded-md outline-none"
+                  className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
             </div>

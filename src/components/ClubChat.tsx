@@ -65,7 +65,7 @@ export default function ClubChat() {
       <BottomTabNavigator className="space-x-2 px-2">
         <input
           type="text"
-          className="bg-gray-300 p-4 rounded-lg flex-1 outline-none"
+          className="bg-gray-100 p-4 rounded-lg flex-1 outline-none"
         />
         <Button>전송</Button>
       </BottomTabNavigator>

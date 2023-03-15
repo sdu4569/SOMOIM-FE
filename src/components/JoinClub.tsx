@@ -10,7 +10,7 @@ export default function JoinClub() {
       </header>
       <input
         type="text"
-        className="rounded-md p-2 bg-gray-300 outline-none"
+        className="rounded-md p-2 bg-gray-100 outline-none"
         placeholder="가입인사를 작성해주세요!"
       />
       <div className="text-blue-500 flex divide-x w-full divide-gray-300">

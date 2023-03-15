@@ -1,32 +1,24 @@
-import { useLocation } from "react-router-dom";
 import HeaderBackButton from "./HeaderBackButton";
 import PageHeader from "./PageHeader";
 import DaumPostCodeEmbed from "react-daum-postcode";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
 
 interface RegionSelectProps {
-  region: Region;
+  title: string;
+  inputId: string;
   closeModal: () => void;
   setValue: any;
 }
 
-const regionObj = {
-  home: "집",
-  work: "직장(활동지역)",
-  interested: "관심지역",
-};
-
-export type Region = "home" | "work" | "interested";
-
 export default function RegionSelect({
-  region,
+  title,
+  inputId,
   closeModal,
   setValue,
 }: RegionSelectProps) {
   const onSearchComplete = (data: any) => {
     console.log(data);
-    setValue(region, data.bname2);
+    setValue(inputId, data.bname2);
     closeModal();
   };
 
@@ -41,7 +33,7 @@ export default function RegionSelect({
       <PageHeader>
         <div className="flex items-center space-x-4">
           <HeaderBackButton onClick={closeModal} />
-          <h2 className="text-xl">{regionObj[region]} 지역 선택</h2>
+          <h2 className="text-xl">{title} 지역 선택</h2>
         </div>
       </PageHeader>
       <div className="mt-12 h-full w-full">
