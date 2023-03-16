@@ -10,7 +10,11 @@ interface greetingFormData {
   greeting?: string;
 }
 
-export default function JoinClub() {
+interface JoinClubProps {
+  closeModal: () => void;
+}
+
+export default function JoinClub({ closeModal }: JoinClubProps) {
   const { data, error, isLoading } = useSWR(
     "https://jsonplaceholder.typicode.com/users/1",
     fetcher
@@ -41,14 +45,15 @@ export default function JoinClub() {
         new Event("submit", { bubbles: true, cancelable: true })
       );
     }
+    closeModal();
   };
 
   return (
-    <div className="rounded-2xl w-full h-[180px] p-4 m-4 flex bg-white self-end flex-col ">
-      <header
-        onClick={(e) => e.stopPropagation()}
-        className="flex justify-between h-[56px]"
-      >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="rounded-2xl w-full h-[180px] p-4 m-4 flex bg-white self-end flex-col "
+    >
+      <header className="flex justify-between h-[56px]">
         <h1 className="text-[18px] mt-auto mb-auto">
           가입인사를 작성해주세요.
         </h1>
@@ -59,7 +64,6 @@ export default function JoinClub() {
         />
       </header>
       <form
-        onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit(onSubmit)}
         ref={formRef}
         className="relative h-[56px] "
@@ -73,7 +77,10 @@ export default function JoinClub() {
       </form>
 
       <div className="text-blue-500 flex divide-x w-full divide-gray-300 mt-2 mb-2">
-        <button className="flex justify-center items-center flex-1">
+        <button
+          className="flex justify-center items-center flex-1"
+          onClick={closeModal}
+        >
           취소
         </button>
         <button

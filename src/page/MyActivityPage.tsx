@@ -96,7 +96,7 @@ const MyActivityPage = () => {
         <UpdateInterestButton />
         <Recommendation />
         <div className="absolute bottom-20 right-8">
-          <FloatButton to={`/clubs/create`} className="">
+          <FloatButton to={`/clubs/create`}>
             <FontAwesomeIcon icon={faPlus} />
             <p className="text-sm">개설</p>
           </FloatButton>

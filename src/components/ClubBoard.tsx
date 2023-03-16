@@ -8,7 +8,7 @@ import Overlay from "./Overlay";
 
 export default function ClubBoard() {
   const [category, setCategory] = useState("all");
-  const [inModal, setInModal] = useState(false);
+
   return (
     <>
       <div className="flex flex-col p-4">
@@ -80,7 +80,8 @@ export default function ClubBoard() {
       </div>
       <div className="absolute bottom-8 right-8">
         <FloatButton to="write">
-          <FontAwesomeIcon icon={faPlus} className="text-white" size="lg" />
+          <FontAwesomeIcon icon={faPlus} />
+          <p className="text-sm">작성</p>
         </FloatButton>
       </div>
     </>
