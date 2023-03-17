@@ -116,9 +116,9 @@ export default function Landing() {
               <a
                 href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
                   import.meta.env.VITE_GOOGLE_CLIENT_ID
-                }&redirect_uri=${
+                }&redirect_uri= ${
                   import.meta.env.VITE_GOOGLE_REDIRECT_URI
-                }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
+                }&response_type=code&scope=openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`}
                 className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center"
               >
                 <svg
