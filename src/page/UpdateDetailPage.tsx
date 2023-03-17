@@ -20,13 +20,13 @@ const UpdateDetailPage = () => {
         <Link to={"/interest"}>
           <Button children="관심사 선택" className="w-full" />
         </Link>
-        <div className="text-14 font-semibold mt-5">선택한 상세관심사</div>
+        <div className="text-[14px] font-semibold mt-5">선택한 상세관심사</div>
         <div className="flex flex-wrap mt-5">
           {detail.flat().map((interest: string, index: number) => {
             return (
               <p
                 key={index}
-                className="border-solid border-gray-300 border p-2 rounded-lg text-12 mb-3 mr-3 "
+                className="border-solid border-gray-300 border p-2 rounded-lg text-[12px] mb-3 mr-3 "
               >
                 <img
                   src={Images.check}

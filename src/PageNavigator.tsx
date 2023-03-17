@@ -5,7 +5,6 @@ import MyActivityPage from "./page/MyActivityPage";
 import UpdateDetailPage from "./page/UpdateDetailPage";
 import InterestSearchPage from "./page/InterestSearchPage";
 import ClubPage from "./page/clubs/ClubPage";
-import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
 import InterestPage from "./page/InterestPage";
 import MainPage from "./page/MainPage";
 import ClubDetail from "./components/ClubDetail";
@@ -21,7 +20,6 @@ import ClubSearchPage from "./page/ClubSearchPage";
 import MorePage from "./page/MorePage";
 import UpdateUserPage from "./page/UpdateUserPage";
 import RecentClubPage from "./page/RecentClubPage";
-import InterestClubPage from "./page/InterestClubPage";
 import Landing from "./page/Landing";
 import LogIn from "./page/LogIn";
 import SignupLayout from "./page/signup/SignupLayout";
@@ -31,6 +29,8 @@ import RegisterInterest from "./page/signup/interest/RegisterInterest";
 import RegisterInterestDetail from "./page/signup/interest/detail/RegisterInterestDetail";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
 import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
+import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
+import FavoriteClubPage from "./page/FavoriteClubPage";
 
 const PageNavigator = () => {
   return (
@@ -68,13 +68,13 @@ const PageNavigator = () => {
       <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
       <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
-      <Route path="/search/:category" element={<CategorySearchPage />} />
       <Route path="/more" element={<MorePage />} />
       <Route path="/recent_club" element={<RecentClubPage />} />
       <Route path="/interest_club" element={<InterestClubPage />} />
 
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
       <Route path="/auth/google/callback" element={<GoogleCallback />} />
+      <Route path="/favorite_club" element={<FavoriteClubPage />} />
 
       <Route path="*" element={<div>404</div>} />
     </Routes>

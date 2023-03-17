@@ -39,13 +39,13 @@ const RecentClubPage = () => {
                     alt="클럽 이미지"
                     className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
                   />
-                  <div className="text-12 absolute top-0 left-16">
+                  <div className="text-[12px] absolute top-0 left-16">
                     {item.clubTitle}
                   </div>
-                  <div className="text-10 absolute top-5 left-16 text-gray-400">
+                  <div className="text-[10px] absolute top-5 left-16 text-gray-400">
                     {item.clubDescription}
                   </div>
-                  <div className="text-10 absolute bottom-0 left-16">
+                  <div className="text-[10px] absolute bottom-0 left-16">
                     <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
                       {item.region}
                     </span>

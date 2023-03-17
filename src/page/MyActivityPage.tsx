@@ -6,8 +6,9 @@ import { Images } from "../libs/Images";
 import { Link } from "react-router-dom";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
+import FloatButton from "../components/FloatButton";
 
 const userClubList: any[] = [
   {
@@ -59,7 +60,7 @@ const MyActivityPage = () => {
       </PageHeader>
 
       <main>
-        <h2 className="text-14 font-semibold mb-5" id="userClub">
+        <h2 className="text-[14px] font-semibold mb-5" id="userClub">
           {userClubList.length !== 0 ? "가입한 클럽" : "클럽에 가입해 보세요!"}
         </h2>
 
@@ -72,7 +73,7 @@ const MyActivityPage = () => {
                   alt="클럽 이미지"
                   className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
                 />
-                <div className="text-12 absolute top-2 left-16">
+                <div className="text-[12px] absolute top-2 left-16">
                   <img
                     src={item.interestImage}
                     className="h-3 inline-block mr-1"
@@ -80,7 +81,7 @@ const MyActivityPage = () => {
                   />
                   {item.clubTitle}
                 </div>
-                <div className="text-10 absolute bottom-2 left-16">
+                <div className="text-[10px] absolute bottom-2 left-16">
                   <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
                     {item.region}
                   </span>
@@ -90,10 +91,16 @@ const MyActivityPage = () => {
             </Link>
           );
         })}
-        <h2 className="text-14 font-semibold mb-5 mt-5">클럽찾기</h2>
+        <h2 className="text-[14px] font-semibold mb-5 mt-5">클럽찾기</h2>
         <ClubSearch />
         <UpdateInterestButton />
         <Recommendation />
+        <div className="absolute bottom-20 right-8">
+          <FloatButton to={`/clubs/create`} className="">
+            <FontAwesomeIcon icon={faPlus} />
+            <p className="text-sm">개설</p>
+          </FloatButton>
+        </div>
       </main>
       <BottomTabNavigator />
     </div>

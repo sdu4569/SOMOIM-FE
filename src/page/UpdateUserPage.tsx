@@ -1,17 +1,45 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
 import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
+import useSWR from "swr";
+import axios from "axios";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
+
+export const fetcher = async (url: string) => {
+  const response = await axios.get(url);
+  return response.data;
+};
+
+export interface userFormData {
+  name: string;
+  gender: string;
+  birth: string;
+  city: string;
+  profilePic: string;
+  introduction: string;
+}
 
 const UpdateUserPage = () => {
-  const location = useLocation();
-  const userInfo = location.state;
-  const [gender, setGender] = useState(`${userInfo.gender}`);
-  const [birthday, setBirthday] = useState(`${userInfo.birthday}`);
-  const [userDescription, setUserDescription] = useState("");
+  const { data, error, isLoading } = useSWR(
+    "https://jsonplaceholder.typicode.com/users/1",
+    fetcher
+  );
+
+  const navigate = useNavigate();
+  const {
+    watch,
+    register,
+    formState: { errors },
+    handleSubmit,
+    setValue,
+  } = useForm<userFormData>();
+
   const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
+    // 이미지 미리보기
     function readImage(input: HTMLInputElement) {
       if (input.files && input.files[0]) {
         const reader = new FileReader();
@@ -33,17 +61,18 @@ const UpdateUserPage = () => {
     });
   }, []);
 
-  const handleClickRadioButton = (e: any) => {
-    setGender(e.target.value);
-  };
-
-  const handleChange = (e: any) => {
-    setBirthday(e.target.value);
-  };
+  useEffect(() => {
+    console.log(data);
+    if (!isLoading && data) {
+      setValue("name", data.name);
+      setValue("gender", "male");
+      setValue("birth", "1993-01-01");
+      setValue("city", "부산광역시");
+      setValue("introduction", "");
+    }
+  }, [data, isLoading]);
 
   const clickHandler = (e: any) => {
-    e.preventDefault();
-
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
@@ -51,8 +80,22 @@ const UpdateUserPage = () => {
     }
   };
 
-  const textareaChange = (e: any) => {
-    setUserDescription(e.target.value);
+  const onSubmit = (userForm: userFormData) => {
+    console.log(userForm);
+
+    axios.patch("https://jsonplaceholder.typicode.com/users/1", {
+      name: userForm.name,
+      gender: userForm.gender,
+      birth: userForm.birth,
+      city: userForm.city,
+    });
+    axios.put("https://jsonplaceholder.typicode.com/users/1", {
+      userIntroduction: userForm.introduction,
+    });
+    axios.put("https://jsonplaceholder.typicode.com/users/1", {
+      profilePic: userForm.profilePic,
+    });
+    navigate(-1);
   };
 
   return (
@@ -62,42 +105,70 @@ const UpdateUserPage = () => {
           <HeaderBackButton />
           <h1 className="text-xl whitespace-nowrap truncate">내 프로필</h1>
         </div>
+
         <button type="submit" className="text-xl" onClick={clickHandler}>
           저장
         </button>
       </PageHeader>
-      <form method="post" ref={formRef} className="ml-1">
-        <label htmlFor="file" className="button">
+      <form onSubmit={handleSubmit(onSubmit)} ref={formRef} className="ml-1">
+        <label htmlFor="file" className="inline-block w-14 h-14">
           <img
-            src={userInfo.userImage}
+            src={Images.user}
             alt="유저 이미지"
             className="w-14 h-14 cursor-pointer rounded-full bg-gray-200"
             id="previewImage"
-          ></img>
+          />
+          <img
+            src={Images.camera}
+            alt="유저 프로필 변경"
+            className="w-5 cursor-pointer rounded-full relative top-[-20px] left-[36px] "
+          />
         </label>
-        <input type="file" name="file" id="file" className="hidden" />
-        <div className="mt-4 h-10 relative">
+        <input
+          type="file"
+          id="file"
+          className="hidden"
+          {...register("profilePic")}
+        />
+        <div className="mt-6 h-10 relative">
           <input
             type="text"
-            className="inline-block w-200 h-10 pl-3 rounded-md bg-gray-200 mr-3"
+            className="inline-block w-[200px] h-10 pl-3 rounded-md bg-gray-200 mr-3"
             placeholder="이름"
-            defaultValue={userInfo.userName}
+            {...register("name", {
+              required: "이름은 필수 기입사항입니다.",
+              minLength: { value: 2, message: "이름은 최소 2자 이상입니다." },
+              maxLength: {
+                value: 10,
+                message: "이름은 10자를 초과할 수 없습니다.",
+              },
+            })}
           />
-          <div className="inline-block w-150 absolute top-0 h-10 border-2 border-solid rounded-md border-gray-300">
+          <ErrorMessage
+            errors={errors}
+            name="name"
+            render={({ message }) => (
+              <p className="text-[7px] text-red-500 inline-block absolute -bottom-4 left-1">
+                {message}
+              </p>
+            )}
+          />
+
+          <div className="inline-block w-[150px] absolute top-0 h-10 border-2 border-solid rounded-md border-gray-300">
             <div className="relative">
               <input
                 type="radio"
                 id="male"
-                className="hidden peer"
+                className="hidden"
                 value="male"
-                name="gender"
-                onClick={handleClickRadioButton}
-                checked={gender == "male"}
-                readOnly
+                {...register("gender")}
               />
+
               <label
                 htmlFor="male"
-                className="absolute top-2.5 left-7 text-gray-200 peer-checked:text-black"
+                className={`absolute top-2.5 left-7  ${
+                  watch("gender") === "male" ? "text-black" : "text-gray-200"
+                }`}
               >
                 남
               </label>
@@ -106,28 +177,35 @@ const UpdateUserPage = () => {
               <input
                 type="radio"
                 id="female"
-                className="hidden peer"
+                className="hidden"
                 value="female"
-                name="gender"
-                onClick={handleClickRadioButton}
-                checked={gender == "female"}
-                readOnly
+                {...register("gender", { required: true })}
               />
               <label
                 htmlFor="female"
-                className="absolute top-2.5 right-7 text-gray-200 peer-checked:text-black"
+                className={`absolute top-2.5 right-7  ${
+                  watch("gender") === "female" ? "text-black" : "text-gray-200"
+                }`}
               >
                 여
               </label>
             </div>
           </div>
         </div>
-        <div className="mt-4 h-10 relative">
+        <div className="mt-6 h-10 relative">
           <input
             type="date"
-            className="w-150 h-10 pl-3 mr-3 rounded-md bg-gray-200"
-            value={birthday}
-            onChange={handleChange}
+            className="w-[150px] h-10 pl-3 mr-3 rounded-md bg-gray-200"
+            {...register("birth", { required: "생일을 선택해주세요." })}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="birth"
+            render={({ message }) => (
+              <p className="text-[7px] text-red-500 inline-block absolute -bottom-4 left-1">
+                {message}
+              </p>
+            )}
           />
           <Link to={"/region"} className="relative">
             <img
@@ -137,20 +215,20 @@ const UpdateUserPage = () => {
             />
             <input
               type="text"
-              className="w-200 h-10 pl-8 rounded-md bg-gray-200"
-              defaultValue={userInfo.city}
+              className="w-[200px] h-10 pl-8 rounded-md bg-gray-200"
+              {...register("city")}
             />
           </Link>
         </div>
         <div className="relative">
           <textarea
-            className="inline-block w-full mt-4 h-20 p-3 rounded-md bg-gray-200 overflow-hidden resize-none"
+            className="inline-block w-full mt-6 h-20 p-3 rounded-md bg-gray-200 overflow-hidden resize-none"
             placeholder="간략한 자기소개(학교,회사)&#13;&#10;한국대 경영학과 학생입니다."
-            onChange={textareaChange}
-            maxLength={39}
-          ></textarea>
-          <div className="absolute bottom-2 right-2 text-12 text-gray-400">
-            {userDescription.length} / 40자
+            maxLength={40}
+            {...register("introduction")}
+          />
+          <div className="absolute bottom-2 right-2 text-[12px] text-gray-400">
+            {watch("introduction")?.length} / 40자
           </div>
         </div>
       </form>

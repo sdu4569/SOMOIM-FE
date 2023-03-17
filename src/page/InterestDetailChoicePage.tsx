@@ -95,12 +95,12 @@ const InterestDetailChoicePage = () => {
           <div className="flex flex-col flex-wrap ">
             {detailList.map((item, idx) => {
               return (
-                <div key={idx} className="min-w-80 mb-3 relative">
+                <div key={idx} className="min-w-[80px] mb-3 relative">
                   <img
                     src={item.image}
                     className="mb-2 w-6 inline-block ml-3"
                   />
-                  <p className="ml-2 absolute top-1 text-14 inline-block">
+                  <p className="ml-2 absolute top-1 text-[14px] inline-block">
                     {item.title}
                   </p>
                   <div className="flex flex-wrap m-2 ">
@@ -116,7 +116,7 @@ const InterestDetailChoicePage = () => {
                           />
                           <label
                             htmlFor={item}
-                            className="p-1 border-2 border-solid rounded text-12 peer-checked:border-blue-500"
+                            className="p-1 border-2 border-solid rounded text-[12px] peer-checked:border-blue-500"
                           >
                             {item}
                           </label>

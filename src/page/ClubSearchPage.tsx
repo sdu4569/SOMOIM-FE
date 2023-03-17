@@ -45,7 +45,7 @@ const ClubSearchPage = () => {
     if (getStorage !== null) {
       array = JSON.parse(getStorage);
       setRecentSearchList(array);
-      //중복 클럽 여부
+      //중복 검색 여부
       if (array.filter((item: any) => item == text).length == 0) {
         array.unshift(text);
         localStorage.setItem("recentSearch", JSON.stringify(array));
@@ -98,7 +98,7 @@ const ClubSearchPage = () => {
                 value={text}
                 onChange={onChange}
                 placeholder="클럽이나 커뮤니티를 검색하세요"
-                className="bg-gray-200 rounded-md w-80 h-8 text-12 pl-3"
+                className="bg-gray-200 rounded-md w-80 h-8 text-[12px] pl-3"
                 inputMode="text"
                 required
               />
@@ -117,7 +117,7 @@ const ClubSearchPage = () => {
         </PageHeader>
         <main>
           <div className=" border-t pt-4 border-solid border-gray-400 relative">
-            <p className="text-12 inline-block float-left font-semibold absolute top-4">
+            <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
               <span className="text-blue-500">{userCity}</span>의 클럽 리스트
             </p>
             {filterList.map((item, idx) => {
@@ -129,13 +129,13 @@ const ClubSearchPage = () => {
                       alt="클럽 이미지"
                       className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
                     />
-                    <div className="text-12 absolute top-0 left-16">
+                    <div className="text-[12px] absolute top-0 left-16">
                       {item.clubTitle}
                     </div>
-                    <div className="text-10 absolute top-5 left-16 text-gray-400">
+                    <div className="text-[10px] absolute top-5 left-16 text-gray-400">
                       {item.clubDescription}
                     </div>
-                    <div className="text-10 absolute bottom-0 left-16">
+                    <div className="text-[10px] absolute bottom-0 left-16">
                       <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
                         {item.region}
                       </span>
@@ -169,7 +169,7 @@ const ClubSearchPage = () => {
                 value={text}
                 onChange={onChange}
                 placeholder="클럽이나 커뮤니티를 검색하세요"
-                className="bg-gray-200 rounded-md w-80 h-8 text-12 pl-3"
+                className="bg-gray-200 rounded-md w-80 h-8 text-[12px] pl-3"
                 inputMode="text"
                 required
               />
@@ -185,7 +185,7 @@ const ClubSearchPage = () => {
           </div>
         </PageHeader>
         <main>
-          <div className="mb-2.5 text-12">
+          <div className="mb-2.5 text-[12px]">
             <div className="text-gray-400">최근 검색</div>
             {recentSearchList.map((item, idx) => {
               return (
@@ -230,7 +230,7 @@ const ClubSearchPage = () => {
               value={text}
               onChange={onChange}
               placeholder="클럽이나 커뮤니티를 검색하세요"
-              className="bg-gray-200 rounded-md w-80 h-8 text-12 pl-3"
+              className="bg-gray-200 rounded-md w-80 h-8 text-[12px] pl-3"
               inputMode="text"
               required
             />
@@ -256,13 +256,13 @@ const ClubSearchPage = () => {
                   key={idx}
                   className=" w-40 mb-2.5 border rounded-lg h-9 relative"
                 >
-                  <Link to={`/${item.interest}`} className="m-0">
+                  <Link to={`/search/${item.interest}`} className="m-0">
                     <img
                       src={item.image}
                       alt="관심사 이미지"
                       className="w-3 inline-block absolute top-3 left-11"
                     />
-                    <span className="text-10 w-20 h-3 absolute top-3 left-16">
+                    <span className="text-[10px] w-20 h-3 absolute top-3 left-16">
                       {item.title}
                     </span>
                   </Link>
