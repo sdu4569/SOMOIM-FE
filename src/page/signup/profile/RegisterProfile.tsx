@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../../../components/Button";
-import PageHeader from "../../../components/PageHeader";
-import { pageSlideIn } from "../../../libs/variants";
-import RegionPage from "../../RegionPage";
+import { useNavigate } from "react-router-dom";
+import Button from "@/components/Button";
+import PageHeader from "@/components/PageHeader";
+import { pageSlideIn } from "@/libs/variants";
+import RegionPage from "@/page/RegionPage";
 
 interface RegisterProfileFormData {
   name: string;

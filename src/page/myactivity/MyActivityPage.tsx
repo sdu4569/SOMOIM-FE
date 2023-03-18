@@ -1,14 +1,14 @@
-import PageHeader from "../components/PageHeader";
-import ClubSearch from "../components/ClubSearch";
-import UpdateInterestButton from "../components/UpdateInterestButton";
-import Recommendation from "../components/Recommendation";
-import { Images } from "../libs/Images";
+import PageHeader from "@/components/PageHeader";
+import ClubSearch from "@/components/ClubSearch";
+import UpdateInterestButton from "@/components/UpdateInterestButton";
+import Recommendation from "@/components/Recommendation";
+import { Images } from "@/libs/Images";
 import { Link } from "react-router-dom";
-import BottomTabNavigator from "../components/BottomTabNavigator";
+import BottomTabNavigator from "@/components/BottomTabNavigator";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
-import FloatButton from "../components/FloatButton";
+import FloatButton from "@/components/FloatButton";
 
 const userClubList: any[] = [
   {

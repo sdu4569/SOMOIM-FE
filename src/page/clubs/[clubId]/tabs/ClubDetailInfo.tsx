@@ -9,16 +9,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import BottomTabNavigator from "../components/BottomTabNavigator";
-import JoinClub from "../components/JoinClub";
-import Overlay from "../components/Overlay";
+import BottomTabNavigator from "@/components/BottomTabNavigator";
+import JoinClub from "@/components/JoinClub";
+import Overlay from "@/components/Overlay";
 
 export default function ClubDetailInfo({
   like,
   handleClick,
 }: {
   like: boolean;
-  handleClick: any;
+  handleClick?: any;
 }) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   return (

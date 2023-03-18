@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../libs/Images";
-import PageHeader from "../components/PageHeader";
-import getUserChoiceInterest from "../util/getUserChoiceInterest";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { Images } from "@/libs/Images";
+import PageHeader from "@/components/PageHeader";
+import getUserChoiceInterest from "@/util/getUserChoiceInterest";
 
 const UpdateDetailPage = () => {
   const detail = getUserChoiceInterest().map((item: any) => item.detail);

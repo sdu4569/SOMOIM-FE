@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import BottomTabNavigator from "./BottomTabNavigator";
-import Button from "./Button";
+import BottomTabNavigator from "../../../../components/BottomTabNavigator";
+import Button from "../../../../components/Button";
 
 export default function ClubChat() {
   const chatList = useRef<HTMLLIElement>(null);

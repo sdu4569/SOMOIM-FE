@@ -1,9 +1,9 @@
-import PageHeader from "../components/PageHeader";
-import UpdateInterestButton from "../components/UpdateInterestButton";
-import BottomTabNavigator from "../components/BottomTabNavigator";
-import UpdateUserButton from "../components/UpdateUserButton";
-import RecentClubButton from "../components/RecentClubButton";
-import InterestClubButton from "../components/FavoriteClubButton";
+import PageHeader from "@/components/PageHeader";
+import UpdateInterestButton from "@/components/UpdateInterestButton";
+import BottomTabNavigator from "@/components/BottomTabNavigator";
+import UpdateUserButton from "@/components/UpdateUserButton";
+import RecentClubButton from "@/components/RecentClubButton";
+import InterestClubButton from "@/components/FavoriteClubButton";
 
 const MorePage = () => {
   return (

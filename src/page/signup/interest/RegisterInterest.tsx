@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import PageHeader from "../../../components/PageHeader";
-import { InterestList } from "../../../libs/InterestList";
+import PageHeader from "@/components/PageHeader";
+import { InterestList } from "@/libs/InterestList";
 import { motion } from "framer-motion";
-import { pageSlideIn } from "../../../libs/variants";
-import HeaderBackButton from "../../../components/HeaderBackButton";
+import { pageSlideIn } from "@/libs/variants";
+import HeaderBackButton from "@/components/HeaderBackButton";
 
 interface RegisterInterestProps {
   onComplete?: (data: InterestFormData) => void;

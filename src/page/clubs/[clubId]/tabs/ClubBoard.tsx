@@ -3,8 +3,8 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import FloatButton from "./FloatButton";
-import Overlay from "./Overlay";
+import FloatButton from "../../../../components/FloatButton";
+import Overlay from "../../../../components/Overlay";
 
 export default function ClubBoard() {
   const [category, setCategory] = useState("all");

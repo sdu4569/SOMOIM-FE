@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import ClubComponent from "./ClubComponent";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { useEffect, useRef } from "react";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "./Spinner";
 
 const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
@@ -43,7 +43,7 @@ export default function ClubsList() {
 
   return (
     <>
-      <ul className="flex flex-col space-y-5 mt-4">
+      <ul className="flex flex-col space-y-5 mt-4 px-4">
         {data &&
           data.flat().map((post) => (
             <Link to={`/clubs/${post.id}`} key={post.id}>

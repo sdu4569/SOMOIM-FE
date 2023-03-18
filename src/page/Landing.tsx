@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import { fadeIn } from "../libs/variants";
+import Button from "@/components/Button";
+import { fadeIn } from "@/libs/variants";
 
 interface LogInFormData {
   id: string;

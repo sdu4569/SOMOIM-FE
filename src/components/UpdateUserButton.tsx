@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import useSWR from "swr";
-import { fetcher } from "../page/UpdateUserPage";
-import { Images } from "../libs/Images";
+import { fetcher } from "@/page/UpdateUserPage";
+import { Images } from "@/libs/Images";
 
 const UpdateUserButton = () => {
   const { data, error, isLoading } = useSWR(

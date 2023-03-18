@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../libs/Images";
-import PageHeader from "../components/PageHeader";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { Images } from "@/libs/Images";
+import PageHeader from "@/components/PageHeader";
 
-const InterestClubPage = () => {
-  const [favoriteClubList, setfavoriteClubList] = useState<any[]>([]);
-  const getData = localStorage.getItem("favoriteClub");
+const RecentClubPage = () => {
+  const [recentClubList, setRecentClubList] = useState<any[]>([]);
+  const getData = localStorage.getItem("recentClub");
   useEffect(() => {
     if (getData !== null) {
       const parseData = JSON.parse(getData);
-      setfavoriteClubList(parseData);
+      setRecentClubList(parseData);
     }
   }, []);
-
+  const handleClick = (e: string) => {
+    const updateRecentList = recentClubList.filter(
+      (item) => item.id !== Number(e)
+    );
+    setRecentClubList(updateRecentList);
+    localStorage.setItem("recentClub", JSON.stringify(updateRecentList));
+  };
   return (
     <div className="h-full pt-10 pb-16 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
-          <h1 className="text-xl whitespace-nowrap truncate">내 찜 클럽</h1>
+          <h1 className="text-xl whitespace-nowrap truncate">최근 본 클럽</h1>
         </div>
       </PageHeader>
       <div>
-        {favoriteClubList.map((item, idx) => {
+        {recentClubList.map((item, idx) => {
           return (
             <div className="relative" key={idx}>
               <Link to={`/clubs/${item.id}`} state={item}>
@@ -52,6 +58,17 @@ const InterestClubPage = () => {
                   </div>
                 </div>
               </Link>
+              <button
+                className="absolute top-0 right-0"
+                value={item.id}
+                onClick={() => handleClick(`${item.id}`)}
+              >
+                <img
+                  src={Images.delete}
+                  alt="삭제버튼"
+                  className="w-3 inline-block "
+                />
+              </button>
             </div>
           );
         })}
@@ -60,4 +77,4 @@ const InterestClubPage = () => {
   );
 };
 
-export default InterestClubPage;
+export default RecentClubPage;

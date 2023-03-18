@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "@/components/PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouseUser, faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faStar } from "@fortawesome/free-regular-svg-icons";
-import HeaderBackButton from "../components/HeaderBackButton";
+import HeaderBackButton from "@/components/HeaderBackButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
-import RegionSelect from "../components/RegionSelect";
+import RegionSelect from "@/components/RegionSelect";
 
 interface RegionPageProps {
   closeModal: () => void;

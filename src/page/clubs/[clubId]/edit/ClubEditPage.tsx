@@ -3,9 +3,9 @@ import { faHashtag, faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../components/Button";
-import HeaderBackButton from "../components/HeaderBackButton";
-import PageHeader from "../components/PageHeader";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import PageHeader from "@/components/PageHeader";
 
 interface ClubEditForm {
   category: string;

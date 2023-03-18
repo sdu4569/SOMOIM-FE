@@ -5,9 +5,9 @@ import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import HeaderBackButton from "./HeaderBackButton";
-import { Images } from "../libs/Images";
-import PageHeader from "./PageHeader";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { Images } from "@/libs/Images";
+import PageHeader from "@/components/PageHeader";
 
 interface writeFormData {
   title?: string;

@@ -3,13 +3,13 @@ import { faHeart, faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../../../components/Button";
-import HeaderBackButton from "../../../components/HeaderBackButton";
-import InterestSelect from "../../../components/InterestSelect";
-import InterestDetailSelect from "../../../components/InterestDetailSelect";
-import PageHeader from "../../../components/PageHeader";
-import RegionSelect from "../../../components/RegionSelect";
-import { InterestWithDetails } from "../../../libs/types";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import InterestSelect from "@/components/InterestSelect";
+import InterestDetailSelect from "@/components/InterestDetailSelect";
+import PageHeader from "@/components/PageHeader";
+import RegionSelect from "@/components/RegionSelect";
+import { InterestWithDetails } from "@/libs/types";
 
 interface CreateClubForm {
   location: string;

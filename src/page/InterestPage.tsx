@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PageHeader from "../components/PageHeader";
+import PageHeader from "@/components/PageHeader";
 
-import { InterestList } from "../libs/InterestList";
-import getUserChoiceInterest from "../util/getUserChoiceInterest";
-import HeaderBackButton from "../components/HeaderBackButton";
+import { InterestList } from "@/libs/InterestList";
+import getUserChoiceInterest from "@/util/getUserChoiceInterest";
+import HeaderBackButton from "@/components/HeaderBackButton";
 
 const InterestPage = () => {
   const userChoice = getUserChoiceInterest().map((item: any) => item.title);

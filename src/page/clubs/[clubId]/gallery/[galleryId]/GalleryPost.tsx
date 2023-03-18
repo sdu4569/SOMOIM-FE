@@ -2,12 +2,12 @@ import { faComment, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import HeaderBackButton from "../components/HeaderBackButton";
-import PageHeader from "../components/PageHeader";
-import BottomTabNavigator from "../components/BottomTabNavigator";
-import Button from "../components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import PageHeader from "@/components/PageHeader";
+import BottomTabNavigator from "@/components/BottomTabNavigator";
+import Button from "@/components/Button";
 
-export default function ClubPost() {
+export default function GalleryPost() {
   const [like, setLike] = useState<boolean>(false);
   return (
     <>
@@ -32,15 +32,9 @@ export default function ClubPost() {
               <p className="text-gray-500">3월 3일 오후 12시 57분</p>
             </div>
           </div>
-          <div>
-            <p className="text-blue-500">공지사항</p>
-          </div>
         </header>
-        <div className="pt-4 pb-12">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur,
-          maiores? A temporibus rem voluptate ad cumque ea ipsum eius.
-          Asperiores rem deleniti laudantium atque ad delectus dolores. Libero,
-          sunt modi?
+        <div className="mb-12 h-96 bg-red-500 flex justify-center items-center">
+          이미지
         </div>
         <div className="grid grid-cols-2 gap-3">
           <button

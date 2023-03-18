@@ -3,8 +3,8 @@ import axios from "axios";
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
-import { fetcher } from "../page/UpdateUserPage";
-import { Images } from "../libs/Images";
+import { fetcher } from "@/page/UpdateUserPage";
+import { Images } from "@/libs/Images";
 
 interface greetingFormData {
   greeting?: string;
@@ -22,25 +22,12 @@ export default function JoinClub() {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm();
-
-  useEffect(() => {
-    setValue("greeting", "");
-  }, [data]);
 
   const onSubmit = (e: greetingFormData) => {
     console.log(e);
 
     // axios.post("https://jsonplaceholder.typicode.com/users/1", e);
-  };
-
-  const clickHandler = (e: any) => {
-    if (formRef.current) {
-      formRef.current.dispatchEvent(
-        new Event("submit", { bubbles: true, cancelable: true })
-      );
-    }
   };
 
   return (
@@ -61,8 +48,7 @@ export default function JoinClub() {
       <form
         onClick={(e) => e.stopPropagation()}
         onSubmit={handleSubmit(onSubmit)}
-        ref={formRef}
-        className="relative h-[56px] "
+        className="relative h-[56px]"
       >
         <input
           type="text"
@@ -79,14 +65,6 @@ export default function JoinClub() {
         <button
           type="submit"
           className="flex justify-center items-center flex-1"
-          onClick={
-            watch("greeting")?.length == 0
-              ? (e) => {
-                  e.stopPropagation();
-                  alert("가입인사를 작성해주세요");
-                }
-              : clickHandler
-          }
         >
           확인
         </button>

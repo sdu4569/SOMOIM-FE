@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Images } from "../libs/Images";
+import { Images } from "@/libs/Images";
 
 const FavoriteClubButton = () => {
   return (

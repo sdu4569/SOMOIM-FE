@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import getUserChoiceInterest from "../util/getUserChoiceInterest";
+import getUserChoiceInterest from "@/util/getUserChoiceInterest";
 
 const UpdateInterestButton = () => {
   const userChoice = getUserChoiceInterest();

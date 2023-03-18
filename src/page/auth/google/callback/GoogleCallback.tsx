@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Spinner from "../../../../components/Spinner";
+import Spinner from "@/components/Spinner";
 
 export default function GoogleCallback() {
   const location = useLocation();

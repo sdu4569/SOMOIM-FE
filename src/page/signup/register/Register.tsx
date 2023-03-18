@@ -5,11 +5,11 @@ import { AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../../../components/Button";
-import HeaderBackButton from "../../../components/HeaderBackButton";
-import Overlay from "../../../components/Overlay";
-import PageHeader from "../../../components/PageHeader";
-import { pageSlideIn } from "../../../libs/variants";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import Overlay from "@/components/Overlay";
+import PageHeader from "@/components/PageHeader";
+import { pageSlideIn } from "@/libs/variants";
 
 interface RegisterFormData {
   email: string;
