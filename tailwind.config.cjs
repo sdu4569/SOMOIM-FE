@@ -6,7 +6,8 @@ module.exports = {
     extend: {
       animation: {
         "fade-in": "fade-in 0.5s ease-in-out",
-        "slide-up": "slide-up 0.5s ease-in-out",
+        "slide-up": "slide-up 0.3s ease-in-out",
+        "slide-down": "slide-down 0.3s ease-in-out",
       },
       keyframes: {
         "fade-in": {
@@ -16,6 +17,10 @@ module.exports = {
         "slide-up": {
           "0%": { transform: "translateY(100%)" },
           "100%": { transform: "translateY(0)" },
+        },
+        "slide-down": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
         },
       },
       aspectRatio: {
@@ -28,6 +33,7 @@ module.exports = {
         kakao: "#FEE500",
       },
     },
+
     plugins: [],
   },
 };

@@ -1,9 +1,5 @@
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
-import {
-  faEllipsisV,
-  faShareNodes,
-  faHeart as solidHeart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import HeaderBackButton from "./HeaderBackButton";

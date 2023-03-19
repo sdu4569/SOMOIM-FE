@@ -6,21 +6,78 @@ import HeaderBackButton from "../components/HeaderBackButton";
 import PageHeader from "../components/PageHeader";
 import BottomTabNavigator from "../components/BottomTabNavigator";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
+import Overlay from "../components/Overlay";
 
 export default function ClubPost() {
   const [like, setLike] = useState<boolean>(false);
+  const [firstModal, setFirstModal] = useState<boolean>(false);
+  const [secondModal, setSecondModal] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const handleUpdate = () => {
+    navigate(`/clubs/1/update_post/1`);
+  };
+  const handleDelete = () => {
+    navigate(-1);
+  };
+  const openSecondModal = () => {
+    setFirstModal(false);
+    setSecondModal(true);
+  };
+
   return (
     <>
-      <PageHeader className="!bg-gray-100">
+      {firstModal && (
+        <div
+          onClick={() => setFirstModal(false)}
+          className=" w-[200px] h-[90px] flex bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]"
+        >
+          <div className="h-[40px] p-3 text-[16px]" onClick={handleUpdate}>
+            게시글 수정
+          </div>
+          <div className="h-[40px] p-3 text-[16px]" onClick={openSecondModal}>
+            게시글 삭제
+          </div>
+        </div>
+      )}
+      {secondModal && (
+        <Overlay onClick={() => setSecondModal(false)}>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="rounded-2xl w-full h-[100px] p-4 m-4 flex bg-white self-end flex-col justify-evenly "
+          >
+            <div className="h-[30px] p-1">게시글을 삭제하시겠습니까?</div>
+            <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">
+              <button
+                className="flex justify-center items-center flex-1"
+                onClick={() => setSecondModal(false)}
+              >
+                취소
+              </button>
+              <button
+                type="button"
+                className="flex justify-center items-center flex-1"
+                onClick={handleDelete}
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        </Overlay>
+      )}
+      <PageHeader className="!bg-gray-100 relative">
         <div className="flex space-x-2 items-center">
           <HeaderBackButton />
           <h1 className="text-lg ">게시글</h1>
         </div>
-        <div className="flex items-center">
+        <button
+          className="flex items-center"
+          onClick={() => setFirstModal(true)}
+        >
           <FontAwesomeIcon icon={faEllipsisV} />
-        </div>
+        </button>
       </PageHeader>
-      <section className="mt-10 mb-12 h-full overflow-scroll p-4">
+      <section className="mb-12 h-full overflow-scroll p-4">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
             <div className="w-10 aspect-square rounded-full bg-blue-500"></div>

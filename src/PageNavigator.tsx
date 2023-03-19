@@ -32,6 +32,7 @@ import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 import InterestDetailChoicePage from "./page/InterestDetailChoicePage";
 
 import InterestClubPage from "./page/InterestClubPage";
+import UpdateClubPostPage from "./page/UpdateClubPostPage";
 
 const PageNavigator = () => {
   return (
@@ -67,6 +68,10 @@ const PageNavigator = () => {
         element={<CreateActivity />}
       />
       <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route
+        path="/clubs/:clubId/update_post/:postId/"
+        element={<UpdateClubPostPage />}
+      />
       <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
       <Route path="/more" element={<MorePage />} />
