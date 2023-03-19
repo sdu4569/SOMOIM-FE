@@ -25,7 +25,7 @@ import RegisterInterest from "./page/signup/interest/RegisterInterest";
 import RegisterInterestDetail from "./page/signup/interest/detail/RegisterInterestDetail";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
 import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
-import InterestDetailChoicePage from "./page/search/[:category]/InterestDetailChoicePage";
+import InterestDetailChoicePage from "./page/search/[category]/InterestDetailChoicePage";
 import InterestClubPage from "./page/more/favorite/InterestClubPage";
 
 const PageNavigator = () => {
