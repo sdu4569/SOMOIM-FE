@@ -40,11 +40,15 @@ const PageNavigator = () => {
         <Route path="interest" element={<RegisterInterest />} />
         <Route path="interest/detail" element={<RegisterInterestDetail />} />
       </Route>
+
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
+
       <Route path="/search" element={<ClubSearchPage />} />
       <Route path="/search/:interest" element={<InterestSearchPage />} />
+
       <Route path="/activity" element={<MyActivityPage />} />
+      <Route path="/activity/editInterest" element={<UpdateDetailPage />} />
 
       <Route path="/clubs" element={<ClubPage />} />
       <Route path="/clubs/create" element={<CreateClub />}></Route>
@@ -59,11 +63,13 @@ const PageNavigator = () => {
         path="/clubs/:clubId/update_post/:postId/"
         element={<UpdateClubPostPage />}
       />
+
       <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
 
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />
+
       <Route path="/more/editInterest" element={<UpdateDetailPage />} />
       <Route path="/more/recent" element={<RecentClubPage />} />
       <Route path="/more/favorite" element={<FavoriteClubPage />} />

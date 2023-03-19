@@ -13,7 +13,6 @@ export interface postFormData {
 }
 
 export default function UpdateClubPostPage() {
-  const [category, setCategory] = useState("all");
   const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const {

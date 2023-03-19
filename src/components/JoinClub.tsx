@@ -28,12 +28,13 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = (e: greetingFormData) => {
-    console.log(e);
-    if (e.greeting?.length == 0) {
+  const onSubmit = (formData: greetingFormData) => {
+    console.log(formData);
+    if (formData.greeting?.length == 0) {
       setSecondModal(true);
+    } else {
+      // axios.post("https://jsonplaceholder.typicode.com/users/1", formData);
     }
-    // axios.post("https://jsonplaceholder.typicode.com/users/1", e);
   };
 
   return (
@@ -77,22 +78,21 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
             placeholder="가입인사를 작성해주세요!"
             {...register("greeting")}
           />
+          <div className="text-blue-500 flex divide-x w-full divide-gray-300 mt-2 mb-2">
+            <button
+              className="flex justify-center items-center flex-1"
+              onClick={closeModal}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              className="flex justify-center items-center flex-1"
+            >
+              확인
+            </button>
+          </div>
         </form>
-
-        <div className="text-blue-500 flex divide-x w-full divide-gray-300 mt-2 mb-2">
-          <button
-            className="flex justify-center items-center flex-1"
-            onClick={closeModal}
-          >
-            취소
-          </button>
-          <button
-            type="submit"
-            className="flex justify-center items-center flex-1"
-          >
-            확인
-          </button>
-        </div>
       </div>
     </>
   );
