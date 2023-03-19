@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../libs/Images";
 import PageHeader from "../components/PageHeader";
 
-const InterestClubPage = () => {
+const FavoriteClubPage = () => {
   const [favoriteClubList, setfavoriteClubList] = useState<any[]>([]);
   const getData = localStorage.getItem("favoriteClub");
   useEffect(() => {
@@ -15,7 +14,7 @@ const InterestClubPage = () => {
   }, []);
 
   return (
-    <div className="h-full pt-10 pb-16 overflow-auto">
+    <div className="h-full py-16 px-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
@@ -60,4 +59,4 @@ const InterestClubPage = () => {
   );
 };
 
-export default InterestClubPage;
+export default FavoriteClubPage;

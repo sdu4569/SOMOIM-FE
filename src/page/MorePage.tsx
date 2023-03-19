@@ -7,7 +7,7 @@ import InterestClubButton from "../components/FavoriteClubButton";
 
 const MorePage = () => {
   return (
-    <div className="h-full py-16 overflow-scroll px-4">
+    <div className="h-full py-16 px-4 overflow-scroll">
       <PageHeader>
         <h2 className="text-xl">더보기</h2>
       </PageHeader>

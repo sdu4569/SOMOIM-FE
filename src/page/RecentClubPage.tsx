@@ -21,7 +21,7 @@ const RecentClubPage = () => {
     localStorage.setItem("recentClub", JSON.stringify(updateRecentList));
   };
   return (
-    <div className="h-full pt-10 pb-16 overflow-auto">
+    <div className="h-full py-16 px-4 overflow-auto">
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
