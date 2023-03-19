@@ -81,15 +81,31 @@ export default function ClubBoardWrite() {
   }, [watch("firstPic"), watch("secondPic"), watch("thirdPic")]);
 
   const onSubmit = (writeForm: writeFormData) => {
-    writeForm.category = category;
+    switch (true) {
+      case category == "자유 글":
+        writeForm.category = "all";
+        break;
+      case category == "관심사 공유":
+        writeForm.category = "share";
+        break;
+      case category == "정모후기":
+        writeForm.category = "meeting";
+        break;
+      case category == "가입인사":
+        writeForm.category = "greeting";
+        break;
+      case category == "공지사항":
+        writeForm.category = "notice";
+        break;
+    }
     console.log(writeForm);
 
     navigate(-1);
   };
 
   const handleClick = (e: any) => {
-    console.log(e.target.innerText);
     setCategory(e.target.innerText);
+
     setInJoinModal(false);
   };
 
@@ -99,7 +115,7 @@ export default function ClubBoardWrite() {
         <Overlay onClick={() => setInJoinModal(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col "
+            className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col"
           >
             <div className="h-[50px] p-4 text-[20px]">게시글 카테고리</div>
             <div
@@ -166,7 +182,12 @@ export default function ClubBoardWrite() {
               </p>
             )}
           />
-          <p className="text-blue-500 text-sm absolute right-4">{category}</p>
+          <p
+            className="text-blue-500 text-sm absolute right-4"
+            {...register("category")}
+          >
+            {category}
+          </p>
         </div>
         <textarea
           cols={30}
