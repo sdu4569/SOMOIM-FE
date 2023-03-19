@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import useSWR from "swr";
-import { fetcher } from "@/page/UpdateUserPage";
+import { fetcher } from "@/page/more/editProfile/UpdateUserPage";
 import { Images } from "@/libs/Images";
 
 const UpdateUserButton = () => {
@@ -10,7 +10,7 @@ const UpdateUserButton = () => {
   );
 
   return (
-    <Link to={"/update_user"}>
+    <Link to={"editProfile"}>
       <button className="w-full relative">
         <img
           src={Images.user}

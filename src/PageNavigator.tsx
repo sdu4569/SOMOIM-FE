@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import MyActivityPage from "./page/myactivity/MyActivityPage";
-import UpdateDetailPage from "./page/UpdateDetailPage";
+import UpdateDetailPage from "./page/more/editInterest/UpdateDetailPage";
 import InterestSearchPage from "./page/InterestSearchPage";
 import ClubPage from "./page/clubs/ClubPage";
 import InterestPage from "./page/InterestPage";
@@ -15,7 +15,7 @@ import CreateClub from "./page/clubs/create/CreateClubPage";
 import GalleryPost from "./page/clubs/[clubId]/gallery/[galleryId]/GalleryPost";
 import ClubSearchPage from "./page/search/ClubSearchPage";
 import MorePage from "./page/more/MorePage";
-import UpdateUserPage from "./page/UpdateUserPage";
+import UpdateUserPage from "./page/more/editProfile/UpdateUserPage";
 import RecentClubPage from "./page/more/recent/RecentClubPage";
 import Landing from "./page/Landing";
 import SignupLayout from "./page/signup/SignupLayout";
@@ -44,8 +44,6 @@ const PageNavigator = () => {
       <Route path="/search" element={<ClubSearchPage />} />
       <Route path="/search/:id" element={<InterestSearchPage />} />
       <Route path="/activity" element={<MyActivityPage />} />
-      <Route path="/update_detail" element={<UpdateDetailPage />} />
-      <Route path="/update_user" element={<UpdateUserPage />} />
 
       <Route path="/clubs" element={<ClubPage />} />
       <Route path="/clubs/create" element={<CreateClub />}></Route>
@@ -60,8 +58,10 @@ const PageNavigator = () => {
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
 
       <Route path="/more" element={<MorePage />} />
-      <Route path="/recent_club" element={<RecentClubPage />} />
-      <Route path="/interest_club" element={<InterestClubPage />} />
+      <Route path="/more/editProfile" element={<UpdateUserPage />} />
+      <Route path="/more/editInterest" element={<UpdateDetailPage />} />
+      <Route path="/more/recent" element={<RecentClubPage />} />
+      <Route path="/more/favorite" element={<InterestClubPage />} />
 
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
       <Route path="/auth/google/callback" element={<GoogleCallback />} />

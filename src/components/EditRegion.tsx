@@ -6,7 +6,7 @@ import { faStar } from "@fortawesome/free-regular-svg-icons";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
-import RegionSelect from "@/components/RegionSelect";
+import RegionSearch from "@/components/RegionSearch";
 
 interface RegionPageProps {
   closeModal: () => void;
@@ -27,7 +27,7 @@ const regionObj = {
 
 type Region = "home" | "work" | "interested";
 
-const RegionPage = ({ closeModal, setInputValue }: RegionPageProps) => {
+const EditRegion = ({ closeModal, setInputValue }: RegionPageProps) => {
   const formRef = useRef<HTMLFormElement>(null);
   const { register, handleSubmit, setValue, watch } = useForm<RegionFormData>({
     shouldFocusError: false,
@@ -52,7 +52,7 @@ const RegionPage = ({ closeModal, setInputValue }: RegionPageProps) => {
     <>
       <AnimatePresence>
         {inRegionSearchModal && (
-          <RegionSelect
+          <RegionSearch
             setValue={setValue}
             closeModal={() => setInRegionSearchModal(false)}
             title={regionObj[selectedRegion]}
@@ -168,4 +168,4 @@ const RegionPage = ({ closeModal, setInputValue }: RegionPageProps) => {
   );
 };
 
-export default RegionPage;
+export default EditRegion;

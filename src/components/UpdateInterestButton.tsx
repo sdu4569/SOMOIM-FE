@@ -5,7 +5,7 @@ import getUserChoiceInterest from "@/util/getUserChoiceInterest";
 const UpdateInterestButton = () => {
   const userChoice = getUserChoiceInterest();
   return (
-    <Link to={"/update_detail"} state={userChoice}>
+    <Link to={"editInterest"} state={userChoice}>
       <button className="w-full mt-5 relative">
         {userChoice.map((item: any, idx: number) => {
           return (

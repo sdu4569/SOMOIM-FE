@@ -10,7 +10,7 @@ interface RegionSelectProps {
   setValue: any;
 }
 
-export default function RegionSelect({
+export default function RegionSearch({
   title,
   inputId,
   closeModal,

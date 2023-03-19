@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import { pageSlideIn } from "@/libs/variants";
-import RegionPage from "@/page/RegionPage";
+import EditRegion from "@/components/EditRegion";
 
 interface RegisterProfileFormData {
   name: string;
@@ -38,7 +38,7 @@ export default function RegisterProfile() {
     <>
       <AnimatePresence>
         {inRegionModal && (
-          <RegionPage setInputValue={setValue} closeModal={closeModal} />
+          <EditRegion setInputValue={setValue} closeModal={closeModal} />
         )}
       </AnimatePresence>
       <motion.div

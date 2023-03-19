@@ -8,7 +8,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import InterestSelect from "@/components/InterestSelect";
 import InterestDetailSelect from "@/components/InterestDetailSelect";
 import PageHeader from "@/components/PageHeader";
-import RegionSelect from "@/components/RegionSelect";
+import RegionSelect from "@/components/RegionSearch";
 import { InterestWithDetails } from "@/libs/types";
 
 interface CreateClubForm {
