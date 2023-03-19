@@ -7,6 +7,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
+import { write } from "fs";
 
 interface writeFormData {
   title: string;
@@ -17,10 +18,18 @@ interface writeFormData {
   thirdPic: FileList;
 }
 
+const textObject = {
+  free: "자유 글",
+  share: "관심사 공유",
+  meeting: "정모후기",
+  greeting: "가입인사",
+  notice: "공지사항",
+};
+type categoryType = "free" | "share" | "meeting" | "greeting" | "notice";
 export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
-  const [category, setCategory] = useState("자유 글");
+  const [category, setCategory] = useState<categoryType>("free");
   const navigate = useNavigate();
   const {
     watch,
@@ -81,15 +90,33 @@ export default function ClubBoardWrite() {
   }, [watch("firstPic"), watch("secondPic"), watch("thirdPic")]);
 
   const onSubmit = (writeForm: writeFormData) => {
+    // switch (true) {
+    //   case category == "자유 글":
+    //     writeForm.category = "all";
+    //     break;
+    //   case category == "관심사 공유":
+    //     writeForm.category = "share";
+    //     break;
+    //   case category == "정모후기":
+    //     writeForm.category = "meeting";
+    //     break;
+    //   case category == "가입인사":
+    //     writeForm.category = "greeting";
+    //     break;
+    //   case category == "공지사항":
+    //     writeForm.category = "notice";
+    //     break;
+    // }
+    console.log(category);
     writeForm.category = category;
     console.log(writeForm);
 
-    navigate(-1);
+    // navigate(-1);
   };
 
   const handleClick = (e: any) => {
-    console.log(e.target.innerText);
-    setCategory(e.target.innerText);
+    setCategory(e.currentTarget.dataset.category);
+    console.log(e.currentTarget.dataset);
     setInJoinModal(false);
   };
 
@@ -99,36 +126,41 @@ export default function ClubBoardWrite() {
         <Overlay onClick={() => setInJoinModal(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col "
+            className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col"
           >
             <div className="h-[50px] p-4 text-[20px]">게시글 카테고리</div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
+              data-category="free"
             >
               자유 글
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
+              data-category="share"
             >
               관심사 공유
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
+              data-category="meeting"
             >
               정모후기
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
+              data-category="greeting"
             >
               가입인사
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
+              data-category="notice"
             >
               공지사항
             </div>
@@ -166,7 +198,12 @@ export default function ClubBoardWrite() {
               </p>
             )}
           />
-          <p className="text-blue-500 text-sm absolute right-4">{category}</p>
+          <p
+            className="text-blue-500 text-sm absolute right-4"
+            {...register("category")}
+          >
+            {textObject[category]}
+          </p>
         </div>
         <textarea
           cols={30}
