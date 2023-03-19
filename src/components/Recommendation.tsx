@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import RecommendClub from "./RecommendClub";
-import UserChoiceInterest from "../util/getUserChoiceInterest";
+import UserChoiceInterest from "@/util/getUserChoiceInterest";
 const Recommendation = () => {
   const userChoice = UserChoiceInterest();
   return (

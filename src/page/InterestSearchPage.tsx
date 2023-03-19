@@ -1,11 +1,11 @@
-import PageHeader from "../components/PageHeader";
+import PageHeader from "@/components/PageHeader";
 
 import { Link, useLocation } from "react-router-dom";
-import { InterestList } from "../libs/InterestList";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { testClubList } from "../components/testClubList";
+import { InterestList } from "@/libs/InterestList";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { testClubList } from "@/components/testClubList";
 import { useEffect, useState } from "react";
-import { Images } from "../libs/Images";
+import { Images } from "@/libs/Images";
 
 const InterestSearchPage = () => {
   const location = useLocation();

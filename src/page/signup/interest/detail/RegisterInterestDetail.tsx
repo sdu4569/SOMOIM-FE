@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import HeaderBackButton from "../../../../components/HeaderBackButton";
-import PageHeader from "../../../../components/PageHeader";
-import { InterestList } from "../../../../libs/InterestList";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import PageHeader from "@/components/PageHeader";
+import { InterestList } from "@/libs/InterestList";
 import { motion } from "framer-motion";
-import { pageSlideIn } from "../../../../libs/variants";
+import { pageSlideIn } from "@/libs/variants";
 import { useForm } from "react-hook-form";
 
 interface Interest {

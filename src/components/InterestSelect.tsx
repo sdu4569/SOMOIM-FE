@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
-import { pageSlideIn } from "../libs/variants";
+import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
-import { InterestList } from "../libs/InterestList";
+import { InterestList } from "@/libs/InterestList";
 
 interface InterestSelectProps {
   onComplete: (data: InterestFormData) => void;

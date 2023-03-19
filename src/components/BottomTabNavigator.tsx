@@ -20,7 +20,7 @@ export default function BottomTabNavigator({
       ) : (
         <ul className="flex w-full h-full justify-around items-center">
           <Link
-            to={"/clubs/recommend"}
+            to={"/clubs"}
             className={`flex flex-col items-center space-y-1 w-12 ${
               location.pathname.includes("club")
                 ? "text-black"

@@ -1,7 +1,7 @@
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import PageNavigator from "./PageNavigator";
-import Layout from "./components/layout";
+import Layout from "./page/layout";
 import { SWRConfig } from "swr";
 
 function App() {
