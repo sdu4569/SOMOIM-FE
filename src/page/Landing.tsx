@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import { fadeIn } from "../libs/variants";
+import Button from "@/components/Button";
+import { fadeIn } from "@/libs/variants";
 
 interface LogInFormData {
   id: string;
@@ -43,13 +43,7 @@ export default function Landing() {
                   <div className="rounded-md w-full flex flex-col space-y-4">
                     <ul className="flex flex-col space-y-4">
                       <li>
-                        <div className="flex items-center">
-                          {/* {errors.id && (
-                            <p className="text-red-500 text-sm">
-                              {errors.id.message}
-                            </p>
-                          )} */}
-                        </div>
+                        <div className="flex items-center"></div>
                         <input
                           placeholder="이메일"
                           {...register("id", {
@@ -66,13 +60,7 @@ export default function Landing() {
                       </li>
                       <li>
                         <div className="relative">
-                          <div className="flex items-center">
-                            {/* {errors.password && (
-                              <p className="text-red-500 text-sm">
-                                {errors.password.message}
-                              </p>
-                            )} */}
-                          </div>
+                          <div className="flex items-center"></div>
                           <input
                             placeholder="비밀번호"
                             {...register("password", {
@@ -128,9 +116,9 @@ export default function Landing() {
               <a
                 href={`https://accounts.google.com/o/oauth2/v2/auth?client_id=${
                   import.meta.env.VITE_GOOGLE_CLIENT_ID
-                }&redirect_uri=${
+                }&redirect_uri= ${
                   import.meta.env.VITE_GOOGLE_REDIRECT_URI
-                }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
+                }&response_type=code&scope=openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`}
                 className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center"
               >
                 <svg

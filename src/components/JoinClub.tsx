@@ -1,10 +1,8 @@
-import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
-import { fetcher } from "../page/UpdateUserPage";
-import { Images } from "../libs/Images";
+import { fetcher } from "@/page/more/editProfile/UpdateUserPage";
+import { Images } from "@/libs/Images";
+import { useState } from "react";
 import Overlay from "./Overlay";
 
 interface greetingFormData {
@@ -23,32 +21,19 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
 
   const [secondModal, setSecondModal] = useState<Boolean>(false);
 
-  const formRef = useRef<HTMLFormElement>(null);
   const {
     watch,
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm();
-
-  useEffect(() => {
-    setValue("greeting", "");
-  }, [data]);
 
   const onSubmit = (e: greetingFormData) => {
     console.log(e);
-
-    // axios.post("https://jsonplaceholder.typicode.com/users/1", e);
-  };
-
-  const clickHandler = (e: any) => {
-    if (formRef.current) {
-      formRef.current.dispatchEvent(
-        new Event("submit", { bubbles: true, cancelable: true })
-      );
+    if (e.greeting?.length == 0) {
+      setSecondModal(true);
     }
-    closeModal();
+    // axios.post("https://jsonplaceholder.typicode.com/users/1", e);
   };
 
   return (
@@ -85,11 +70,7 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
             className="w-10 h-10 mt-auto mb-auto"
           />
         </header>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          ref={formRef}
-          className="relative h-[56px] "
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="relative h-[56px] ">
           <input
             type="text"
             className="rounded-md p-2 w-full bg-gray-300 outline-none h-[40px] text-[12px] mt-2 mb-2"
@@ -108,13 +89,6 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
           <button
             type="submit"
             className="flex justify-center items-center flex-1"
-            onClick={
-              watch("greeting")?.length == 0
-                ? () => {
-                    setSecondModal(true);
-                  }
-                : clickHandler
-            }
           >
             확인
           </button>

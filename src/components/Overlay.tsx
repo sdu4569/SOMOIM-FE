@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { overlayVariants } from "../libs/variants";
+import { overlayVariants } from "@/libs/variants";
 
 interface OverlayPorps {
   onClick?: () => void;

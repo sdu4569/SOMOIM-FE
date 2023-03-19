@@ -2,7 +2,7 @@ interface ClubComponentProps {
   data: any;
 }
 
-export default function ClubComponent({ data }: ClubComponentProps) {
+export default function Club({ data }: ClubComponentProps) {
   return (
     <div className="flex space-x-4">
       <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative">

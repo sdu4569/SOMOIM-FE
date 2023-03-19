@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
-import { InterestList } from "../libs/InterestList";
-import { pageSlideIn } from "../libs/variants";
+import { InterestList } from "@/libs/InterestList";
+import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
-import { InterestWithDetails } from "../libs/types";
+import { InterestWithDetails } from "@/libs/types";
 
 interface InterestDetailSelectProps {
   onComplete: (data: InterestWithDetails[]) => void;

@@ -1,17 +1,17 @@
-import PageHeader from "../components/PageHeader";
+import PageHeader from "@/components/PageHeader";
 
-import { Link, useLocation } from "react-router-dom";
-import { InterestList } from "../libs/InterestList";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { testClubList } from "../components/testClubList";
+import { Link, useParams } from "react-router-dom";
+import { InterestList } from "@/libs/InterestList";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { testClubList } from "@/components/testClubList";
 import { useEffect, useState } from "react";
-import { Images } from "../libs/Images";
+import { Images } from "@/libs/Images";
 
 const InterestSearchPage = () => {
-  const location = useLocation();
+  const params = useParams();
 
   const interest = InterestList.filter(
-    (item) => item.interest == location.pathname.slice(8)
+    (item) => item.interest == params.interest
   );
 
   const all = "전체";
@@ -20,8 +20,7 @@ const InterestSearchPage = () => {
   const [detailList, setDetailList] = useState<string[]>([]);
   const [filterList, setfilterList] = useState<any[]>([]);
   const notFilterList = testClubList.filter(
-    (item) =>
-      item.city == userCity && item.interest == location.pathname.slice(8)
+    (item) => item.city == userCity && item.interest == params.interest
   );
   useEffect(() => {
     setDetailList([all, ...interest[0].detail]);

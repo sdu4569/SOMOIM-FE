@@ -2,17 +2,15 @@ import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import FloatButton from "./FloatButton";
-import Overlay from "./Overlay";
+import { useNavigate } from "react-router-dom";
+import FloatButton from "@/components/FloatButton";
 
 export default function ClubBoard() {
   const [category, setCategory] = useState("all");
-  const location = useLocation();
-  const clubNum = location.pathname.slice(-1);
+
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate(`/clubs/${clubNum}/post/1`);
+    navigate(`/clubs/1/post/1`);
   };
   return (
     <>

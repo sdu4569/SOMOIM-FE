@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../libs/Images";
-import PageHeader from "../components/PageHeader";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { Images } from "@/libs/Images";
+import PageHeader from "@/components/PageHeader";
 
 const RecentClubPage = () => {
   const [recentClubList, setRecentClubList] = useState<any[]>([]);

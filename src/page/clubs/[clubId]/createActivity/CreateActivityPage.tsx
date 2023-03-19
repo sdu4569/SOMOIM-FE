@@ -6,9 +6,9 @@ import {
 import { faLocation, faWonSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm, Controller } from "react-hook-form";
-import Button from "../components/Button";
-import HeaderBackButton from "../components/HeaderBackButton";
-import PageHeader from "../components/PageHeader";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import PageHeader from "@/components/PageHeader";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 

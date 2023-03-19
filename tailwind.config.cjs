@@ -32,6 +32,9 @@ module.exports = {
       borderColor: {
         kakao: "#FEE500",
       },
+      fontSize: {
+        "2xs": "0.625rem",
+      },
     },
 
     plugins: [],

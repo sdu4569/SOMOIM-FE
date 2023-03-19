@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import HeaderBackButton from "../components/HeaderBackButton";
-import { Images } from "../libs/Images";
-import PageHeader from "../components/PageHeader";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import { Images } from "@/libs/Images";
+import PageHeader from "@/components/PageHeader";
 import useSWR from "swr";
 import axios from "axios";
 import { useForm } from "react-hook-form";
