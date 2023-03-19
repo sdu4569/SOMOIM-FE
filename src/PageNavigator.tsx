@@ -45,6 +45,7 @@ const PageNavigator = () => {
       <Route path="/search" element={<ClubSearchPage />} />
       <Route path="/search/:interest" element={<InterestSearchPage />} />
       <Route path="/activity" element={<MyActivityPage />} />
+      <Route path="/activity/editInterest" element={<UpdateDetailPage />} />
 
       <Route path="/clubs" element={<ClubPage />} />
       <Route path="/clubs/create" element={<CreateClub />}></Route>
@@ -64,6 +65,7 @@ const PageNavigator = () => {
 
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />
+
       <Route path="/more/editInterest" element={<UpdateDetailPage />} />
       <Route path="/more/recent" element={<RecentClubPage />} />
       <Route path="/more/favorite" element={<FavoriteClubPage />} />
