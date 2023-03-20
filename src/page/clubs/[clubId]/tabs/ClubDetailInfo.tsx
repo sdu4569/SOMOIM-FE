@@ -28,7 +28,7 @@ export default function ClubDetailInfo({
           <JoinClub closeModal={() => setInJoinModal(false)} />
         </Overlay>
       )}
-      <div className="flex flex-col space-y-4 pb-12 p-4">
+      <div className="flex flex-col space-y-4 pb-16 p-4">
         <div className="h-32 bg-red-500 flex justify-center items-center">
           이미지
         </div>

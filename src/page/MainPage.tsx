@@ -20,7 +20,7 @@ const routes = [
     name: "활동",
   },
   {
-    path: "/clubs/recommend",
+    path: "/clubs",
     name: "클럽 리스트",
   },
   {
