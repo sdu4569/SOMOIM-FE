@@ -14,9 +14,13 @@ export default function GoogleCallback() {
       body: JSON.stringify({
         code,
       }),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
   });
   return (
     <div className="w-full h-full flex justify-center items-center">
