@@ -25,7 +25,7 @@ export default function ClubDetailInfo({
     <>
       {inJoinModal && (
         <Overlay onClick={() => setInJoinModal(false)}>
-          <JoinClub />
+          <JoinClub closeModal={() => setInJoinModal(false)} />
         </Overlay>
       )}
       <div className="flex flex-col space-y-4 pb-12 p-4">

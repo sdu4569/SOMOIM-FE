@@ -5,9 +5,6 @@ import InterestSearchPage from "./page/InterestSearchPage";
 import ClubPage from "./page/clubs/ClubPage";
 import InterestPage from "./page/InterestPage";
 import MainPage from "./page/MainPage";
-import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
-import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
-import ClubsList from "./components/ClubsList";
 import ClubPost from "./page/clubs/[clubId]/posts/[postId]/ClubPost";
 import ClubEditPage from "./page/clubs/[clubId]/edit/ClubEditPage";
 import CreateActivity from "./page/clubs/[clubId]/createActivity/CreateActivityPage";
@@ -26,7 +23,10 @@ import RegisterInterestDetail from "./page/signup/interest/detail/RegisterIntere
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
 import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 import InterestDetailChoicePage from "./page/search/[category]/InterestDetailChoicePage";
-import InterestClubPage from "./page/more/favorite/InterestClubPage";
+import FavoriteClubPage from "./page/more/favorite/FavoriteClubPage";
+import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
+import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
+import UpdateClubPostPage from "./page/UpdateClubPostPage";
 
 const PageNavigator = () => {
   return (
@@ -39,11 +39,15 @@ const PageNavigator = () => {
         <Route path="interest" element={<RegisterInterest />} />
         <Route path="interest/detail" element={<RegisterInterestDetail />} />
       </Route>
+
       <Route path="/interest" element={<InterestPage />} />
       <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
+
       <Route path="/search" element={<ClubSearchPage />} />
-      <Route path="/search/:id" element={<InterestSearchPage />} />
+      <Route path="/search/:interest" element={<InterestSearchPage />} />
+
       <Route path="/activity" element={<MyActivityPage />} />
+      <Route path="/activity/editInterest" element={<UpdateDetailPage />} />
 
       <Route path="/clubs" element={<ClubPage />} />
       <Route path="/clubs/create" element={<CreateClub />}></Route>
@@ -54,18 +58,23 @@ const PageNavigator = () => {
         element={<CreateActivity />}
       />
       <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route
+        path="/clubs/:clubId/update_post/:postId/"
+        element={<UpdateClubPostPage />}
+      />
+
       <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
 
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />
+
       <Route path="/more/editInterest" element={<UpdateDetailPage />} />
       <Route path="/more/recent" element={<RecentClubPage />} />
-      <Route path="/more/favorite" element={<InterestClubPage />} />
+      <Route path="/more/favorite" element={<FavoriteClubPage />} />
 
       <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
       <Route path="/auth/google/callback" element={<GoogleCallback />} />
-      {/* <Route path="/favorite_club" element={<FavoriteClubPage />} /> */}
 
       <Route path="*" element={<div>404</div>} />
     </Routes>

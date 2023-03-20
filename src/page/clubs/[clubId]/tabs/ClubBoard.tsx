@@ -2,13 +2,16 @@ import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import FloatButton from "../../../../components/FloatButton";
-import Overlay from "../../../../components/Overlay";
+import { useNavigate } from "react-router-dom";
+import FloatButton from "@/components/FloatButton";
 
 export default function ClubBoard() {
   const [category, setCategory] = useState("all");
-  const [inModal, setInModal] = useState(false);
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/clubs/1/post/1`);
+  };
   return (
     <>
       <div className="flex flex-col p-4">
@@ -44,9 +47,13 @@ export default function ClubBoard() {
         <section>
           <ul className="flex flex-col divide-gray-200">
             {[0, 1, 2, 3].map((i) => (
-              <li key={i} className="py-2 border-b-4 border-gray-200">
+              <li
+                key={i}
+                className="py-2 border-b-4 border-gray-200 cursor-pointer"
+                onClick={handleClick}
+              >
                 <header className="flex justify-between items-center">
-                  <div className="flex space-x-2 items-center">
+                  <div className="flex space-x-2 items-center ">
                     <div className="w-8 h-8 rounded-full bg-gray-500"></div>
                     <span>이름</span>
                   </div>
@@ -80,7 +87,8 @@ export default function ClubBoard() {
       </div>
       <div className="absolute bottom-8 right-8">
         <FloatButton to="write">
-          <FontAwesomeIcon icon={faPlus} className="text-white" size="lg" />
+          <FontAwesomeIcon icon={faPlus} />
+          <p className="text-sm">작성</p>
         </FloatButton>
       </div>
     </>
