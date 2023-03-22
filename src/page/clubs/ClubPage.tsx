@@ -99,21 +99,21 @@ import {
   faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import ClubSearch from "@/components/ClubSearch";
 import FloatButton from "@/components/FloatButton";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import ClubsList from "@/components/ClubsList";
+import useSWR from "swr";
 
 const tabs = ["추천클럽", "신규클럽"];
 
 export default function ClubPage() {
-  const location = useLocation();
+  const { data, isLoading } = useSWR("clubs/newclub?area=서울&page=0");
   const [selectedTab, setSelectedTab] = useState<string>(
     localStorage.getItem("clubListTab") || "추천클럽"
   );
@@ -121,6 +121,13 @@ export default function ClubPage() {
     setSelectedTab(tab);
     localStorage.setItem("clubListTab", tab);
   };
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      console.log(data);
+    }
+  }, [isLoading, data]);
+
   return (
     <div className="h-full overflow-scroll pt-16 pb-20">
       <PageHeader>

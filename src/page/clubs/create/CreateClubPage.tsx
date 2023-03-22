@@ -6,44 +6,81 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import InterestSelect from "@/components/InterestSelect";
-import InterestDetailSelect from "@/components/InterestDetailSelect";
 import PageHeader from "@/components/PageHeader";
 import RegionSelect from "@/components/RegionSearch";
-import { InterestWithDetails } from "@/libs/types";
+import { createClub } from "@/libs/api";
+import usePostRequest from "@/hooks/usePostRequest";
+import { useNavigate } from "react-router-dom";
 
-interface CreateClubForm {
-  location: string;
-  clubName: string;
+export interface CreateClubForm {
+  area: string;
+  name: string;
   description: string;
-  maxMember: number;
-  interest: string;
+  memberLimit: number;
+  favorite: "GAME" | "OUTDOOR" | "EXERCISE" | "HUMANITIES";
+  imageUrl?: string;
 }
 
 enum ModalType {
   INTEREST = "interest",
-  INTEREST_DETAIL = "interestDetail",
   LOCATION = "location",
 }
 
+const interests = {
+  "게임/오락": "GAME",
+  "아웃도어/여행": "OUTDOOR",
+  "운동/스포츠": "EXERCISE",
+  "인문학/책/글": "HUMANITIES",
+};
+
+type InterestType = keyof typeof interests;
+
 export default function CreateClub() {
-  const { register, handleSubmit, setValue, watch } = useForm<CreateClubForm>();
+  const { register, handleSubmit, setValue, watch } = useForm<CreateClubForm>({
+    defaultValues: {
+      imageUrl: "",
+    },
+  });
 
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
-  const [clubInterest, setClubInterest] = useState<InterestWithDetails>();
+
+  const { mutate, isLoading } = usePostRequest("clubs", {
+    authorized: true,
+  });
+
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setInModal(false);
   };
 
-  const onSubmit = (data: CreateClubForm) => {
+  const onSubmit = async (data: CreateClubForm) => {
     console.log(data);
-    console.log(clubInterest);
-  };
 
-  useEffect(() => {
-    console.log(clubInterest);
-  }, [clubInterest]);
+    // const response = await fetch(
+    //   `https://api.cloudflare.com/client/v4/accounts/23f362ecd420755dd443b290ed1593f6/images/v2/direct_upload`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer YZRHJ5lk4rMlUg5JDlFD23Jgi-lbtw9DNPGv_P7S`,
+    //     },
+    //   }
+    // );
+
+    // const parsed = await response.json();
+
+    // console.log(parsed);
+
+    const result = await mutate(data);
+
+    if (!result.ok) {
+      alert("클럽 개설에 실패했습니다. 다시 시도해주세요.");
+    } else {
+      navigate(`/clubs/${result.data.id}`);
+    }
+  };
 
   return (
     <>
@@ -55,7 +92,7 @@ export default function CreateClub() {
               setValue={setValue}
               closeModal={closeModal}
               title="클럽"
-              inputId="location"
+              inputId="area"
             />
           ),
           interest: (
@@ -64,23 +101,7 @@ export default function CreateClub() {
                 closeModal={closeModal}
                 maxSelect={1}
                 onComplete={(data) => {
-                  setClubInterest({
-                    name: data.selectedInterests[0],
-                    detail: [],
-                  });
-                  setModalType(ModalType.INTEREST_DETAIL);
-                }}
-              />
-            </div>
-          ),
-          interestDetail: clubInterest && (
-            <div className="w-full h-full z-[200] absolute bg-white">
-              <InterestDetailSelect
-                closeModal={closeModal}
-                interests={[clubInterest.name]}
-                onComplete={(data) => {
-                  setClubInterest(data[0]);
-                  setValue("interest", clubInterest.name);
+                  setValue("favorite", "EXERCISE");
                   closeModal();
                 }}
               />
@@ -114,7 +135,7 @@ export default function CreateClub() {
                 id="location"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="동&middot;읍&middot;면 찾기"
-                {...register("location")}
+                {...register("area")}
               />
             </label>
             <label htmlFor="interest" className="flex items-center">
@@ -132,7 +153,7 @@ export default function CreateClub() {
                 id="interest"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 관심사 선택"
-                {...register("interest")}
+                {...register("favorite")}
               />
             </label>
             <label htmlFor="clubName" className="flex items-center">
@@ -141,7 +162,7 @@ export default function CreateClub() {
                 id="clubName"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 이름"
-                {...register("clubName", {
+                {...register("name", {
                   required: "클럽 이름을 입력해주세요.",
                   maxLength: {
                     value: 30,
@@ -163,7 +184,7 @@ export default function CreateClub() {
                 <p>정원(25 ~ 300명)</p>
               </div>
               <input
-                {...register("maxMember", {
+                {...register("memberLimit", {
                   min: 25,
                   max: 300,
                 })}
