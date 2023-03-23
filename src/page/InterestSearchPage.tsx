@@ -6,6 +6,11 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { testClubList } from "@/components/testClubList";
 import { useEffect, useState } from "react";
 import { Images } from "@/libs/Images";
+import { useForm } from "react-hook-form";
+
+interface searchFormData {
+  search: string;
+}
 
 const InterestSearchPage = () => {
   const params = useParams();
@@ -16,56 +21,58 @@ const InterestSearchPage = () => {
 
   const all = "전체";
   const userCity = "부산광역시";
-  const [text, setText] = useState("");
   const [detailList, setDetailList] = useState<string[]>([]);
-  const [filterList, setfilterList] = useState<any[]>([]);
+  const [filterList, setFilterList] = useState<any[]>([]);
   const notFilterList = testClubList.filter(
     (item) => item.city == userCity && item.interest == params.interest
   );
   useEffect(() => {
     setDetailList([all, ...interest[0].detail]);
-    setfilterList(notFilterList);
+    setFilterList(notFilterList);
   }, []);
 
-  const [x, setX] = useState("전체");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm<searchFormData>();
+
+  const [select, setSelect] = useState("전체");
 
   const handleClickRadioButton = (e: any) => {
-    setX(e.target.value);
+    setSelect(e.target.value);
 
     if (e.target.value == "전체") {
-      setfilterList(notFilterList);
+      setFilterList(notFilterList);
     } else {
       const searchList = notFilterList.filter((item) => {
         return item.interestDetail == e.target.value;
       });
 
-      setfilterList(searchList);
-    }
-  };
-  const [contents, setContents] = useState<any[]>([]);
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
-    const searchContents = notFilterList.filter(
-      (content) =>
-        content.clubTitle.includes(event.target.value) ||
-        content.clubDescription.includes(event.target.value)
-    );
-    if (searchContents.length !== 0) {
-      setContents(searchContents);
-    } else {
-      setContents([]);
+      setFilterList(searchList);
     }
   };
 
-  const onSubmit = (event: any) => {
-    event.preventDefault();
-    setfilterList(contents);
+  const onSubmit = () => {
+    if (watch("search") == "") {
+      return;
+    }
+
+    const searchContents = notFilterList.filter(
+      (content) =>
+        content.clubTitle.includes(watch("search")) ||
+        content.clubDescription.includes(watch("search"))
+    );
+    console.log(searchContents);
+    setFilterList(searchContents);
   };
 
   const onDelete = () => {
-    setText("");
-    setX("전체");
-    setfilterList(notFilterList);
+    setValue("search", "");
+    setSelect("전체");
+    setFilterList(notFilterList);
   };
 
   return (
@@ -82,20 +89,20 @@ const InterestSearchPage = () => {
               </div>
             </PageHeader>
             <div className="sticky -top-14 z-20 w-full">
-              <form method="post" onSubmit={onSubmit}>
+              <form method="post" onSubmit={handleSubmit(onSubmit)}>
                 <input
                   type="text"
-                  onChange={onChange}
-                  value={text}
                   placeholder="클럽이나 커뮤니티를 검색하세요"
                   className="bg-gray-200 rounded-md mb-5 w-full h-8 text-[12px] pl-3"
                   inputMode="text"
-                  required
+                  {...register("search")}
                 />
               </form>
               <button
                 className={
-                  text !== "" ? "absolute top-2 right-2 z-10" : "hidden"
+                  watch("search") !== ""
+                    ? "absolute top-2 right-2 z-10"
+                    : "hidden"
                 }
               >
                 <img
@@ -119,7 +126,7 @@ const InterestSearchPage = () => {
                         className="hidden peer"
                         value={detail}
                         onClick={handleClickRadioButton}
-                        checked={x === `${detail}`}
+                        checked={select === `${detail}`}
                         readOnly
                       />
                       <label

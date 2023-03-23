@@ -98,7 +98,7 @@ export default function RegisterInterest({
                     "border-blue-500"
                   }`}
                 />
-                <div className="text-12 mt-2">{item.title}</div>
+                <div className="text-[13px] mt-2">{item.title}</div>
               </label>
             );
           })}
