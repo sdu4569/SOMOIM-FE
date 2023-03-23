@@ -38,7 +38,7 @@ export default function InterestSelect({
   useEffect(() => {
     const selectedInterests = watch("selectedInterests");
 
-    if (selectedInterests && selectedInterests.length > maxSelect) {
+    if (selectedInterests.length > maxSelect) {
       alert(`최대 ${maxSelect}개까지 선택해주세요.`);
       setValue("selectedInterests", selectedInterests.slice(0, maxSelect));
     }
@@ -67,6 +67,7 @@ export default function InterestSelect({
                 <input
                   {...register("selectedInterests", {
                     required: "적어도 한 개의 관심사를 선택해주세요.",
+                    maxLength: maxSelect,
                   })}
                   type="checkbox"
                   id={item.title}
@@ -81,7 +82,7 @@ export default function InterestSelect({
                     "border-blue-500"
                   }`}
                 />
-                <div className="text-12 mt-2">{item.title}</div>
+                <div className="text-[12px] mt-2">{item.title}</div>
               </label>
             );
           })}

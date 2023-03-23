@@ -7,7 +7,6 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
-import { write } from "fs";
 
 interface writeFormData {
   title: string;
@@ -31,7 +30,7 @@ export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const [category, setCategory] = useState<categoryType>("free");
-  const navigate = useNavigate();
+
   const {
     watch,
     register,
@@ -91,23 +90,6 @@ export default function ClubBoardWrite() {
   }, [watch("firstPic"), watch("secondPic"), watch("thirdPic")]);
 
   const onSubmit = (writeForm: writeFormData) => {
-    // switch (true) {
-    //   case category == "자유 글":
-    //     writeForm.category = "all";
-    //     break;
-    //   case category == "관심사 공유":
-    //     writeForm.category = "share";
-    //     break;
-    //   case category == "정모후기":
-    //     writeForm.category = "meeting";
-    //     break;
-    //   case category == "가입인사":
-    //     writeForm.category = "greeting";
-    //     break;
-    //   case category == "공지사항":
-    //     writeForm.category = "notice";
-    //     break;
-    // }
     console.log(category);
     writeForm.category = category;
     console.log(writeForm);
