@@ -7,8 +7,8 @@ import Spinner from "./Spinner";
 
 const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
 
-const getKey: SWRInfiniteKeyLoader = (pageIndex, previousePageData) => {
-  if (previousePageData && !previousePageData.length) return null;
+const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+  if (previousPageData && !previousPageData.length) return null;
   return `${API_ENTRYPOINT}/posts?_page=${pageIndex + 1}`;
 };
 
@@ -17,6 +17,12 @@ export default function ClubsList() {
     getKey,
     {
       revalidateOnFocus: false,
+      fetcher: (url: string) =>
+        fetch(url, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((res) => res.json()),
     }
   );
   const targetRef = useRef<HTMLDivElement>(null);

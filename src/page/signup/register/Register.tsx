@@ -10,8 +10,11 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import Overlay from "@/components/Overlay";
 import PageHeader from "@/components/PageHeader";
 import { pageSlideIn } from "@/libs/variants";
+import { emailRegex } from "@/libs/regex";
+import EmailVerifyModal from "@/components/EmailVerifyModal";
+import usePostRequest from "@/hooks/usePostRequest";
 
-interface RegisterFormData {
+export interface RegisterFormData {
   email: string;
   password: string;
   confirmPassword: string;
@@ -23,23 +26,29 @@ export default function Register() {
   const [isEmailVerified, setIsEmailVerified] = useState<boolean>(false);
   const [submittedEmail, setSubmittedEmail] = useState<string>("");
   const [inVerifyOverlay, setInVerifyOverlay] = useState<boolean>(false);
+
+  // to do : store verification code
+
   const {
     handleSubmit,
     register,
     formState: { errors },
     setError,
-    clearErrors,
     watch,
   } = useForm<RegisterFormData>();
 
   const navigate = useNavigate();
 
-  const onVerifyClick = (
+  const { mutate: sendVerifyEmail, isLoading: sendVerifyEmailLoading } =
+    usePostRequest("users/auth/email/send");
+  const { mutate: createAccount, isLoading: createAccountLoading } =
+    usePostRequest("users/auth/signup");
+
+  const onVerifyClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     if (isEmailVerified) {
-      setIsEmailVerified(false);
       return;
     }
     const email = watch("email");
@@ -50,17 +59,23 @@ export default function Register() {
       });
       return;
     }
-    if (!/^\S+@\S+$/.test(email)) {
+    if (!emailRegex.test(email)) {
       setError("email", {
         type: "pattern",
         message: "이메일 형식이 아닙니다.",
       });
       return;
     }
+
     setSubmittedEmail(email);
     setInVerifyOverlay(true);
+
+    const response = await sendVerifyEmail({ email });
+
+    console.log(response);
   };
-  const onSubmit = () => {
+
+  const onSubmit = async (data: RegisterFormData) => {
     if (!isEmailVerified) {
       setError("email", {
         type: "manual",
@@ -70,10 +85,14 @@ export default function Register() {
     }
 
     // to do : create account
+    const response = await createAccount(data);
 
-    navigate("/signup/profile", {
-      replace: true,
-    });
+    if (response.ok) {
+      // store token
+      navigate("/clubs");
+    } else {
+      alert("회원가입에 실패했습니다.");
+    }
   };
 
   // to do : prevent direct access
@@ -87,45 +106,13 @@ export default function Register() {
       key={location.pathname}
     >
       <AnimatePresence>
-        {inVerifyOverlay && (
+        {inVerifyOverlay && submittedEmail && (
           <Overlay onClick={() => setInVerifyOverlay(false)}>
-            <form
-              onClick={(e) => e.stopPropagation()}
-              className="p-4 rounded-md bg-white flex flex-col space-y-8"
-            >
-              <div className="flex flex-col space-y-2">
-                <p>{submittedEmail}로 발송된 코드를 입력해주세요.</p>
-                <p>메일 전송에는 몇 분의 시간이 소요될 수 있습니다.</p>
-              </div>
-              <input
-                type="text"
-                className="p-4 bg-gray-100 rounded-md outline-none"
-              />
-              <div className="w-full flex justify-between space-x-2">
-                <Button
-                  onClick={(
-                    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-                  ) => {
-                    e.preventDefault();
-                    setInVerifyOverlay(false);
-                  }}
-                  className="flex-1 !bg-white !text-black border border-black"
-                >
-                  취소
-                </Button>
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    clearErrors();
-                    setIsEmailVerified(true);
-                    setInVerifyOverlay(false);
-                  }}
-                  className="flex-1"
-                >
-                  확인
-                </Button>
-              </div>
-            </form>
+            <EmailVerifyModal
+              email={submittedEmail}
+              closeModal={() => setInVerifyOverlay(false)}
+              setVerified={() => setIsEmailVerified(true)}
+            />
           </Overlay>
         )}
       </AnimatePresence>
@@ -137,7 +124,7 @@ export default function Register() {
       </PageHeader>
       <form
         className="flex justify-center items-center h-full w-full p-4"
-        onSubmit={handleSubmit((data) => onSubmit())}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="rounded-md border w-full border-black p-4 flex flex-col space-y-8">
           <ul className="flex flex-col space-y-4">
@@ -189,7 +176,7 @@ export default function Register() {
                   {...register("email", {
                     required: "이메일을 입력해주세요.",
                     pattern: {
-                      value: /^\S+@\S+$/i,
+                      value: emailRegex,
                       message: "이메일 형식이 아닙니다.",
                     },
                   })}

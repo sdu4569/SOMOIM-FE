@@ -25,7 +25,8 @@ const textObject = {
   greeting: "가입인사",
   notice: "공지사항",
 };
-type categoryType = "free" | "share" | "meeting" | "greeting" | "notice";
+type categoryType = keyof typeof textObject;
+
 export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
