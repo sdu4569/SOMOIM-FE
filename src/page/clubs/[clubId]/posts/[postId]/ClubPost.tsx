@@ -417,6 +417,8 @@ export default function ClubPost() {
         <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
           <textarea
             rows={1}
+            cols={20}
+            wrap="hard"
             placeholder="댓글을 입력해주세요."
             className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-[300px] h-[48px] resize-none text-[16px] max-h-[48px]"
             {...register("comment")}
