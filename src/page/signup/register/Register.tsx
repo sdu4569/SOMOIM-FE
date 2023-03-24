@@ -17,7 +17,7 @@ import usePostRequest from "@/hooks/usePostRequest";
 export interface RegisterFormData {
   email: string;
   password: string;
-  confirmPassword: string;
+  passwordCheck: string;
 }
 
 export default function Register() {
@@ -91,7 +91,7 @@ export default function Register() {
       // store token
       navigate("/clubs");
     } else {
-      alert("회원가입에 실패했습니다.");
+      alert(response.message);
     }
   };
 
@@ -226,19 +226,19 @@ export default function Register() {
             </li>
             <li>
               <label
-                htmlFor="confirmPassword"
+                htmlFor="passwordCheck"
                 className="relative flex flex-col space-y-2"
               >
                 <div className="flex items-center space-x-2">
                   <p className="text-base">비밀번호 확인</p>
-                  {errors.confirmPassword && (
+                  {errors.passwordCheck && (
                     <p className="text-red-500 text-sm">
-                      {errors.confirmPassword.message}
+                      {errors.passwordCheck.message}
                     </p>
                   )}
                 </div>
                 <input
-                  {...register("confirmPassword", {
+                  {...register("passwordCheck", {
                     required: "비밀번호를 확인해주세요.",
                     validate: (value) => {
                       return (
@@ -248,7 +248,7 @@ export default function Register() {
                     },
                   })}
                   type={isMasked ? "password" : "text"}
-                  id="confirmPassword"
+                  id="passwordCheck"
                   className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
                 />
                 <FontAwesomeIcon
