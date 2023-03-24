@@ -108,7 +108,7 @@ const ClubSearchPage = () => {
             <input
               type="text"
               placeholder="클럽이나 커뮤니티를 검색하세요"
-              className="bg-gray-200 rounded-md w-80 h-8 text-[12px] pl-3"
+              className="bg-gray-100 rounded-md w-80 h-8 text-[12px] pl-3 outline-none"
               inputMode="text"
               {...register("search", { required: "" })}
             />

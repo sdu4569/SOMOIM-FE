@@ -8,7 +8,6 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import InterestSelect from "@/components/InterestSelect";
 import PageHeader from "@/components/PageHeader";
 import RegionSelect from "@/components/RegionSearch";
-import { createClub } from "@/libs/api";
 import usePostRequest from "@/hooks/usePostRequest";
 import { useNavigate } from "react-router-dom";
 
