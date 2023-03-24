@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 import Overlay from "./Overlay";
 
@@ -8,19 +9,19 @@ interface commentFormData {
 }
 
 interface CommentProps {
-  inputValue: string;
-  formRef: React.RefObject<HTMLFormElement>;
+  selectComment: any[];
+  setCommentList: React.Dispatch<React.SetStateAction<any[]>>;
   closeModal: () => void;
-  clickHandler: () => void;
-  onUpdate: (commentForm: commentFormData) => void;
+  commentArr: any[];
+  selectKey?: number;
 }
 
 export default function UpdateComment({
-  inputValue,
-  formRef,
+  selectComment,
+  setCommentList,
   closeModal,
-  clickHandler,
-  onUpdate,
+  commentArr,
+  selectKey,
 }: CommentProps) {
   const {
     register,
@@ -29,6 +30,11 @@ export default function UpdateComment({
     setValue,
   } = useForm<commentFormData>();
 
+  const params = useParams();
+  const formRef = useRef<HTMLFormElement>(null);
+  const { ref } = register("comment");
+  const commentRef = useRef<HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
     if (errors.comment) {
       alert(errors.comment.message);
@@ -36,9 +42,33 @@ export default function UpdateComment({
   }, [errors.comment]);
 
   useEffect(() => {
-    setValue("comment", inputValue);
-    console.log(inputValue);
-  }, [inputValue]);
+    setValue("comment", selectComment[0]?.comment);
+    console.log(selectComment[0]?.comment);
+  }, [selectComment]);
+
+  const clickHandler = () => {
+    if (formRef.current) {
+      formRef.current.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true })
+      );
+    }
+    closeModal();
+  };
+  const onUpdate = (commentForm: commentFormData) => {
+    console.log(commentForm.comment);
+    selectComment[0].comment = commentForm.comment;
+    commentArr = commentArr.filter((item) => item.id !== selectKey);
+    commentArr.push(selectComment[0]);
+    commentArr.sort(function (a, b) {
+      return a.id - b.id;
+    });
+    localStorage.setItem(
+      `${params.clubId}_${params.postId} comment`,
+      JSON.stringify(commentArr)
+    );
+    setCommentList(commentArr);
+    console.log(commentArr);
+  };
 
   return (
     <Overlay onClick={closeModal}>
@@ -52,6 +82,10 @@ export default function UpdateComment({
             rows={2}
             className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-full h-[96px] resize-none text-[16px] max-h-[96px]"
             {...register("comment")}
+            ref={(e) => {
+              ref(e);
+              commentRef.current = e;
+            }}
           />
         </form>
         <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">

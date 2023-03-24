@@ -101,6 +101,10 @@ export default function ClubPost() {
   };
 
   const onSubmit = (commentForm: commentFormData) => {
+    if (commentForm.comment.length == 0) {
+      return;
+    }
+
     let d = Date.now();
     commentArr.sort(function (a, b) {
       return a.id - b.id;
@@ -132,21 +136,6 @@ export default function ClubPost() {
     );
     setCommentList(commentArr);
     setValue("comment", "");
-  };
-
-  const onUpdate = (commentForm: commentFormData) => {
-    console.log(commentForm.comment);
-    selectComment[0].comment = commentForm.comment;
-    commentArr = commentArr.filter((item) => item.id !== selectKey);
-    commentArr.push(selectComment[0]);
-    commentArr.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    localStorage.setItem(
-      `${params.clubId}_${params.postId} comment`,
-      JSON.stringify(commentArr)
-    );
-    setCommentList(commentArr);
   };
 
   const commentDelete = () => {
@@ -248,11 +237,11 @@ export default function ClubPost() {
           ),
           updateComment: selectComment && (
             <UpdateComment
-              inputValue={selectComment[0]?.comment}
+              selectComment={selectComment}
+              setCommentList={setCommentList}
               closeModal={closeModal}
-              clickHandler={clickHandler}
-              onUpdate={onUpdate}
-              formRef={formRef}
+              commentArr={commentArr}
+              selectKey={selectKey}
             />
           ),
           delComment: (
@@ -389,6 +378,7 @@ export default function ClubPost() {
             rows={1}
             cols={20}
             wrap="hard"
+            required
             placeholder="댓글을 입력해주세요."
             className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-[300px] h-[48px] resize-none text-[16px] max-h-[48px]"
             {...register("comment")}
