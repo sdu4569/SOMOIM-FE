@@ -9,7 +9,6 @@ import Button from "@/components/Button";
 import Overlay from "@/components/Overlay";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import UpdateComment from "@/components/UpdateComment";
 
 interface commentFormData {
   comment: string;
@@ -66,6 +65,12 @@ export default function ClubPost() {
     handleSubmit,
     setFocus,
     setValue,
+  } = useForm<commentFormData>();
+
+  const {
+    register: register2,
+    handleSubmit: handleSubmit2,
+    setValue: setValue2,
   } = useForm<commentFormData>();
 
   const clickHandler = () => {
@@ -175,6 +180,10 @@ export default function ClubPost() {
     console.log(selectKey);
   }, [selectKey]);
 
+  useEffect(() => {
+    setValue2("comment", selectComment[0]?.comment);
+    console.log(selectComment);
+  }, [selectComment]);
   return (
     <>
       {inModal &&
@@ -247,13 +256,36 @@ export default function ClubPost() {
             </Overlay>
           ),
           updateComment: selectComment && (
-            <UpdateComment
-              inputValue={selectComment[0]?.comment}
-              closeModal={closeModal}
-              clickHandler={clickHandler}
-              onUpdate={onUpdate}
-              formRef={formRef}
-            />
+            <Overlay onClick={closeModal}>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="rounded-2xl w-full h-[210px] p-4 m-4 flex bg-white self-end flex-col justify-between "
+              >
+                <div className="h-[30px] p-1">댓글수정</div>
+                <form onSubmit={handleSubmit2(onUpdate)} ref={formRef}>
+                  <textarea
+                    rows={2}
+                    className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-full h-[96px] resize-none text-[16px] max-h-[96px]"
+                    {...register2("comment")}
+                  />
+                </form>
+                <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">
+                  <button
+                    className="flex justify-center items-center flex-1"
+                    onClick={closeModal}
+                  >
+                    취소
+                  </button>
+                  <button
+                    type="button"
+                    className="flex justify-center items-center flex-1"
+                    onClick={clickHandler}
+                  >
+                    확인
+                  </button>
+                </div>
+              </div>
+            </Overlay>
           ),
           delComment: (
             <Overlay onClick={closeModal}>
