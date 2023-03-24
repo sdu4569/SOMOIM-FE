@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import Overlay from "@/components/Overlay";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import UpdateComment from "@/components/UpdateComment";
 
 interface commentFormData {
   comment: string;
@@ -67,13 +68,7 @@ export default function ClubPost() {
     setValue,
   } = useForm<commentFormData>();
 
-  const {
-    register: register2,
-    handleSubmit: handleSubmit2,
-    setValue: setValue2,
-  } = useForm<commentFormData>();
-
-  const clickHandler = (e: any) => {
+  const clickHandler = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
@@ -106,6 +101,10 @@ export default function ClubPost() {
   };
 
   const onSubmit = (commentForm: commentFormData) => {
+    if (commentForm.comment.length == 0) {
+      return;
+    }
+
     let d = Date.now();
     commentArr.sort(function (a, b) {
       return a.id - b.id;
@@ -139,20 +138,6 @@ export default function ClubPost() {
     setValue("comment", "");
   };
 
-  const onUpdate = (commentForm: commentFormData) => {
-    selectComment[0].comment = commentForm.comment;
-    commentArr = commentArr.filter((item) => item.id !== selectKey);
-    commentArr.push(selectComment[0]);
-    commentArr.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    localStorage.setItem(
-      `${params.clubId}_${params.postId} comment`,
-      JSON.stringify(commentArr)
-    );
-    setCommentList(commentArr);
-  };
-
   const commentDelete = () => {
     commentArr = commentArr.filter((item) => item.id !== selectKey);
     commentArr.sort(function (a, b) {
@@ -179,9 +164,6 @@ export default function ClubPost() {
     console.log(selectKey);
   }, [selectKey]);
 
-  useEffect(() => {
-    setValue2("comment", selectComment[0]?.comment);
-  }, [selectComment]);
   return (
     <>
       {inModal &&
@@ -254,36 +236,13 @@ export default function ClubPost() {
             </Overlay>
           ),
           updateComment: selectComment && (
-            <Overlay onClick={closeModal}>
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="rounded-2xl w-full h-[210px] p-4 m-4 flex bg-white self-end flex-col justify-between "
-              >
-                <div className="h-[30px] p-1">댓글수정</div>
-                <form onSubmit={handleSubmit2(onUpdate)} ref={formRef}>
-                  <textarea
-                    rows={2}
-                    className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-full h-[96px] resize-none text-[16px] max-h-[96px]"
-                    {...register2("comment")}
-                  />
-                </form>
-                <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">
-                  <button
-                    className="flex justify-center items-center flex-1"
-                    onClick={closeModal}
-                  >
-                    취소
-                  </button>
-                  <button
-                    type="button"
-                    className="flex justify-center items-center flex-1"
-                    onClick={clickHandler}
-                  >
-                    확인
-                  </button>
-                </div>
-              </div>
-            </Overlay>
+            <UpdateComment
+              selectComment={selectComment}
+              setCommentList={setCommentList}
+              closeModal={closeModal}
+              commentArr={commentArr}
+              selectKey={selectKey}
+            />
           ),
           delComment: (
             <Overlay onClick={closeModal}>
@@ -419,6 +378,7 @@ export default function ClubPost() {
             rows={1}
             cols={20}
             wrap="hard"
+            required
             placeholder="댓글을 입력해주세요."
             className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-[300px] h-[48px] resize-none text-[16px] max-h-[48px]"
             {...register("comment")}

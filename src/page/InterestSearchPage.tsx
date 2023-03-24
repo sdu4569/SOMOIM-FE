@@ -93,7 +93,7 @@ const InterestSearchPage = () => {
                 <input
                   type="text"
                   placeholder="클럽이나 커뮤니티를 검색하세요"
-                  className="bg-gray-200 rounded-md mb-5 w-full h-8 text-[12px] pl-3"
+                  className="bg-gray-100 rounded-md mb-5 w-full h-8 text-[12px] pl-3 outline-none"
                   inputMode="text"
                   {...register("search")}
                 />
