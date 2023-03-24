@@ -10,6 +10,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { API_ENDPOINT } from "@/App";
 import { useRecoilValue } from "recoil";
 import { accessTokenAtom } from "@/libs/atoms";
+import useUser from "@/hooks/useUser";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -17,19 +18,20 @@ export const fetcher = async (url: string) => {
 };
 
 export interface userFormData {
-  name: string;
-  gender: string;
+  area: string;
   birth: string;
-  city: string;
-  profilePic: string;
+  gender: string;
   introduction: string;
+  name: string;
+  profileUrl?: string;
 }
 
 const UpdateUserPage = () => {
-  const { data, error, isLoading } = useSWR(
-    "https://jsonplaceholder.typicode.com/users/1",
-    fetcher
-  );
+  const { user, mutate } = useUser();
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const navigate = useNavigate();
   const {
@@ -41,6 +43,7 @@ const UpdateUserPage = () => {
   } = useForm<userFormData>();
 
   const formRef = useRef<HTMLFormElement>(null);
+
   useEffect(() => {
     // 이미지 미리보기
     function readImage(input: HTMLInputElement) {
@@ -64,17 +67,6 @@ const UpdateUserPage = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-    if (!isLoading && data) {
-      setValue("name", data.name);
-      setValue("gender", "male");
-      setValue("birth", "1993-01-01");
-      setValue("city", "부산광역시");
-      setValue("introduction", "");
-    }
-  }, [data, isLoading]);
-
   const clickHandler = (e: any) => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
@@ -84,20 +76,6 @@ const UpdateUserPage = () => {
   };
 
   const onSubmit = (userForm: userFormData) => {
-    console.log(userForm);
-
-    axios.patch("https://jsonplaceholder.typicode.com/users/1", {
-      name: userForm.name,
-      gender: userForm.gender,
-      birth: userForm.birth,
-      city: userForm.city,
-    });
-    axios.put("https://jsonplaceholder.typicode.com/users/1", {
-      userIntroduction: userForm.introduction,
-    });
-    axios.put("https://jsonplaceholder.typicode.com/users/1", {
-      profilePic: userForm.profilePic,
-    });
     navigate(-1);
   };
 
@@ -128,10 +106,10 @@ const UpdateUserPage = () => {
           />
         </label>
         <input
-          type="file"
+          type="image/*"
           id="file"
           className="hidden"
-          {...register("profilePic")}
+          {...register("profileUrl")}
         />
         <div className="mt-6 h-10 relative">
           <input
@@ -219,7 +197,7 @@ const UpdateUserPage = () => {
             <input
               type="text"
               className="w-[200px] h-10 pl-8 rounded-md bg-gray-200"
-              {...register("city")}
+              {...register("area")}
             />
           </Link>
         </div>
