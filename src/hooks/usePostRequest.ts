@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "@/App";
 import { accessTokenAtom, accessTokenExpirationAtom } from "./../libs/atoms";
 import { useRecoilValue } from "recoil";
@@ -23,9 +24,12 @@ export default function usePostRequest(
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const token = useAccessToken();
+  const navigate = useNavigate();
 
-  if (authorized) {
-    // to do : verify token
+  if (authorized && !token) {
+    navigate("/landing", {
+      replace: true,
+    });
   }
 
   const mutate = async function (data: any): Promise<APIResponse> {
@@ -44,14 +48,37 @@ export default function usePostRequest(
       body: JSON.stringify(data),
     });
 
-    const result = await response.json();
-
     setIsLoading(false);
 
-    return {
-      ok: response.ok,
-      data: result,
-    };
+    if (response.status === 200) {
+      const data = await response.json();
+      return { ok: true, data };
+    }
+
+    if (response.status === 201) {
+      return { ok: true };
+    }
+
+    if (response.status === 401) {
+      const data = await response.json();
+      return { ok: false, data };
+    }
+
+    if (response.status === 403) {
+      const data = await response.json();
+      return { ok: false, data };
+    }
+
+    if (response.status === 404) {
+      const data = await response.json();
+      return { ok: false, data };
+    }
+
+    if (response.status === 500) {
+      return { ok: false, message: "Internal server error" };
+    }
+
+    return { ok: false, message: "Unknown error" };
   };
 
   return { mutate, isLoading };

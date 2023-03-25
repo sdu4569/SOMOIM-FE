@@ -38,7 +38,7 @@ export default function RegisterProfile() {
         replace: true,
       });
     } else {
-      alert("프로필 등록에 실패했습니다. 다시 시도해주세요.");
+      alert(updateResponse.data.detail);
     }
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);

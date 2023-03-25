@@ -104,7 +104,9 @@ const UpdateUserPage = () => {
       introduction: userForm.introduction,
     });
     console.log(result);
-    navigate(-1);
+    navigate("/more", {
+      replace: true,
+    });
   };
 
   return (
