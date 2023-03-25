@@ -9,11 +9,11 @@ import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { API_ENDPOINT } from "@/App";
 import { useRecoilValue } from "recoil";
-import { accessTokenAtom } from "@/libs/atoms";
 import useUser from "@/hooks/useUser";
 
 import { AnimatePresence } from "framer-motion";
 import EditRegion from "@/components/EditRegion";
+import usePostRequest from "@/hooks/usePostRequest";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -21,7 +21,7 @@ export const fetcher = async (url: string) => {
 };
 
 export interface userFormData {
-  location: string;
+  area: string;
   birth: string;
   gender: string;
   introduction: string;
@@ -30,11 +30,13 @@ export interface userFormData {
 }
 
 const UpdateUserPage = () => {
-  const { user, mutate } = useUser();
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const { user, loading } = useUser();
+  const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
+    "users",
+    {
+      authorized: true,
+    }
+  );
 
   const navigate = useNavigate();
   const {
@@ -48,6 +50,19 @@ const UpdateUserPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
+
+  // populate form with user data
+  useEffect(() => {
+    if (user) {
+      setValue("area", user.area);
+      setValue("gender", user.gender);
+      setValue("name", user.name);
+      setValue("introduction", user.introduction);
+      setValue("birth", user.birth);
+
+      // to do : profileUrl
+    }
+  }, [user]);
 
   useEffect(() => {
     // 이미지 미리보기
@@ -80,7 +95,15 @@ const UpdateUserPage = () => {
     }
   };
 
-  const onSubmit = (userForm: userFormData) => {
+  const onSubmit = async (userForm: userFormData) => {
+    const result = await updateUser({
+      area: userForm.area,
+      birth: userForm.birth,
+      name: userForm.name,
+      gender: userForm.gender,
+      introduction: userForm.introduction,
+    });
+    console.log(result);
     navigate(-1);
   };
 
@@ -151,34 +174,34 @@ const UpdateUserPage = () => {
                 className="flex items-center justify-between rounded-md border h-full"
               >
                 <label
-                  htmlFor="male"
+                  htmlFor="MALE"
                   className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                    watch("gender") === "male" ? "bg-blue-500 text-white" : ""
+                    watch("gender") === "MALE" ? "bg-blue-500 text-white" : ""
                   }`}
                 >
                   <p>남</p>
                   <input
                     {...register("gender", { required: true })}
                     type="radio"
-                    id="male"
+                    id="MALE"
                     name="gender"
-                    value={"male"}
+                    value="MALE"
                     className="hidden"
                   />
                 </label>
                 <label
-                  htmlFor="female"
+                  htmlFor="FEMALE"
                   className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                    watch("gender") === "female" ? "bg-blue-500 text-white" : ""
+                    watch("gender") === "FEMALE" ? "bg-blue-500 text-white" : ""
                   }`}
                 >
                   <p>여</p>
                   <input
                     {...register("gender", { required: true })}
                     type="radio"
-                    id="female"
+                    id="FEMALE"
                     name="gender"
-                    value="female"
+                    value="FEMALE"
                     className="hidden"
                   />
                 </label>
@@ -208,12 +231,12 @@ const UpdateUserPage = () => {
             />
             <input
               onFocus={() => setInRegionModal(true)}
-              {...register("location", {
+              {...register("area", {
                 required: true,
               })}
               type="text"
               disabled={inRegionModal}
-              id="location"
+              id="area"
               className="w-[200px] h-10 pl-7 rounded-md bg-gray-100 outline-none absolute right-0"
             />
           </div>

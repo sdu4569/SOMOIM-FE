@@ -4,8 +4,18 @@ import BottomTabNavigator from "@/components/BottomTabNavigator";
 import UpdateUserButton from "@/components/UpdateUserButton";
 import RecentClubButton from "@/components/RecentClubButton";
 import InterestClubButton from "@/components/FavoriteClubButton";
+import useUser from "@/hooks/useUser";
+import { useEffect } from "react";
 
 const MorePage = () => {
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+    }
+  }, [user]);
+
   return (
     <div className="h-full py-16 overflow-scroll px-4">
       <PageHeader>
@@ -13,7 +23,7 @@ const MorePage = () => {
       </PageHeader>
 
       <main>
-        <UpdateUserButton />
+        <UpdateUserButton user={user} />
         <UpdateInterestButton />
         <InterestClubButton />
         <RecentClubButton />

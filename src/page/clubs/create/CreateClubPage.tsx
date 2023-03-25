@@ -22,7 +22,7 @@ export interface CreateClubForm {
 
 enum ModalType {
   INTEREST = "interest",
-  LOCATION = "location",
+  AREA = "area",
 }
 
 const interests = {
@@ -57,21 +57,6 @@ export default function CreateClub() {
   const onSubmit = async (data: CreateClubForm) => {
     console.log(data);
 
-    // const response = await fetch(
-    //   `https://api.cloudflare.com/client/v4/accounts/23f362ecd420755dd443b290ed1593f6/images/v2/direct_upload`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer YZRHJ5lk4rMlUg5JDlFD23Jgi-lbtw9DNPGv_P7S`,
-    //     },
-    //   }
-    // );
-
-    // const parsed = await response.json();
-
-    // console.log(parsed);
-
     const result = await mutate(data);
 
     if (!result.ok) {
@@ -86,7 +71,7 @@ export default function CreateClub() {
       {inModal &&
         modalType &&
         {
-          location: (
+          area: (
             <RegionSelect
               setValue={setValue}
               closeModal={closeModal}
@@ -119,7 +104,7 @@ export default function CreateClub() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col space-y-4"
           >
-            <label htmlFor="location" className="flex items-center">
+            <label htmlFor="area" className="flex items-center">
               <div className="flex space-x-2 w-24 items-center">
                 <FontAwesomeIcon icon={faLocation} />
                 <p>지역</p>
@@ -127,11 +112,11 @@ export default function CreateClub() {
               <input
                 onFocus={() => {
                   setInModal(true);
-                  setModalType(ModalType.LOCATION);
+                  setModalType(ModalType.AREA);
                 }}
                 disabled={inModal}
                 type="text"
-                id="location"
+                id="area"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="동&middot;읍&middot;면 찾기"
                 {...register("area")}

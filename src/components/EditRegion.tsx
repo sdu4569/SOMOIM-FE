@@ -34,7 +34,7 @@ const EditRegion = ({ closeModal, setInputValue }: RegionPageProps) => {
   });
 
   const onSubmit = (data: RegionFormData) => {
-    setInputValue("location", watch("home"));
+    setInputValue("area", watch("home"));
     closeModal();
   };
 

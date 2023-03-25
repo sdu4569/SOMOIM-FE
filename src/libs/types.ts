@@ -9,3 +9,13 @@ export interface LoginResponse {
   refreshToken: string;
   refreshTokenExpirationDateTime: string;
 }
+
+export interface User {
+  name: string;
+  area: string;
+  birth: string;
+  favorite: string;
+  gender: string;
+  introduction: string;
+  profileUrl?: string;
+}

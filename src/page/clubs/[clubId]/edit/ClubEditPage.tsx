@@ -9,7 +9,7 @@ import PageHeader from "@/components/PageHeader";
 
 interface ClubEditForm {
   category: string;
-  location: string;
+  area: string;
   banner?: FileList;
   clubName: string;
   description: string;
@@ -51,16 +51,16 @@ export default function ClubEditPage() {
               {...register("category")}
             />
           </label>
-          <label htmlFor="location" className="flex items-center">
+          <label htmlFor="area" className="flex items-center">
             <div className="flex space-x-2 w-28">
               <FontAwesomeIcon icon={faLocation} />
               <p>중심지역</p>
             </div>
             <input
               type="text"
-              id="location"
+              id="area"
               className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
-              {...register("location")}
+              {...register("area")}
             />
           </label>
           <label

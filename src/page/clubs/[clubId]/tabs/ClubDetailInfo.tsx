@@ -12,6 +12,7 @@ import { useState } from "react";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
+import { useParams } from "react-router-dom";
 
 export default function ClubDetailInfo({
   like,
@@ -21,11 +22,15 @@ export default function ClubDetailInfo({
   handleClick?: any;
 }) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
+  const params = useParams();
   return (
     <>
-      {inJoinModal && (
+      {inJoinModal && params.clubId && (
         <Overlay onClick={() => setInJoinModal(false)}>
-          <JoinClub closeModal={() => setInJoinModal(false)} />
+          <JoinClub
+            closeModal={() => setInJoinModal(false)}
+            clubId={params.clubId}
+          />
         </Overlay>
       )}
       <div className="flex flex-col space-y-4 pb-16 p-4">

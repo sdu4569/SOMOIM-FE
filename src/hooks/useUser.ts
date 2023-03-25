@@ -3,21 +3,13 @@ import { useEffect } from "react";
 import { API_ENDPOINT } from "@/App";
 import useSWR from "swr";
 import useAccessToken from "./useAccessToken";
-
-interface UserResponse {
-  area: string;
-  birth: string;
-  favorite: string;
-  gender: string;
-  introduction: string;
-  name: string;
-}
+import { User } from "@/libs/types";
 
 export default function useUser() {
   const navigate = useNavigate();
   const token = useAccessToken();
 
-  const { data, isLoading, error, mutate } = useSWR<UserResponse>("users", {
+  const { data, isLoading, error, mutate } = useSWR<User>("users", {
     fetcher: (url: string) =>
       fetch(`${API_ENDPOINT}/users`, {
         method: "GET",
@@ -55,6 +47,7 @@ export default function useUser() {
 
   return {
     user: data,
+    loading: isLoading,
     mutate,
   };
 }

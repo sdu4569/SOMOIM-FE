@@ -1,24 +1,19 @@
 import { useForm } from "react-hook-form";
-import useSWR from "swr";
-import { fetcher } from "@/page/more/editProfile/UpdateUserPage";
 import { Images } from "@/libs/Images";
 import { useState } from "react";
 import Overlay from "./Overlay";
+import usePostRequest from "@/hooks/usePostRequest";
 
 interface greetingFormData {
-  greeting?: string;
+  introduction?: string;
 }
 
 interface JoinClubProps {
   closeModal: () => void;
+  clubId: string;
 }
 
-export default function JoinClub({ closeModal }: JoinClubProps) {
-  const { data, error, isLoading } = useSWR(
-    "https://jsonplaceholder.typicode.com/users/1",
-    fetcher
-  );
-
+export default function JoinClub({ closeModal, clubId }: JoinClubProps) {
   const [secondModal, setSecondModal] = useState<Boolean>(false);
 
   const {
@@ -28,12 +23,18 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
     handleSubmit,
   } = useForm();
 
-  const onSubmit = (formData: greetingFormData) => {
+  const { mutate } = usePostRequest(`clubs/${clubId}/join`, {
+    authorized: true,
+  });
+
+  const onSubmit = async (formData: greetingFormData) => {
     console.log(formData);
-    if (formData.greeting?.length == 0) {
+    if (formData.introduction?.trim().length == 0) {
       setSecondModal(true);
     } else {
-      // axios.post("https://jsonplaceholder.typicode.com/users/1", formData);
+      const result = await mutate({
+        introduction: formData.introduction,
+      });
     }
   };
 
@@ -76,7 +77,7 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
             type="text"
             className="rounded-md p-2 w-full bg-gray-300 outline-none h-[40px] text-[12px] mt-2 mb-2"
             placeholder="가입인사를 작성해주세요!"
-            {...register("greeting")}
+            {...register("introduction")}
           />
           <div className="text-blue-500 flex divide-x w-full divide-gray-300 mt-2 mb-2">
             <button

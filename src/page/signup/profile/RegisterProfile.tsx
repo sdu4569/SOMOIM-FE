@@ -6,15 +6,19 @@ import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import { pageSlideIn } from "@/libs/variants";
 import EditRegion from "@/components/EditRegion";
+import usePostRequest from "@/hooks/usePostRequest";
+import useUser from "@/hooks/useUser";
+import Spinner from "@/components/Spinner";
 
 interface RegisterProfileFormData {
   name: string;
-  gender: any;
-  birthday: string;
-  location: string;
+  gender: string;
+  birth: string;
+  area: string;
 }
 
 export default function RegisterProfile() {
+  const { user, loading } = useUser();
   const {
     handleSubmit,
     register,
@@ -23,16 +27,39 @@ export default function RegisterProfile() {
     setValue,
   } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
+  const { mutate: updateUser } = usePostRequest("users", { authorized: true });
   const navigate = useNavigate();
-  const onSubmit = (data: RegisterProfileFormData) => {
-    console.log(data);
+  const onSubmit = async (data: RegisterProfileFormData) => {
     // to do : edit profile api call
-    navigate("/signup/interest");
+    const updateResponse = await updateUser(data);
+
+    if (updateResponse.ok) {
+      navigate("/signup/interest", {
+        replace: true,
+      });
+    } else {
+      alert("프로필 등록에 실패했습니다. 다시 시도해주세요.");
+    }
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
-  // to do : prevent direct access
+  // prevent direct access
+  useEffect(() => {
+    if (user && user.name) {
+      navigate("/clubs", {
+        replace: true,
+      });
+    }
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Spinner size="md" />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -85,25 +112,25 @@ export default function RegisterProfile() {
                   className="flex items-center justify-between rounded-md border h-full"
                 >
                   <label
-                    htmlFor="male"
+                    htmlFor="MALE"
                     className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                      selectedGender === "male" ? "bg-blue-500 text-white" : ""
+                      selectedGender === "MALE" ? "bg-blue-500 text-white" : ""
                     }`}
                   >
                     <p>남</p>
                     <input
                       {...register("gender", { required: true })}
                       type="radio"
-                      id="male"
+                      id="MALE"
                       name="gender"
-                      value={"male"}
+                      value={"MALE"}
                       className="hidden"
                     />
                   </label>
                   <label
-                    htmlFor="female"
+                    htmlFor="FEMALE"
                     className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                      selectedGender === "female"
+                      selectedGender === "FEMALE"
                         ? "bg-blue-500 text-white"
                         : ""
                     }`}
@@ -112,9 +139,9 @@ export default function RegisterProfile() {
                     <input
                       {...register("gender", { required: true })}
                       type="radio"
-                      id="female"
+                      id="FEMALE"
                       name="gender"
-                      value="female"
+                      value="FEMALE"
                       className="hidden"
                     />
                   </label>
@@ -122,33 +149,27 @@ export default function RegisterProfile() {
               </label>
             </div>
             <div className="flex justify-between space-x-2">
-              <label
-                htmlFor="birthday"
-                className="flex w-1/2 flex-col space-y-2"
-              >
+              <label htmlFor="birth" className="flex w-1/2 flex-col space-y-2">
                 <p>생일</p>
                 <input
-                  {...register("birthday", {
+                  {...register("birth", {
                     required: true,
                   })}
                   type="date"
-                  id="birthday"
+                  id="birth"
                   className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
-              <label
-                htmlFor="location"
-                className="flex w-1/2 flex-col space-y-2"
-              >
+              <label htmlFor="area" className="flex w-1/2 flex-col space-y-2">
                 <p>지역</p>
                 <input
                   onFocus={() => setInRegionModal(true)}
-                  {...register("location", {
+                  {...register("area", {
                     required: true,
                   })}
                   type="text"
                   disabled={inRegionModal}
-                  id="location"
+                  id="area"
                   className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
