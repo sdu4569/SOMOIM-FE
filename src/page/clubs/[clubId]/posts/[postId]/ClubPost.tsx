@@ -24,10 +24,12 @@ const enum ModalType {
 }
 
 let commentArr: any[] = [];
+let postLikeArr: any[] = [];
 
 export default function ClubPost() {
-  const userId: number = 1;
+  const userId: number = 4;
   const params = useParams();
+  const navigate = useNavigate();
   const formRef = useRef<HTMLFormElement>(null);
   const [like, setLike] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
@@ -35,6 +37,14 @@ export default function ClubPost() {
   const [selectKey, setSelectKey] = useState<number>();
   const [selectComment, setSelectComment] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<any[]>([]);
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setFocus,
+    setValue,
+  } = useForm<commentFormData>();
 
   //코멘트를 로컬저장소에서 들고옴
   const getComment = localStorage.getItem(
@@ -48,10 +58,10 @@ export default function ClubPost() {
     }
   }, []);
 
-  const navigate = useNavigate();
   const handleUpdate = () => {
     navigate(`/clubs/${params.clubId}/update_post/${params.postId}`);
   };
+
   const handleDelete = () => {
     navigate(-1);
   };
@@ -59,14 +69,6 @@ export default function ClubPost() {
   const closeModal = () => {
     setInModal(false);
   };
-
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    setFocus,
-    setValue,
-  } = useForm<commentFormData>();
 
   const clickHandler = () => {
     if (formRef.current) {
@@ -163,6 +165,68 @@ export default function ClubPost() {
   useEffect(() => {
     console.log(selectKey);
   }, [selectKey]);
+
+  // 좋아요 기능
+  const getPostLike = localStorage.getItem(
+    `${params.clubId}_${params.postId} like`
+  );
+
+  useEffect(() => {
+    if (getPostLike !== null) {
+      postLikeArr = JSON.parse(getPostLike);
+      const likeUserArr = postLikeArr.filter(
+        (item: { id: number }) => item.id == userId
+      );
+
+      if (likeUserArr.length !== 0) {
+        setLike(true);
+      } else {
+        setLike(false);
+      }
+    }
+  }, [getPostLike]);
+
+  const user = {
+    id: userId,
+  };
+
+  const likeClick = () => {
+    setLike((prev) => !prev);
+
+    if (getPostLike !== null) {
+      postLikeArr = JSON.parse(getPostLike);
+      console.log(postLikeArr);
+      //유저가 이미 좋아요를 눌렀다면?
+      if (
+        postLikeArr.filter((item: { id: number }) => item.id == userId)
+          .length !== 0
+      ) {
+        postLikeArr = postLikeArr.filter(
+          (item: { id: number }) => item.id !== userId
+        );
+        localStorage.setItem(
+          `${params.clubId}_${params.postId} like`,
+          JSON.stringify(postLikeArr)
+        );
+      }
+      //좋아요를 누르지 않았다면
+      else {
+        postLikeArr.unshift(user);
+        localStorage.setItem(
+          `${params.clubId}_${params.postId} like`,
+          JSON.stringify(postLikeArr)
+        );
+      }
+    }
+    // 글에 좋아요가 0일때
+    else {
+      postLikeArr.unshift(user);
+      localStorage.setItem(
+        `${params.clubId}_${params.postId} like`,
+        JSON.stringify(postLikeArr)
+      );
+    }
+  };
 
   return (
     <>
@@ -313,7 +377,7 @@ export default function ClubPost() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <button
-            onClick={() => setLike((prev) => !prev)}
+            onClick={likeClick}
             className={`border rounded-md p-2 text-sm border-black flex justify-center space-x-1 items-center ${
               like ? "text-blue-500" : "text-black"
             }`}
@@ -331,8 +395,19 @@ export default function ClubPost() {
         </div>
         <div className="border-y border-gray-300 mt-4 flex justify-between items-center pl-2">
           <div className="flex space-x-2 items-center">
-            <FontAwesomeIcon icon={faThumbsUp} className="-" />
-            <p className="py-3 text-sm">제일 먼저 좋아요를 눌러주세요!</p>
+            <FontAwesomeIcon icon={faThumbsUp} className="text-blue-500" />
+            <p className="py-3 text-sm">
+              {postLikeArr.length == 0 ? (
+                "제일 먼저 좋아요를 눌러주세요!"
+              ) : (
+                <>
+                  <p className="text-blue-500 inline-block">
+                    {postLikeArr.length}
+                  </p>
+                  <p className="inline-block">&nbsp;명이 좋아하셨습니다.</p>
+                </>
+              )}
+            </p>
           </div>
           <div className="flex items-center">
             <p className="text-sm">댓글 {commentList.length}개</p>
