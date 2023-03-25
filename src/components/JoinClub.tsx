@@ -74,7 +74,7 @@ export default function JoinClub({ closeModal }: JoinClubProps) {
         <form onSubmit={handleSubmit(onSubmit)} className="relative h-[56px] ">
           <input
             type="text"
-            className="rounded-md p-2 w-full bg-gray-300 outline-none h-[40px] text-[12px] mt-2 mb-2"
+            className="rounded-md p-2 w-full bg-gray-100 outline-none h-[40px] text-[12px] mt-2 mb-2"
             placeholder="가입인사를 작성해주세요!"
             {...register("greeting")}
           />
