@@ -6,13 +6,14 @@ import { InterestList } from "@/libs/InterestList";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import HeaderBackButton from "@/components/HeaderBackButton";
+import usePostRequest from "@/hooks/usePostRequest";
 
 interface RegisterInterestProps {
   onComplete?: (data: InterestFormData) => void;
 }
 
 export interface InterestFormData {
-  selectedInterests: string[];
+  favorite: string[];
 }
 
 export default function RegisterInterest({
@@ -26,29 +27,38 @@ export default function RegisterInterest({
     watch,
   } = useForm<InterestFormData>();
 
+  const { mutate: updateInterest, isLoading: updateLoading } = usePostRequest(
+    "users/favorite",
+    {
+      authorized: true,
+    }
+  );
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const onSubmit = (data: InterestFormData) => {
-    navigate("detail", {
-      state: { interests: data.selectedInterests },
+  const onSubmit = async (interestForm: InterestFormData) => {
+    const result = await updateInterest({
+      favorite: interestForm.favorite[0],
     });
+    console.log(result);
+    navigate("/activity");
   };
 
   useEffect(() => {
-    if (errors.selectedInterests) {
-      alert(errors.selectedInterests.message);
+    if (errors.favorite) {
+      alert(errors.favorite.message);
     }
-  }, [errors.selectedInterests]);
+  }, [errors.favorite]);
 
   useEffect(() => {
-    const selectedInterests = watch("selectedInterests");
+    const selectedInterests = watch("favorite");
 
     if (selectedInterests && selectedInterests.length > 7) {
       alert("관심사는 최대 7개까지 선택할 수 있습니다.");
-      setValue("selectedInterests", selectedInterests.slice(0, 7));
+      setValue("favorite", selectedInterests.slice(0, 7));
     }
-  }, [watch("selectedInterests")]);
+  }, [watch("favorite")]);
 
   useEffect(() => {
     console.log(location.state);
@@ -82,19 +92,19 @@ export default function RegisterInterest({
                 className="flex flex-col justify-center items-center"
               >
                 <input
-                  {...register("selectedInterests", {
+                  {...register("favorite", {
                     required: "적어도 한 개의 관심사를 선택해주세요.",
                   })}
                   type="checkbox"
                   id={item.title}
                   className="hidden"
-                  value={item.title}
+                  value={item.interest}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
-                    watch("selectedInterests") &&
-                    watch("selectedInterests").includes(item.title) &&
+                    watch("favorite") &&
+                    watch("favorite").includes(item.interest) &&
                     "border-blue-500"
                   }`}
                 />
