@@ -43,6 +43,7 @@ export default function Register() {
     usePostRequest("users/auth/email/send");
   const { mutate: createAccount, isLoading: createAccountLoading } =
     usePostRequest("users/auth/signup");
+  const { mutate: login } = usePostRequest("users/auth/login");
 
   const onVerifyClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -89,9 +90,10 @@ export default function Register() {
 
     if (response.ok) {
       // store token
-      navigate("/clubs");
+      await login({ email: data.email, password: data.password });
+      navigate("/register/profile");
     } else {
-      alert(response.message);
+      alert(response.data.detail);
     }
   };
 

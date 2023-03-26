@@ -34,8 +34,7 @@ export default function LoginForm() {
     if (!response.ok) {
       alert("로그인에 실패했습니다.");
     } else {
-      const { accessToken, accessTokenExpirationDateTime } =
-        await response.data;
+      const { accessToken, accessTokenExpirationDateTime } = response.data;
 
       setAccessToken(accessToken);
       setAccessTokenExpiration(accessTokenExpirationDateTime);
