@@ -43,17 +43,7 @@ const UpdateDetailPage = () => {
         {
           interest: (
             <div className="w-full h-full z-[200] absolute bg-white">
-              <InterestSelect
-                closeModal={closeModal}
-                maxSelect={7}
-                onComplete={(data) => {
-                  setClubInterest({
-                    name: data.selectedInterests,
-                    detail: [],
-                  });
-                  setModalType(ModalType.INTEREST_DETAIL);
-                }}
-              />
+              <InterestSelect closeModal={closeModal} maxSelect={7} />
             </div>
           ),
           interestDetail: clubInterest && (

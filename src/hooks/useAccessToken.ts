@@ -14,9 +14,9 @@ export default function useAccessToken() {
   useEffect(() => {
     if (!token || !tokenExpiration) {
       // need to login
-      navigate("/landing", {
-        replace: true,
-      });
+      // navigate("/landing", {
+      //   replace: true,
+      // });
     }
 
     if (tokenExpiration - Date.now() < 5000) {

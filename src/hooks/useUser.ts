@@ -10,7 +10,7 @@ export default function useUser() {
   const token = useAccessToken();
 
   const { data, isLoading, error, mutate } = useSWR<User>("users", {
-    fetcher: (url: string) =>
+    fetcher: () =>
       fetch(`${API_ENDPOINT}/users`, {
         method: "GET",
         headers: {

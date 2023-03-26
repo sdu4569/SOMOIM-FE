@@ -1,6 +1,5 @@
 import { API_ENDPOINT } from "@/App";
-import { accessTokenAtom, accessTokenExpirationAtom } from "./../libs/atoms";
-import { useRecoilValue } from "recoil";
+
 import { useState } from "react";
 import useAccessToken from "./useAccessToken";
 
