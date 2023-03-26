@@ -115,7 +115,7 @@ const InterestSearchPage = () => {
             </div>
 
             <main className="relative">
-              <div className="flex flex-wrap mt-3">
+              {/* <div className="flex flex-wrap mt-3">
                 {detailList.map((detail, idx) => {
                   return (
                     <div key={idx} className="pb-3 pr-3 mb-4 ">
@@ -138,7 +138,7 @@ const InterestSearchPage = () => {
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
               <div
                 className="mt-4 border-t pt-4 border-solid border-gray-400"
                 key={idx}
