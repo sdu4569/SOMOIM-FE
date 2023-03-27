@@ -52,7 +52,7 @@ export default function usePostRequest(
 
     if (response.status === 200) {
       const data = await response.json();
-      return { ok: true, data };
+      return data;
     }
 
     if (response.status === 201) {
@@ -61,17 +61,17 @@ export default function usePostRequest(
 
     if (response.status === 401) {
       const data = await response.json();
-      return { ok: false, data };
+      return data;
     }
 
     if (response.status === 403) {
       const data = await response.json();
-      return { ok: false, data };
+      return data;
     }
 
     if (response.status === 404) {
       const data = await response.json();
-      return { ok: false, data };
+      return data;
     }
 
     if (response.status === 500) {

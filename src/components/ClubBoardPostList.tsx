@@ -56,50 +56,59 @@ export default function ClubBoardPostList({
   }
 
   return (
-    <ul className="flex flex-col divide-gray-200">
-      {posts &&
-        posts.flat().map((post) => (
-          <Link
-            to={`/clubs/1/post/${post.id}`}
-            key={post.id}
-            className="py-2 border-b-4 border-gray-200 cursor-pointer"
-          >
-            <header className="flex justify-between items-center">
-              <div className="flex space-x-2 items-center ">
-                <div className="w-8 h-8 rounded-full bg-gray-500"></div>
-                <span>이름</span>
-              </div>
-              <div>
-                <p className="text-sm text-gray-400"> 2월 13일 오후 3:13</p>
-              </div>
-            </header>
-            <div className="h-24 py-2 border-b border-gray-300 flex justify-between items-start">
-              <p className="flex-1 line-clamp-4 pr-4 leading-5">{post.body}</p>
-              <div className="w-28 aspect-video bg-gray-500 rounded-lg"></div>
-            </div>
-            <div className="flex py-2 justify-between items-center">
-              <div className="flex space-x-4">
-                <div className="flex space-x-1 items-center">
-                  <FontAwesomeIcon icon={faThumbsUp} />
-                  <p className="text-sm ">좋아요 {post.id}</p>
+    <>
+      <ul className="flex flex-col divide-gray-200 space-y-8 mt-4">
+        {posts &&
+          posts.flat().map((post) => (
+            <Link
+              to={`/clubs/1/post/${post.id}`}
+              key={post.id}
+              className="py-2 cursor-pointer"
+            >
+              <header className="flex justify-between items-center">
+                <div className="flex space-x-2 items-center ">
+                  <div className="w-8 h-8 rounded-full bg-gray-500"></div>
+                  <span>이름</span>
                 </div>
-                <div className="flex space-x-1 items-center">
-                  <FontAwesomeIcon icon={faMessage} />
-                  <p className="text-sm ">댓글 1</p>
+                <div>
+                  <p className="text-sm text-gray-400"> 2일 전</p>
+                </div>
+              </header>
+              <div className="py-4 flex justify-between items-start">
+                <div className="flex flex-col flex-1 space-y-2">
+                  <p className="text-blue-500 pr-4 line-clamp-1">
+                    {post.title}
+                  </p>
+                  <p className="flex-1 line-clamp-3 pr-4 leading-5">
+                    {post.body}
+                  </p>
+                </div>
+                <div className="w-28 aspect-video bg-gray-500 rounded-lg"></div>
+              </div>
+              <div className="flex py-2 justify-between items-center border-y-2 border-gray-200">
+                <div className="flex space-x-4">
+                  <div className="flex space-x-1 items-center">
+                    <FontAwesomeIcon icon={faThumbsUp} />
+                    <p className="text-sm ">좋아요 {post.id}</p>
+                  </div>
+                  <div className="flex space-x-1 items-center">
+                    <FontAwesomeIcon icon={faMessage} />
+                    <p className="text-sm ">댓글 1</p>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-gray-500 text-sm ">가입인사</p>
                 </div>
               </div>
-              <div>
-                <p className="text-gray-500 text-sm ">가입인사</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+      </ul>
       <div
         ref={targetRef}
         className={`w-full flex justify-center ${isIntersecting && "pt-2"}`}
       >
         {isValidating ? <Spinner size="md" /> : null}
       </div>
-    </ul>
+    </>
   );
 }
