@@ -12,7 +12,6 @@ import {
 export default function KakaoCallback() {
   const location = useLocation();
   const navigate = useNavigate();
-  const setLoginState = useSetRecoilState(loginState);
   const setAccessTokenAtom = useSetRecoilState(accessTokenAtom);
   const setAccessTokenExpiration = useSetRecoilState(accessTokenExpirationAtom);
 
@@ -40,7 +39,6 @@ export default function KakaoCallback() {
           navigate("/landing");
           return;
         }
-        setLoginState(true);
         setAccessTokenAtom(data.accessToken);
         setAccessTokenExpiration(
           new Date(data.accessTokenExpirationDateTime).getTime()

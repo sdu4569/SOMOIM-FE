@@ -10,16 +10,10 @@ import { useEffect } from "react";
 const MorePage = () => {
   const { user } = useUser();
 
-  useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
-  }, [user]);
-
   return (
     <div className="h-full py-16 overflow-scroll px-4">
       <PageHeader>
-        <h2 className="text-xl">더보기</h2>
+        <h2 className="text-xl">더 보기</h2>
       </PageHeader>
 
       <main>

@@ -5,11 +5,18 @@ import useSWR from "swr";
 import useAccessToken from "./useAccessToken";
 import { User } from "@/libs/types";
 
+interface UserResponse {
+  ok: boolean;
+  data?: User;
+  code?: number;
+  message?: string;
+}
+
 export default function useUser() {
   const navigate = useNavigate();
   const token = useAccessToken();
 
-  const { data, isLoading, error, mutate } = useSWR<User>("users", {
+  const { data, isLoading, error, mutate } = useSWR<UserResponse>("users", {
     fetcher: (url: string) =>
       fetch(`${API_ENDPOINT}/users`, {
         method: "GET",
@@ -22,13 +29,14 @@ export default function useUser() {
 
   useEffect(() => {
     if (!isLoading) {
-      if (!data) {
+      if (!data.ok) {
+        alert(data.message);
         navigate("/landing", {
           replace: true,
         });
         return;
       }
-      if (!data?.name) {
+      if (data.data && !data.data.name) {
         alert("프로필을 설정해주세요.");
         navigate("/more/editProfile", {
           replace: true,
@@ -46,7 +54,7 @@ export default function useUser() {
   }, [data, isLoading, error]);
 
   return {
-    user: data,
+    user: data?.data,
     loading: isLoading,
     mutate,
   };

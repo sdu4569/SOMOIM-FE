@@ -4,6 +4,7 @@ import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { useEffect, useRef } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "./Spinner";
+import ClubSkeleton from "./ClubSkeleton";
 
 const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
 
@@ -35,15 +36,13 @@ export default function ClubsList() {
     }
   }, [isIntersecting]);
 
-  useEffect(() => {
-    if (data && data.length) {
-      console.log(data);
-    }
-  }, [data]);
-
   if (isLoading) {
     return (
-      <div className="flex h-full justify-center py-20">불러 오는 중...</div>
+      <ul className="flex flex-col space-y-5 mt-4 px-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <ClubSkeleton key={i} />
+        ))}
+      </ul>
     );
   }
 

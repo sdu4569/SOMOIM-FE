@@ -3,16 +3,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import { LoginResponse } from "@/libs/types";
 import { useSetRecoilState } from "recoil";
-import {
-  accessTokenAtom,
-  accessTokenExpirationAtom,
-  loginState,
-} from "@/libs/atoms";
+import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
 
 export default function GoogleCallback() {
   const location = useLocation();
   const navigate = useNavigate();
-  const setLoginState = useSetRecoilState(loginState);
   const setAccessTokenAtom = useSetRecoilState(accessTokenAtom);
   const setAccessTokenExpiration = useSetRecoilState(accessTokenExpirationAtom);
 
@@ -34,12 +29,10 @@ export default function GoogleCallback() {
         return res.json();
       })
       .then((data: LoginResponse) => {
-        setLoginState(true);
         setAccessTokenAtom(data.accessToken);
         setAccessTokenExpiration(
           new Date(data.accessTokenExpirationDateTime).getTime()
         );
-        console.log(data);
         navigate("/clubs");
       })
       .catch((e) => {

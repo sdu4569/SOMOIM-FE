@@ -24,7 +24,6 @@ export default function ClubEditPage() {
   useEffect(() => {
     if (banner && banner.length > 0) {
       const file = banner[0];
-      console.log(file);
       setBannerPreview(URL.createObjectURL(file));
     }
   }, [banner]);

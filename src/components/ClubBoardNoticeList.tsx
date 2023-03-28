@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import SkeletonBar from "./SkeletonBar";
 import Spinner from "./Spinner";
 
 export default function ClubBoardNoticeList() {
@@ -16,9 +17,14 @@ export default function ClubBoardNoticeList() {
 
   if (noticeLoading) {
     return (
-      <div className="w-full h-20 justify-center items-center flex">
-        <Spinner size="sm" />
-      </div>
+      <ul className="flex flex-col divide-y-[1px] divide-gray-300 mt-2">
+        {[1, 2, 3].map((i) => (
+          <li key={i} className="flex space-x-2 py-2">
+            <SkeletonBar className="w-10" />
+            <SkeletonBar className="w-60" />
+          </li>
+        ))}
+      </ul>
     );
   }
 
