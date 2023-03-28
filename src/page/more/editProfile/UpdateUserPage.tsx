@@ -25,7 +25,7 @@ export interface userFormData {
   gender: string;
   introduction: string;
   name: string;
-  profileUrl?: string;
+  profileUrl: FileList;
 }
 
 const UpdateUserPage = () => {
@@ -50,6 +50,17 @@ const UpdateUserPage = () => {
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
+  useEffect(() => {
+    console.log(watch("profileUrl"));
+    if (watch("profileUrl")[0]) {
+      const file = URL.createObjectURL(watch("profileUrl")[0]);
+      const previewImage = document.querySelector(
+        "#previewImage"
+      ) as HTMLInputElement;
+      previewImage.src = file;
+    }
+  }, [watch("profileUrl")]);
+
   // populate form with user data
   useEffect(() => {
     if (user) {
@@ -58,40 +69,20 @@ const UpdateUserPage = () => {
       setValue("name", user.name);
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
-
-      // to do : profileUrl
     }
   }, [user]);
 
-  useEffect(() => {
-    // 이미지 미리보기
-    function readImage(input: HTMLInputElement) {
-      if (input.files && input.files[0]) {
-        const reader = new FileReader();
-
-        reader.onload = (e: any) => {
-          const previewImage = document.querySelector(
-            "#previewImage"
-          ) as HTMLInputElement;
-          previewImage.src = e.target.result;
-        };
-
-        reader.readAsDataURL(input.files[0]);
-      }
-    }
-
-    const inputImage = document.querySelector("#file") as HTMLInputElement;
-    inputImage.addEventListener("change", (e: any) => {
-      readImage(e.target);
-    });
-  }, []);
-
-  const clickHandler = (e: any) => {
+  const clickHandler = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
       );
     }
+  };
+
+  const handleDelete = () => {
+    const fileListArr = Array.from(watch("profileUrl"));
+    console.log(fileListArr);
   };
 
   const onSubmit = async (userForm: userFormData) => {
@@ -127,7 +118,11 @@ const UpdateUserPage = () => {
             저장
           </button>
         </PageHeader>
-        <form onSubmit={handleSubmit(onSubmit)} ref={formRef} className="ml-1">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          ref={formRef}
+          className="ml-1 relative"
+        >
           <label htmlFor="file" className="inline-block w-14 h-14">
             <img
               src={Images.user}
@@ -142,11 +137,19 @@ const UpdateUserPage = () => {
             />
           </label>
           <input
-            type="image/*"
+            type="file"
             id="file"
             className="hidden"
             {...register("profileUrl")}
           />
+          <div
+            onClick={() => handleDelete()}
+            className={`text-[12px] inline-block absolute top-5 right-0 underline text-gray-400 cursor-pointer ${
+              watch("profileUrl")?.length !== 0 ? "" : "hidden"
+            }`}
+          >
+            삭제
+          </div>
           <div className="mt-6 h-10 relative">
             <input
               type="text"

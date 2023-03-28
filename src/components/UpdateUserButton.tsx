@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import useSWR from "swr";
-import { fetcher } from "@/page/more/editProfile/UpdateUserPage";
+
 import { Images } from "@/libs/Images";
 import { User } from "@/libs/types";
 
