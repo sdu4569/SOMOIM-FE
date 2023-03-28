@@ -37,9 +37,9 @@ export default function useUser() {
       }
       if (error) {
         console.log(error);
-        navigate("/landing", {
-          replace: true,
-        });
+        // navigate("/landing", {
+        //   replace: true,
+        // });
         return;
       }
     }

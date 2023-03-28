@@ -21,7 +21,7 @@ export default function InterestSelect({
   maxSelect,
 }: InterestSelectProps) {
   const { mutate: updateInterest, isLoading: updateLoading } = usePostRequest(
-    "users/favorite",
+    "users/favorites",
     {
       authorized: true,
     }
@@ -53,9 +53,7 @@ export default function InterestSelect({
   }, [watch("favorite")]);
 
   const onSubmit = async (interestForm: interestFormData) => {
-    const result = await updateInterest({
-      favorite: interestForm.favorite[0],
-    });
+    const result = await updateInterest(interestForm);
     console.log(result);
     closeModal();
   };

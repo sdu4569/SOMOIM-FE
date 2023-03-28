@@ -29,6 +29,8 @@ export interface userFormData {
 }
 
 const UpdateUserPage = () => {
+  const [checkFile, setCheckFile] = useState<Boolean>(false);
+  const [fileUrl, setFileUrl] = useState<string>(Images.user);
   const { user, loading } = useUser();
   const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
     "users",
@@ -50,13 +52,16 @@ const UpdateUserPage = () => {
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
+  const fileInput = useRef<HTMLInputElement | null>(null);
+  const { ref } = register("profileUrl");
+
+  const previewImage = document.querySelector(
+    "#previewImage"
+  ) as HTMLInputElement;
   useEffect(() => {
-    console.log(watch("profileUrl"));
     if (watch("profileUrl")[0]) {
+      setCheckFile(true);
       const file = URL.createObjectURL(watch("profileUrl")[0]);
-      const previewImage = document.querySelector(
-        "#previewImage"
-      ) as HTMLInputElement;
       previewImage.src = file;
     }
   }, [watch("profileUrl")]);
@@ -81,23 +86,33 @@ const UpdateUserPage = () => {
   };
 
   const handleDelete = () => {
-    const fileListArr = Array.from(watch("profileUrl"));
-    console.log(fileListArr);
+    if (fileInput.current == null) return;
+
+    fileInput.current.value = "";
+    previewImage.src = Images.user;
+    setCheckFile(false);
+    console.log(watch("profileUrl"));
   };
 
   const onSubmit = async (userForm: userFormData) => {
     console.log(userForm);
+    if (userForm.profileUrl[0]) {
+      const file = URL.createObjectURL(userForm.profileUrl[0]);
+      setFileUrl(file);
+    }
     const result = await updateUser({
       area: userForm.area,
       birth: userForm.birth,
       name: userForm.name,
       gender: userForm.gender,
       introduction: userForm.introduction,
+      profileUrl: fileUrl,
     });
+    console.log(fileUrl);
     console.log(result);
-    navigate("/more", {
-      replace: true,
-    });
+    // navigate("/more", {
+    //   replace: true,
+    // });
   };
 
   return (
@@ -141,11 +156,15 @@ const UpdateUserPage = () => {
             id="file"
             className="hidden"
             {...register("profileUrl")}
+            ref={(e) => {
+              ref(e);
+              fileInput.current = e;
+            }}
           />
           <div
-            onClick={() => handleDelete()}
+            onClick={handleDelete}
             className={`text-[12px] inline-block absolute top-5 right-0 underline text-gray-400 cursor-pointer ${
-              watch("profileUrl")?.length !== 0 ? "" : "hidden"
+              checkFile ? "" : "hidden"
             }`}
           >
             삭제
