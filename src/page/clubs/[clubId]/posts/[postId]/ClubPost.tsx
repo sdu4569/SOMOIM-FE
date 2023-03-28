@@ -396,18 +396,18 @@ export default function ClubPost() {
         <div className="border-y border-gray-300 mt-4 flex justify-between items-center pl-2">
           <div className="flex space-x-2 items-center">
             <FontAwesomeIcon icon={faThumbsUp} className="text-blue-500" />
-            <p className="py-3 text-sm">
+            <div className="py-3 text-sm">
               {postLikeArr.length == 0 ? (
                 "제일 먼저 좋아요를 눌러주세요!"
               ) : (
                 <>
-                  <p className="text-blue-500 inline-block">
+                  <div className="text-blue-500 inline-block">
                     {postLikeArr.length}
-                  </p>
-                  <p className="inline-block">&nbsp;명이 좋아하셨습니다.</p>
+                  </div>
+                  <div className="inline-block">&nbsp;명이 좋아하셨습니다.</div>
                 </>
               )}
-            </p>
+            </div>
           </div>
           <div className="flex items-center">
             <p className="text-sm">댓글 {commentList.length}개</p>

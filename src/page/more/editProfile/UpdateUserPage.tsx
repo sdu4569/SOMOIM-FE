@@ -31,6 +31,8 @@ export interface userFormData {
 }
 
 const UpdateUserPage = () => {
+  const [checkFile, setCheckFile] = useState<Boolean>(false);
+  const [fileUrl, setFileUrl] = useState<string>(Images.user);
   const { user, loading } = useUser();
   const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
     "users",
@@ -53,6 +55,20 @@ const UpdateUserPage = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
+
+  const fileInput = useRef<HTMLInputElement | null>(null);
+  const { ref } = register("profileUrl");
+
+  const previewImage = document.querySelector(
+    "#previewImage"
+  ) as HTMLInputElement;
+  useEffect(() => {
+    if (watch("profileUrl")[0]) {
+      setCheckFile(true);
+      const file = URL.createObjectURL(watch("profileUrl")[0]);
+      previewImage.src = file;
+    }
+  }, [watch("profileUrl")]);
 
   // populate form with user data
   useEffect(() => {
@@ -84,7 +100,17 @@ const UpdateUserPage = () => {
     }
   };
 
+  const handleDelete = () => {
+    if (fileInput.current == null) return;
+
+    fileInput.current.value = "";
+    previewImage.src = Images.user;
+    setCheckFile(false);
+    console.log(watch("profileUrl"));
+  };
+
   const onSubmit = async (userForm: userFormData) => {
+
     let profileUrl = null;
 
     if (avatar && avatar.length > 0) {
@@ -93,7 +119,6 @@ const UpdateUserPage = () => {
       console.log(result);
       profileUrl = result;
     }
-
     const result = await updateUser({
       area: userForm.area,
       birth: userForm.birth,
@@ -102,10 +127,11 @@ const UpdateUserPage = () => {
       introduction: userForm.introduction,
       profileUrl,
     });
+    console.log(fileUrl);
     console.log(result);
-    navigate("/more", {
-      replace: true,
-    });
+    // navigate("/more", {
+    //   replace: true,
+    // });
   };
 
   return (
@@ -129,6 +155,7 @@ const UpdateUserPage = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           ref={formRef}
+
           className="flex flex-col"
         >
           <div className="flex justify-center">
@@ -170,6 +197,13 @@ const UpdateUserPage = () => {
                 {...register("avatar")}
               />
             </label>
+          <div
+            onClick={handleDelete}
+            className={`text-[12px] inline-block absolute top-5 right-0 underline text-gray-400 cursor-pointer ${
+              checkFile ? "" : "hidden"
+            }`}
+          >
+            삭제</div>
           </div>
           <div className="mt-6 h-10 relative">
             <input

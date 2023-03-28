@@ -69,8 +69,6 @@ const PageNavigator = () => {
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />
 
-      <Route path="/more/editInterest" element={<UpdateDetailPage />} />
-      <Route path="/more/editInterest/update" element={<RegisterInterest />} />
       <Route
         path="/more/editInterest/update/detail"
         element={<RegisterInterestDetail />}
