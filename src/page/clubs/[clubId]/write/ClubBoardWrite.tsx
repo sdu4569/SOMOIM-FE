@@ -2,19 +2,21 @@ import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
+import usePostRequest from "@/hooks/usePostRequest";
+import useSWR from "swr";
+import useUploadImage from "@/hooks/useUploadImage";
+import Spinner from "@/components/Spinner";
 
 interface writeFormData {
   title: string;
   contents: string;
   category: string;
-  firstPic: FileList;
-  secondPic: FileList;
-  thirdPic: FileList;
+  image: FileList;
 }
 
 const textObject = {
@@ -28,8 +30,10 @@ type categoryType = keyof typeof textObject;
 
 export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [inJoinModal, setInJoinModal] = useState<boolean>(false);
+  const [categoryModal, setCategoryModal] = useState<boolean>(false);
   const [category, setCategory] = useState<categoryType>("free");
+  const params = useParams();
+  const navigate = useNavigate();
 
   const {
     watch,
@@ -38,6 +42,17 @@ export default function ClubBoardWrite() {
     handleSubmit,
     setValue,
   } = useForm<writeFormData>();
+
+  const {
+    uploadImage,
+    isLoading: imageUploadLoading,
+    error,
+  } = useUploadImage();
+
+  const { mutate: uploadPost, isLoading: uploadPostLoading } = usePostRequest(
+    `clubs/${params.clubId}/boards`,
+    { authorized: true }
+  );
 
   const { ref } = register("contents");
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -58,55 +73,60 @@ export default function ClubBoardWrite() {
   };
 
   useEffect(() => {
-    setInJoinModal(true);
+    setCategoryModal(true);
   }, []);
 
   useEffect(() => {
-    // 첫번째 이미지 미리보기
-    if (watch("firstPic")[0]) {
-      const file = URL.createObjectURL(watch("firstPic")[0]);
+    // 이미지 미리보기
+    if (watch("image")[0]) {
+      const file = URL.createObjectURL(watch("image")[0]);
       const previewImage = document.querySelector(
         "#firstPreview"
       ) as HTMLInputElement;
       previewImage.src = file;
     }
+  }, [watch("image")]);
 
-    // 두번째 이미지 미리보기
-    if (watch("secondPic")[0]) {
-      const file = URL.createObjectURL(watch("secondPic")[0]);
-      const previewImage = document.querySelector(
-        "#secondPreview"
-      ) as HTMLInputElement;
-      previewImage.src = file;
-    }
-    // 세번째 이미지 미리보기
-    if (watch("thirdPic")[0]) {
-      const file = URL.createObjectURL(watch("thirdPic")[0]);
-      const previewImage = document.querySelector(
-        "#thirdPreview"
-      ) as HTMLInputElement;
-      previewImage.src = file;
-    }
-  }, [watch("firstPic"), watch("secondPic"), watch("thirdPic")]);
-
-  const onSubmit = (writeForm: writeFormData) => {
-    console.log(category);
+  const onSubmit = async (writeForm: writeFormData) => {
     writeForm.category = category;
     console.log(writeForm);
 
-    // navigate(-1);
+    let imageUrl = null;
+
+    if (writeForm.image[0]) {
+      imageUrl = await uploadImage(writeForm.image[0]);
+    }
+
+    const result = await uploadPost({
+      title: writeForm.title,
+      content: writeForm.contents,
+      category: "자유",
+      imageUrl,
+    });
+
+    if (result.ok) {
+      navigate("/clubs/" + params.clubId + "/post/" + result.data.id, {
+        replace: true,
+      });
+    } else {
+      alert(result.message);
+    }
   };
 
   const handleClick = (e: any) => {
     setCategory(e.currentTarget.dataset.category);
-    console.log(e.currentTarget.dataset);
-    setInJoinModal(false);
+    setCategoryModal(false);
   };
 
   return (
     <>
-      {inJoinModal && (
-        <Overlay onClick={() => setInJoinModal(false)}>
+      {(imageUploadLoading || uploadPostLoading) && (
+        <Overlay>
+          <Spinner size="lg" />
+        </Overlay>
+      )}
+      {categoryModal && (
+        <Overlay onClick={() => setCategoryModal(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
             className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col"
@@ -214,7 +234,7 @@ export default function ClubBoardWrite() {
         <div className="flex mt-2 justify-between">
           <div className="flex space-x-2 ">
             <label
-              htmlFor="first"
+              htmlFor="image"
               className="relative border rounded-md p-2 border-gray-300  w-[65px] h-[65px]"
             >
               <img
@@ -226,43 +246,10 @@ export default function ClubBoardWrite() {
             </label>
             <input
               type="file"
-              id="first"
+              accept="image/*"
+              id="image"
               className="hidden absolute file"
-              {...register("firstPic")}
-            />
-            <label
-              htmlFor="second"
-              className="relative border rounded-md p-2 border-gray-300  w-[65px] h-[65px]"
-            >
-              <img
-                src={Images.preview}
-                alt="두번째 미리보기"
-                className="w-[49px] h-[49px] rounded-md"
-                id="secondPreview"
-              />
-            </label>
-            <input
-              type="file"
-              id="second"
-              className="hidden absolute file"
-              {...register("secondPic")}
-            />
-            <label
-              htmlFor="third"
-              className="relative border rounded-md p-2 border-gray-300  w-[65px] h-[65px]"
-            >
-              <img
-                src={Images.preview}
-                alt="세번째 미리보기"
-                className="w-[49px] h-[49px] rounded-md"
-                id="thirdPreview"
-              />
-            </label>
-            <input
-              type="file"
-              id="third"
-              className="hidden absolute file"
-              {...register("thirdPic")}
+              {...register("image")}
             />
           </div>
           <p className="flex items-end text-gray-400">

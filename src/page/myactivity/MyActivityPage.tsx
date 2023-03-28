@@ -51,7 +51,7 @@ const MyActivityPage = () => {
   return (
     <div className="h-full py-16 px-4 overflow-scroll">
       <PageHeader>
-        <h2 className="text-xl">내활동</h2>
+        <h2 className="text-xl">내 활동</h2>
         <div className="flex space-x-8 items-center">
           <Link to="/search">
             <FontAwesomeIcon icon={faSearch} size="lg" />

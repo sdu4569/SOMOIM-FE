@@ -13,6 +13,8 @@ import useUser from "@/hooks/useUser";
 import { AnimatePresence } from "framer-motion";
 import EditRegion from "@/components/EditRegion";
 import usePostRequest from "@/hooks/usePostRequest";
+import useUploadImage from "@/hooks/useUploadImage";
+import Avatar from "@/components/Avatar";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -25,7 +27,7 @@ export interface userFormData {
   gender: string;
   introduction: string;
   name: string;
-  profileUrl: FileList;
+  avatar: FileList;
 }
 
 const UpdateUserPage = () => {
@@ -38,6 +40,8 @@ const UpdateUserPage = () => {
       authorized: true,
     }
   );
+  const { uploadImage, isLoading } = useUploadImage();
+  const [avatarPreview, setAvatarPreview] = useState("");
 
   const navigate = useNavigate();
   const {
@@ -74,10 +78,21 @@ const UpdateUserPage = () => {
       setValue("name", user.name);
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
+      // to do : avatar
+      console.log(user);
     }
   }, [user]);
 
-  const clickHandler = () => {
+  const avatar = watch("avatar");
+
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
+  const clickHandler = (e: any) => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
@@ -95,10 +110,14 @@ const UpdateUserPage = () => {
   };
 
   const onSubmit = async (userForm: userFormData) => {
-    console.log(userForm);
-    if (userForm.profileUrl[0]) {
-      const file = URL.createObjectURL(userForm.profileUrl[0]);
-      setFileUrl(file);
+
+    let profileUrl = null;
+
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      const result = await uploadImage(file);
+      console.log(result);
+      profileUrl = result;
     }
     const result = await updateUser({
       area: userForm.area,
@@ -106,7 +125,7 @@ const UpdateUserPage = () => {
       name: userForm.name,
       gender: userForm.gender,
       introduction: userForm.introduction,
-      profileUrl: fileUrl,
+      profileUrl,
     });
     console.log(fileUrl);
     console.log(result);
@@ -136,38 +155,55 @@ const UpdateUserPage = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           ref={formRef}
-          className="ml-1 relative"
+
+          className="flex flex-col"
         >
-          <label htmlFor="file" className="inline-block w-14 h-14">
-            <img
-              src={Images.user}
-              alt="유저 이미지"
-              className="w-14 h-14 cursor-pointer rounded-full bg-gray-200"
-              id="previewImage"
-            />
-            <img
-              src={Images.camera}
-              alt="유저 프로필 변경"
-              className="w-5 cursor-pointer rounded-full relative top-[-20px] left-[36px] "
-            />
-          </label>
-          <input
-            type="file"
-            id="file"
-            className="hidden"
-            {...register("profileUrl")}
-            ref={(e) => {
-              ref(e);
-              fileInput.current = e;
-            }}
-          />
+          <div className="flex justify-center">
+            <label
+              htmlFor="file"
+              className="inline-block w-20 aspect-square relative cursor-pointer"
+            >
+              {avatarPreview ? (
+                <img
+                  src={avatarPreview}
+                  alt="유저 이미지"
+                  className={`w-full aspect-square rounded-full bg-gray-200 ${
+                    loading && "animate-pulse"
+                  }`}
+                  id="previewImage"
+                />
+              ) : user?.profileUrl ? (
+                <Avatar size="lg" src={user.profileUrl} />
+              ) : (
+                <img
+                  src={Images.user}
+                  alt="유저 이미지"
+                  className={`w-full aspect-square rounded-full bg-gray-200 ${
+                    loading && "animate-pulse"
+                  }`}
+                  id="previewImage"
+                />
+              )}
+              <img
+                src={Images.camera}
+                alt="유저 프로필 변경"
+                className="w-5 rounded-full absolute bottom-0 right-0"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                id="file"
+                className="hidden"
+                {...register("avatar")}
+              />
+            </label>
           <div
             onClick={handleDelete}
             className={`text-[12px] inline-block absolute top-5 right-0 underline text-gray-400 cursor-pointer ${
               checkFile ? "" : "hidden"
             }`}
           >
-            삭제
+            삭제</div>
           </div>
           <div className="mt-6 h-10 relative">
             <input
