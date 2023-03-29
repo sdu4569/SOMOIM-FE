@@ -15,6 +15,8 @@ import EditRegion from "@/components/EditRegion";
 import usePostRequest from "@/hooks/usePostRequest";
 import useUploadImage from "@/hooks/useUploadImage";
 import Avatar from "@/components/Avatar";
+import Overlay from "@/components/Overlay";
+import Spinner from "@/components/Spinner";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -38,7 +40,7 @@ const UpdateUserPage = () => {
       authorized: true,
     }
   );
-  const { uploadImage, isLoading } = useUploadImage();
+  const { uploadImage, isLoading: uploadImageLoading } = useUploadImage();
   const [avatarPreview, setAvatarPreview] = useState("");
 
   const navigate = useNavigate();
@@ -85,13 +87,13 @@ const UpdateUserPage = () => {
   };
 
   const onSubmit = async (userForm: userFormData) => {
-    let profileUrl = null;
+    let profileUrl: string | null = user?.profileUrl || null;
 
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
       const result = await uploadImage(file);
       console.log(result);
-      profileUrl = result;
+      profileUrl = result || null;
     }
 
     const result = await updateUser({
@@ -110,6 +112,12 @@ const UpdateUserPage = () => {
 
   return (
     <>
+      {updateLoading ||
+        (uploadImageLoading && (
+          <Overlay>
+            <Spinner size="lg" />
+          </Overlay>
+        ))}
       <AnimatePresence>
         {inRegionModal && (
           <EditRegion setInputValue={setValue} closeModal={closeModal} />

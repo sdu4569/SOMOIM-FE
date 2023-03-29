@@ -3,6 +3,7 @@ import { Images } from "@/libs/Images";
 import { useState } from "react";
 import Overlay from "./Overlay";
 import usePostRequest from "@/hooks/usePostRequest";
+import Spinner from "./Spinner";
 
 interface greetingFormData {
   introduction?: string;
@@ -23,18 +24,23 @@ export default function JoinClub({ closeModal, clubId }: JoinClubProps) {
     handleSubmit,
   } = useForm();
 
-  const { mutate } = usePostRequest(`clubs/${clubId}/join`, {
+  const { mutate, isLoading } = usePostRequest(`clubs/${clubId}/join`, {
     authorized: true,
   });
 
   const onSubmit = async (formData: greetingFormData) => {
-    console.log(formData);
     if (formData.introduction?.trim().length == 0) {
       setSecondModal(true);
+      return;
+    }
+
+    const result = await mutate();
+
+    if (result.ok) {
+      alert("가입되었습니다.");
+      closeModal();
     } else {
-      const result = await mutate({
-        introduction: formData.introduction,
-      });
+      alert(result.message);
     }
   };
 
@@ -90,7 +96,7 @@ export default function JoinClub({ closeModal, clubId }: JoinClubProps) {
               type="submit"
               className="flex justify-center items-center flex-1"
             >
-              확인
+              {isLoading ? <Spinner size="sm" /> : "가입"}
             </button>
           </div>
         </form>

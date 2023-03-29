@@ -27,6 +27,7 @@ import FavoriteClubPage from "./page/more/favorite/FavoriteClubPage";
 import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
 import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
 import UpdateClubPostPage from "./page/UpdateClubPostPage";
+import ClubGalleryUpload from "./page/clubs/[clubId]/upload/ClubGalleryUpload";
 
 const PageNavigator = () => {
   return (
@@ -65,6 +66,7 @@ const PageNavigator = () => {
 
       <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
+      <Route path="/clubs/:clubId/upload" element={<ClubGalleryUpload />} />
 
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />

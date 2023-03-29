@@ -54,7 +54,6 @@ export default function ClubBoardPostList({
       </div>
     );
   }
-
   return (
     <>
       <ul className="flex flex-col divide-gray-200 space-y-8 mt-4">

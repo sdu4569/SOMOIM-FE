@@ -31,7 +31,7 @@ export default function usePostRequest(
     });
   }
 
-  const mutate = async function (data: any): Promise<APIResponse> {
+  const mutate = async function (data?: any): Promise<APIResponse> {
     if (isLoading) return Promise.reject("Already loading");
 
     setIsLoading(true);
@@ -44,7 +44,7 @@ export default function usePostRequest(
           Authorization: "Bearer " + token,
         }),
       },
-      body: JSON.stringify(data),
+      body: data && JSON.stringify(data),
     });
 
     setIsLoading(false);
