@@ -4,6 +4,7 @@ import { useState } from "react";
 import FloatButton from "@/components/FloatButton";
 import ClubBoardNoticeList from "@/components/ClubBoardNoticeList";
 import ClubBoardPostList from "@/components/ClubBoardPostList";
+import useUser from "@/hooks/useUser";
 
 export default function ClubBoard() {
   const [category, setCategory] = useState("all");

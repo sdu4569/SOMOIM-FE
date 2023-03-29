@@ -8,11 +8,12 @@ import {
   faHeart as solidHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import useUser from "@/hooks/useUser";
 
 export default function ClubDetailInfo({
   like,
@@ -23,6 +24,11 @@ export default function ClubDetailInfo({
 }) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const params = useParams();
+  const { user } = useUser();
+
+  useEffect(() => {
+    console.log(user);
+  }, []);
   return (
     <>
       {inJoinModal && params.clubId && (
@@ -47,6 +53,13 @@ export default function ClubDetailInfo({
               <span className="text-xs">멤버 237</span>
             </div>
           </div>
+          <Link to={"./edit"}>
+            <div
+              className={`text-[14px] inline-block underline text-gray-400 `}
+            >
+              수정
+            </div>
+          </Link>
         </div>
         <section className="h-[500px] bg-blue-500 flex justify-center items-center">
           클럽 소개

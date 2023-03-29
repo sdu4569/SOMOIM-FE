@@ -9,6 +9,9 @@ import { useEffect } from "react";
 
 const MorePage = () => {
   const { user } = useUser();
+  useEffect(() => {
+    console.log(user);
+  }, []);
 
   return (
     <div className="h-full py-16 overflow-scroll px-4">
@@ -18,7 +21,7 @@ const MorePage = () => {
 
       <main>
         <UpdateUserButton user={user} />
-        <UpdateInterestButton />
+        <UpdateInterestButton user={user} />
         <InterestClubButton />
         <RecentClubButton />
       </main>

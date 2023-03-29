@@ -25,11 +25,11 @@ export default function usePostRequest(
   const token = useAccessToken();
   const navigate = useNavigate();
 
-  if (authorized && !token) {
-    navigate("/landing", {
-      replace: true,
-    });
-  }
+  // if (authorized && !token) {
+  //   navigate("/landing", {
+  //     replace: true,
+  //   });
+  // }
 
   const mutate = async function (data?: any): Promise<APIResponse> {
     if (isLoading) return Promise.reject("Already loading");

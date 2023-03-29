@@ -43,7 +43,7 @@ export default function Register() {
     usePostRequest("users/auth/email/send");
   const { mutate: createAccount, isLoading: createAccountLoading } =
     usePostRequest("users/auth/signup");
-  const { mutate: login } = usePostRequest("users/auth/login");
+  const { mutate: login } = usePostRequest("users/auth/signin");
 
   const onVerifyClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

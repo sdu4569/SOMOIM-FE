@@ -40,8 +40,13 @@ const UpdateUserPage = () => {
       authorized: true,
     }
   );
+<<<<<<< HEAD
   const { uploadImage, isLoading: uploadImageLoading } = useUploadImage();
   const [avatarPreview, setAvatarPreview] = useState("");
+=======
+  const { uploadImage, isLoading } = useUploadImage();
+  const [avatarPreview, setAvatarPreview] = useState<string>("");
+>>>>>>> 412ba6e420ee79caa28c784c977edfd0dcff7177
 
   const navigate = useNavigate();
   const {
@@ -56,6 +61,9 @@ const UpdateUserPage = () => {
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
+  const { ref } = register("avatar");
+  const fileInput = useRef<HTMLInputElement | null>(null);
+
   // populate form with user data
   useEffect(() => {
     if (user) {
@@ -64,8 +72,9 @@ const UpdateUserPage = () => {
       setValue("name", user.name);
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
+
+      user.profileUrl && setAvatarPreview(user.profileUrl + "/avatarLarge");
       // to do : avatar
-      console.log(user);
     }
   }, [user]);
 
@@ -86,8 +95,20 @@ const UpdateUserPage = () => {
     }
   };
 
+  const handleDelete = () => {
+    if (fileInput.current == null) return;
+
+    fileInput.current.value = "";
+    setAvatarPreview("");
+  };
+
   const onSubmit = async (userForm: userFormData) => {
+<<<<<<< HEAD
     let profileUrl: string | null = user?.profileUrl || null;
+=======
+    let profileUrl = null;
+    console.log(profileUrl);
+>>>>>>> 412ba6e420ee79caa28c784c977edfd0dcff7177
 
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
@@ -95,7 +116,6 @@ const UpdateUserPage = () => {
       console.log(result);
       profileUrl = result || null;
     }
-
     const result = await updateUser({
       area: userForm.area,
       birth: userForm.birth,
@@ -104,6 +124,7 @@ const UpdateUserPage = () => {
       introduction: userForm.introduction,
       profileUrl,
     });
+    // console.log(fileUrl);
     console.log(result);
     navigate("/more", {
       replace: true,
@@ -139,36 +160,24 @@ const UpdateUserPage = () => {
           ref={formRef}
           className="flex flex-col"
         >
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
             <label
               htmlFor="file"
               className="inline-block w-20 aspect-square relative cursor-pointer"
             >
-              {avatarPreview ? (
-                <img
-                  src={avatarPreview}
-                  alt="유저 이미지"
-                  className={`w-full aspect-square rounded-full bg-gray-200 ${
-                    loading && "animate-pulse"
-                  }`}
-                  id="previewImage"
-                />
-              ) : user?.profileUrl ? (
-                <Avatar size="lg" src={user.profileUrl} />
-              ) : (
-                <img
-                  src={Images.user}
-                  alt="유저 이미지"
-                  className={`w-full aspect-square rounded-full bg-gray-200 ${
-                    loading && "animate-pulse"
-                  }`}
-                  id="previewImage"
-                />
-              )}
+              <img
+                src={avatarPreview ? avatarPreview : Images.user}
+                alt="유저 이미지"
+                className={`w-full aspect-square rounded-full bg-gray-200 ${
+                  loading && "animate-pulse"
+                }`}
+                id="previewImage"
+              />
+
               <img
                 src={Images.camera}
                 alt="유저 프로필 변경"
-                className="w-5 rounded-full absolute bottom-0 right-0"
+                className="w-6 rounded-full absolute bottom-0 right-0"
               />
               <input
                 type="file"
@@ -176,8 +185,20 @@ const UpdateUserPage = () => {
                 id="file"
                 className="hidden"
                 {...register("avatar")}
+                ref={(e) => {
+                  ref(e);
+                  fileInput.current = e;
+                }}
               />
             </label>
+            <div
+              onClick={handleDelete}
+              className={`text-[12px] absolute bottom-[40px] right-3 underline text-gray-400 cursor-pointer ${
+                avatarPreview ? "" : "hidden"
+              }`}
+            >
+              삭제
+            </div>
           </div>
           <div className="mt-6 h-10 relative">
             <input
