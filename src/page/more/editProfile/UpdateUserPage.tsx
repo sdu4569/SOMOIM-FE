@@ -31,8 +31,6 @@ export interface userFormData {
 }
 
 const UpdateUserPage = () => {
-  const [checkFile, setCheckFile] = useState<Boolean>(false);
-  const [userProfile, setUserProfile] = useState<string | undefined>("");
   const { user, loading } = useUser();
   const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
     "users",
@@ -41,7 +39,7 @@ const UpdateUserPage = () => {
     }
   );
   const { uploadImage, isLoading } = useUploadImage();
-  const [avatarPreview, setAvatarPreview] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState<string>("");
 
   const navigate = useNavigate();
   const {
@@ -67,11 +65,9 @@ const UpdateUserPage = () => {
       setValue("name", user.name);
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
-      setUserProfile(user?.profileUrl);
+
+      user.profileUrl && setAvatarPreview(user.profileUrl + "/avatarLarge");
       // to do : avatar
-      if (user.profileUrl !== null) {
-        setCheckFile(true);
-      }
     }
   }, [user]);
 
@@ -81,7 +77,6 @@ const UpdateUserPage = () => {
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
       setAvatarPreview(URL.createObjectURL(file));
-      setCheckFile(true);
     }
   }, [avatar]);
 
@@ -97,10 +92,7 @@ const UpdateUserPage = () => {
     if (fileInput.current == null) return;
 
     fileInput.current.value = "";
-    setUserProfile("");
-    console.log(userProfile);
     setAvatarPreview("");
-    setCheckFile(false);
   };
 
   const onSubmit = async (userForm: userFormData) => {
@@ -156,27 +148,15 @@ const UpdateUserPage = () => {
               htmlFor="file"
               className="inline-block w-20 aspect-square relative cursor-pointer"
             >
-              {avatarPreview ? (
-                <img
-                  src={avatarPreview}
-                  alt="유저 이미지"
-                  className={`w-full aspect-square rounded-full bg-gray-200 ${
-                    loading && "animate-pulse"
-                  }`}
-                  id="previewImage"
-                />
-              ) : user?.profileUrl ? (
-                <Avatar size="lg" src={userProfile} />
-              ) : (
-                <img
-                  src={Images.user}
-                  alt="유저 이미지"
-                  className={`w-full aspect-square rounded-full bg-gray-200 ${
-                    loading && "animate-pulse"
-                  }`}
-                  id="previewImage"
-                />
-              )}
+              <img
+                src={avatarPreview ? avatarPreview : Images.user}
+                alt="유저 이미지"
+                className={`w-full aspect-square rounded-full bg-gray-200 ${
+                  loading && "animate-pulse"
+                }`}
+                id="previewImage"
+              />
+
               <img
                 src={Images.camera}
                 alt="유저 프로필 변경"
@@ -197,7 +177,7 @@ const UpdateUserPage = () => {
             <div
               onClick={handleDelete}
               className={`text-[12px] absolute bottom-[40px] right-3 underline text-gray-400 cursor-pointer ${
-                checkFile ? "" : "hidden"
+                avatarPreview ? "" : "hidden"
               }`}
             >
               삭제
