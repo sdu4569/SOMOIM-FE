@@ -96,16 +96,20 @@ const UpdateUserPage = () => {
   };
 
   const onSubmit = async (userForm: userFormData) => {
-    let profileUrl = null;
-    console.log(profileUrl);
+    let profileUrl: string | null = user?.profileUrl || null;
 
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
       const result = await uploadImage(file);
       console.log(result);
-      profileUrl = result;
+      profileUrl = result || null;
     }
-    const result = await updateUser({
+
+    if (!avatarPreview) {
+      profileUrl = null;
+    }
+
+    await updateUser({
       area: userForm.area,
       birth: userForm.birth,
       name: userForm.name,
@@ -114,7 +118,7 @@ const UpdateUserPage = () => {
       profileUrl,
     });
     // console.log(fileUrl);
-    console.log(result);
+
     navigate("/more", {
       replace: true,
     });
@@ -139,6 +143,7 @@ const UpdateUserPage = () => {
           </button>
         </PageHeader>
         <form
+          acceptCharset="UTF-8"
           onSubmit={handleSubmit(onSubmit)}
           ref={formRef}
           className="flex flex-col"
