@@ -32,7 +32,7 @@ export interface userFormData {
 
 const UpdateUserPage = () => {
   const [checkFile, setCheckFile] = useState<Boolean>(false);
-  const [fileUrl, setFileUrl] = useState<string>(Images.user);
+  const [userProfile, setUserProfile] = useState<string | undefined>("");
   const { user, loading } = useUser();
   const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
     "users",
@@ -56,19 +56,8 @@ const UpdateUserPage = () => {
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
+  const { ref } = register("avatar");
   const fileInput = useRef<HTMLInputElement | null>(null);
-  const { ref } = register("profileUrl");
-
-  const previewImage = document.querySelector(
-    "#previewImage"
-  ) as HTMLInputElement;
-  useEffect(() => {
-    if (watch("profileUrl")[0]) {
-      setCheckFile(true);
-      const file = URL.createObjectURL(watch("profileUrl")[0]);
-      previewImage.src = file;
-    }
-  }, [watch("profileUrl")]);
 
   // populate form with user data
   useEffect(() => {
@@ -78,8 +67,11 @@ const UpdateUserPage = () => {
       setValue("name", user.name);
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
+      setUserProfile(user?.profileUrl);
       // to do : avatar
-      console.log(user);
+      if (user.profileUrl !== null) {
+        setCheckFile(true);
+      }
     }
   }, [user]);
 
@@ -89,6 +81,7 @@ const UpdateUserPage = () => {
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
       setAvatarPreview(URL.createObjectURL(file));
+      setCheckFile(true);
     }
   }, [avatar]);
 
@@ -104,14 +97,15 @@ const UpdateUserPage = () => {
     if (fileInput.current == null) return;
 
     fileInput.current.value = "";
-    previewImage.src = Images.user;
+    setUserProfile("");
+    console.log(userProfile);
+    setAvatarPreview("");
     setCheckFile(false);
-    console.log(watch("profileUrl"));
   };
 
   const onSubmit = async (userForm: userFormData) => {
-
     let profileUrl = null;
+    console.log(profileUrl);
 
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
@@ -127,11 +121,11 @@ const UpdateUserPage = () => {
       introduction: userForm.introduction,
       profileUrl,
     });
-    console.log(fileUrl);
+    // console.log(fileUrl);
     console.log(result);
-    // navigate("/more", {
-    //   replace: true,
-    // });
+    navigate("/more", {
+      replace: true,
+    });
   };
 
   return (
@@ -155,10 +149,9 @@ const UpdateUserPage = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           ref={formRef}
-
           className="flex flex-col"
         >
-          <div className="flex justify-center">
+          <div className="flex justify-center relative">
             <label
               htmlFor="file"
               className="inline-block w-20 aspect-square relative cursor-pointer"
@@ -173,7 +166,7 @@ const UpdateUserPage = () => {
                   id="previewImage"
                 />
               ) : user?.profileUrl ? (
-                <Avatar size="lg" src={user.profileUrl} />
+                <Avatar size="lg" src={userProfile} />
               ) : (
                 <img
                   src={Images.user}
@@ -187,7 +180,7 @@ const UpdateUserPage = () => {
               <img
                 src={Images.camera}
                 alt="유저 프로필 변경"
-                className="w-5 rounded-full absolute bottom-0 right-0"
+                className="w-6 rounded-full absolute bottom-0 right-0"
               />
               <input
                 type="file"
@@ -195,15 +188,20 @@ const UpdateUserPage = () => {
                 id="file"
                 className="hidden"
                 {...register("avatar")}
+                ref={(e) => {
+                  ref(e);
+                  fileInput.current = e;
+                }}
               />
             </label>
-          <div
-            onClick={handleDelete}
-            className={`text-[12px] inline-block absolute top-5 right-0 underline text-gray-400 cursor-pointer ${
-              checkFile ? "" : "hidden"
-            }`}
-          >
-            삭제</div>
+            <div
+              onClick={handleDelete}
+              className={`text-[12px] absolute bottom-[40px] right-3 underline text-gray-400 cursor-pointer ${
+                checkFile ? "" : "hidden"
+              }`}
+            >
+              삭제
+            </div>
           </div>
           <div className="mt-6 h-10 relative">
             <input

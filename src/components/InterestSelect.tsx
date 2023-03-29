@@ -13,7 +13,7 @@ interface InterestSelectProps {
 }
 
 export interface interestFormData {
-  favorite: string[];
+  favorites: string[];
 }
 
 export default function InterestSelect({
@@ -38,22 +38,25 @@ export default function InterestSelect({
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
-    if (errors.favorite) {
-      alert(errors.favorite.message);
+    if (errors.favorites) {
+      alert(errors.favorites.message);
     }
-  }, [errors.favorite]);
+  }, [errors.favorites]);
 
   useEffect(() => {
-    const selectedInterests = watch("favorite");
+    const selectedInterests = watch("favorites");
 
     if (selectedInterests.length > maxSelect) {
       alert(`최대 ${maxSelect}개까지 선택해주세요.`);
-      setValue("favorite", selectedInterests.slice(0, maxSelect));
+      setValue("favorites", selectedInterests.slice(0, maxSelect));
     }
-  }, [watch("favorite")]);
+  }, [watch("favorites")]);
 
   const onSubmit = async (interestForm: interestFormData) => {
-    const result = await updateInterest(interestForm);
+    console.log(interestForm);
+    const result = await updateInterest({
+      favorites: interestForm.favorites,
+    });
     console.log(result);
     closeModal();
   };
@@ -91,7 +94,7 @@ export default function InterestSelect({
                 className="flex flex-col justify-center items-center"
               >
                 <input
-                  {...register("favorite", {
+                  {...register("favorites", {
                     required: "적어도 한 개의 관심사를 선택해주세요.",
                     maxLength: maxSelect,
                   })}
@@ -103,8 +106,8 @@ export default function InterestSelect({
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
-                    watch("favorite") &&
-                    watch("favorite").includes(item.interest) &&
+                    watch("favorites") &&
+                    watch("favorites").includes(item.interest) &&
                     "border-blue-500"
                   }`}
                 />

@@ -11,11 +11,11 @@ const UpdateUserButton = ({ user }: { user?: User }) => {
           src={user?.profileUrl ? `${user.profileUrl}/avatar` : Images.user}
           className="inline-block w-10 h-10 rounded-full bg-gray-200 float-left"
         />
-        <div className="absolute top-2 left-16">
+        <div className="absolute top-[2px] left-16">
           <span className="text-[12px] mr-2 ">{user?.name}</span>
           <span className="text-[10px] text-gray-400">{user?.birth}</span>
         </div>
-        <div className="absolute bottom-1 left-16">
+        <div className="absolute bottom-[2px] left-16">
           <img
             src={Images.location}
             alt="지역 마크"
@@ -23,7 +23,7 @@ const UpdateUserButton = ({ user }: { user?: User }) => {
           />
           <span className="text-[10px]">{user?.area}</span>
         </div>
-        <div className="text-[12px] inline-block absolute top-2 right-0 underline text-gray-400 ">
+        <div className="text-[12px] inline-block absolute top-[12px] right-0 underline text-gray-400 ">
           수정
         </div>
       </button>

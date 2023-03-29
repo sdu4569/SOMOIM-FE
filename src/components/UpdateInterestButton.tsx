@@ -2,12 +2,7 @@ import { User } from "@/libs/types";
 import { useState } from "react";
 import InterestSelect from "./InterestSelect";
 
-interface interestFormData {
-  name: string[];
-}
-
-const UpdateInterestButton = () => {
-  // const userChoice = user.favorite;
+const UpdateInterestButton = ({ user }: { user?: User }) => {
   const [inModal, setInModal] = useState<boolean>(false);
   const closeModal = () => {
     setInModal(false);
