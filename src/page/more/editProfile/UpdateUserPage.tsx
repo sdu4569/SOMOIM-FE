@@ -40,13 +40,8 @@ const UpdateUserPage = () => {
       authorized: true,
     }
   );
-<<<<<<< HEAD
   const { uploadImage, isLoading: uploadImageLoading } = useUploadImage();
-  const [avatarPreview, setAvatarPreview] = useState("");
-=======
-  const { uploadImage, isLoading } = useUploadImage();
   const [avatarPreview, setAvatarPreview] = useState<string>("");
->>>>>>> 412ba6e420ee79caa28c784c977edfd0dcff7177
 
   const navigate = useNavigate();
   const {
@@ -103,12 +98,8 @@ const UpdateUserPage = () => {
   };
 
   const onSubmit = async (userForm: userFormData) => {
-<<<<<<< HEAD
-    let profileUrl: string | null = user?.profileUrl || null;
-=======
     let profileUrl = null;
     console.log(profileUrl);
->>>>>>> 412ba6e420ee79caa28c784c977edfd0dcff7177
 
     if (avatar && avatar.length > 0) {
       const file = avatar[0];
