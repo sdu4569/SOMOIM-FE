@@ -21,7 +21,7 @@ const MorePage = () => {
 
       <main>
         <UpdateUserButton user={user} />
-        <UpdateInterestButton user={user} />
+        <UpdateInterestButton />
         <InterestClubButton />
         <RecentClubButton />
       </main>
