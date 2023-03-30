@@ -6,6 +6,7 @@ import Spinner from "./Spinner";
 import { useEffect, useRef } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import PostSkeleton from "./PostSkeleton";
+import useSWR from "swr";
 
 interface ClubBoardPostListProps {
   category: string;

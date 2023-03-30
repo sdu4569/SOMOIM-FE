@@ -29,9 +29,9 @@ export default function GoogleCallback() {
         return res.json();
       })
       .then((data: LoginResponse) => {
-        setAccessTokenAtom(data.accessToken);
+        setAccessTokenAtom(data.data.accessToken);
         setAccessTokenExpiration(
-          new Date(data.accessTokenExpirationDateTime).getTime()
+          new Date(data.data.accessTokenExpirationDateTime).getTime()
         );
         navigate("/clubs");
       })

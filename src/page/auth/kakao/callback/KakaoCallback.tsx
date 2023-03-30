@@ -34,14 +34,14 @@ export default function KakaoCallback() {
       })
       .then((data: LoginResponse) => {
         console.log(data);
-        if (!data.accessToken) {
+        if (!data.data.accessToken) {
           alert("로그인에 실패했습니다.");
           navigate("/landing");
           return;
         }
-        setAccessTokenAtom(data.accessToken);
+        setAccessTokenAtom(data.data.accessToken);
         setAccessTokenExpiration(
-          new Date(data.accessTokenExpirationDateTime).getTime()
+          new Date(data.data.accessTokenExpirationDateTime).getTime()
         );
         console.log(data);
         navigate("/clubs");

@@ -4,10 +4,13 @@ export interface InterestWithDetails {
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  accessTokenExpirationDateTime: string;
-  refreshToken: string;
-  refreshTokenExpirationDateTime: string;
+  ok: true;
+  data: {
+    accessToken: string;
+    accessTokenExpirationDateTime: string;
+    refreshToken: string;
+    refreshTokenExpirationDateTime: string;
+  };
 }
 
 export interface User {
