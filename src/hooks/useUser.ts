@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { API_ENDPOINT } from "@/App";
 import useSWR from "swr";
@@ -15,6 +15,7 @@ interface UserResponse {
 export default function useUser() {
   const navigate = useNavigate();
   const token = useAccessToken();
+  const location = useLocation();
 
   const { data, isLoading, error, mutate } = useSWR<UserResponse>("users", {
     fetcher: (url: string) =>
@@ -37,7 +38,9 @@ export default function useUser() {
         return;
       }
       if (data.data && !data.data.name) {
-        alert("프로필을 설정해주세요.");
+        if (location.pathname !== "/more/editProfile") {
+          alert("프로필을 설정해주세요.");
+        }
         navigate("/more/editProfile", {
           replace: true,
         });
