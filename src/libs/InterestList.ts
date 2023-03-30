@@ -3,8 +3,8 @@ import { Images } from "./Images";
 export const InterestList = [
   {
     title: "아웃도어/여행",
-    interest: "outdoor",
-    image: Images.outdoor,
+    interest: "OUTDOOR",
+    image: Images.OUTDOOR,
     detail: [
       "등산",
       "산책/트래킹",
@@ -17,8 +17,8 @@ export const InterestList = [
   },
   {
     title: "운동/스포츠",
-    interest: "sports",
-    image: Images.sports,
+    interest: "EXERCISE",
+    image: Images.EXERCISE,
     detail: [
       "자전거",
       "배드민턴",
@@ -53,8 +53,8 @@ export const InterestList = [
   },
   {
     title: "인문학/책/글",
-    interest: "book",
-    image: Images.book,
+    interest: "HUMANITIES",
+    image: Images.HUMANITIES,
     detail: [
       "책/독서",
       "인문학",
@@ -67,14 +67,14 @@ export const InterestList = [
   },
   {
     title: "외국/언어",
-    interest: "language",
-    image: Images.language,
+    interest: "FOREIGN",
+    image: Images.FOREIGN,
     detail: ["영어", "일본어", "중국어", "프랑스어", "스페인어", "러시아어"],
   },
   {
     title: "문화/공연/축제",
-    interest: "concert",
-    image: Images.concert,
+    interest: "CULTURE",
+    image: Images.CULTURE,
     detail: [
       "뮤지컬/오페라",
       "공연/연극",
@@ -87,8 +87,8 @@ export const InterestList = [
   },
   {
     title: "음악/악기",
-    interest: "music",
-    image: Images.music,
+    interest: "MUSIC",
+    image: Images.MUSIC,
     detail: [
       "노래/보컬",
       "기타/베이스",
@@ -113,8 +113,8 @@ export const InterestList = [
   },
   {
     title: "공예/만들기",
-    interest: "craft",
-    image: Images.craft,
+    interest: "CRAFTS",
+    image: Images.CRAFTS,
     detail: [
       "미술/그림",
       "캘리그라피",
@@ -133,8 +133,8 @@ export const InterestList = [
   },
   {
     title: "댄스/무용",
-    interest: "dance",
-    image: Images.dance,
+    interest: "DANCE",
+    image: Images.DANCE,
     detail: [
       "라틴댄스",
       "사교댄스",
@@ -150,8 +150,8 @@ export const InterestList = [
   },
   {
     title: "봉사활동",
-    interest: "volunteer",
-    image: Images.volunteer,
+    interest: "VOLUNTEER",
+    image: Images.VOLUNTEER,
     detail: [
       "양로원",
       "보육원",
@@ -163,8 +163,8 @@ export const InterestList = [
   },
   {
     title: "사교/인맥",
-    interest: "society",
-    image: Images.society,
+    interest: "SOCIETY",
+    image: Images.SOCIETY,
     detail: [
       "지역",
       "나이",
@@ -178,8 +178,8 @@ export const InterestList = [
   },
   {
     title: "차/오토바이",
-    interest: "car",
-    image: Images.car,
+    interest: "CAR",
+    image: Images.CAR,
     detail: [
       "현대",
       "기아",
@@ -194,14 +194,14 @@ export const InterestList = [
   },
   {
     title: "사진/영상",
-    interest: "photo",
-    image: Images.photo,
+    interest: "PICTURE",
+    image: Images.PICTURE,
     detail: ["DSLR", "필름카메라", "영상제작", "디지털카메라"],
   },
   {
     title: "야구관람",
-    interest: "baseball",
-    image: Images.baseball,
+    interest: "BASEBALL",
+    image: Images.BASEBALL,
     detail: [
       "삼성라이온즈",
       "기아타이거즈",
@@ -217,8 +217,8 @@ export const InterestList = [
   },
   {
     title: "게임/오락",
-    interest: "game",
-    image: Images.game,
+    interest: "GAME",
+    image: Images.GAME,
     detail: [
       "다트",
       "보드게임",
@@ -233,8 +233,8 @@ export const InterestList = [
   },
   {
     title: "요리/제조",
-    interest: "cook",
-    image: Images.cook,
+    interest: "COOK",
+    image: Images.COOK,
     detail: [
       "한식",
       "양식",
@@ -248,20 +248,20 @@ export const InterestList = [
   },
   {
     title: "반려동물",
-    interest: "animal",
-    image: Images.animal,
+    interest: "PET",
+    image: Images.PET,
     detail: ["강아지", "고양이", "물고기", "파충류", "설치류/중치류"],
   },
   {
     title: "가족/결혼",
-    interest: "family",
-    image: Images.family,
+    interest: "FAMILY",
+    image: Images.FAMILY,
     detail: ["결혼/웨딩", "육아/맘", "아빠/대디"],
   },
   {
     title: "자유주제",
-    interest: "free",
-    image: Images.free,
+    interest: "FREE",
+    image: Images.FREE,
     detail: [
       "스피치/발성",
       "시험/자격증",

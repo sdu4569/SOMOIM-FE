@@ -59,6 +59,8 @@ const UpdateUserPage = () => {
   const { ref } = register("avatar");
   const fileInput = useRef<HTMLInputElement | null>(null);
 
+  const { onChange } = register("introduction");
+
   // populate form with user data
   useEffect(() => {
     if (user) {
@@ -87,6 +89,15 @@ const UpdateUserPage = () => {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
       );
+    }
+  };
+
+  const introductionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 40) {
+      const text = e.target.value.slice(0, 40);
+      setValue("introduction", text);
+    } else {
+      setValue("introduction", e.target.value);
     }
   };
 
@@ -297,6 +308,7 @@ const UpdateUserPage = () => {
               placeholder="간략한 자기소개(학교,회사)&#13;&#10;한국대 경영학과 학생입니다."
               maxLength={40}
               {...register("introduction")}
+              onChange={introductionChange}
             />
             <div className="absolute bottom-2 right-2 text-[12px] text-gray-400">
               {watch("introduction")?.length} / 40자

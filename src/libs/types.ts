@@ -17,7 +17,7 @@ export interface User {
   name: string;
   area: string;
   birth: string;
-  favorite: string;
+  favorites: string[];
   gender: string;
   introduction: string;
   profileUrl?: string;

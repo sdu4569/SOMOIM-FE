@@ -1,8 +1,11 @@
-import { User } from "@/libs/types";
-import { useState } from "react";
+import useUser from "@/hooks/useUser";
+import { imageMap, Images } from "@/libs/Images";
+
+import { useEffect, useState } from "react";
 import InterestSelect from "./InterestSelect";
 
-const UpdateInterestButton = ({ user }: { user?: User }) => {
+const UpdateInterestButton = () => {
+  const { user } = useUser();
   const [inModal, setInModal] = useState<boolean>(false);
   const closeModal = () => {
     setInModal(false);
@@ -15,16 +18,30 @@ const UpdateInterestButton = ({ user }: { user?: User }) => {
           <InterestSelect closeModal={closeModal} maxSelect={7} />
         </div>
       )}
-      <button
-        className="w-full mt-6 relative"
-        onClick={() => {
-          setInModal(true);
-        }}
-      >
-        <div className="text-[12px] inline-block absolute top-2.5 right-0  underline text-gray-400 ">
-          편집
-        </div>
-      </button>
+      <div className="w-full mt-6 h-[32px] relative">
+        {user &&
+          user.favorites.map((item, idx) => {
+            const srcImg = imageMap.get(item);
+            console.log(srcImg);
+            return (
+              <img
+                key={idx}
+                src={srcImg}
+                alt="관심사 이미지"
+                className="inline-block mr-3 rounded-md w-8 bg-gray-300"
+              />
+            );
+          })}
+        <button
+          onClick={() => {
+            setInModal(true);
+          }}
+        >
+          <div className="text-[12px] inline-block absolute top-[10px] right-0  underline text-gray-400 ">
+            편집
+          </div>
+        </button>
+      </div>
     </>
   );
 };

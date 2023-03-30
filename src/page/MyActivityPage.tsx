@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import FloatButton from "../components/FloatButton";
+import useUser from "@/hooks/useUser";
 
 const userClubList: any[] = [
   {
@@ -40,6 +41,7 @@ const userClubList: any[] = [
 ];
 
 const MyActivityPage = () => {
+  const { user } = useUser();
   useEffect(() => {
     const userClub = document.querySelector("#userClub") as HTMLInputElement;
     if (userClubList.length == 0) {
@@ -48,6 +50,7 @@ const MyActivityPage = () => {
       userClub.classList.remove("text-blue-500");
     }
   }, []);
+
   return (
     <div className="h-full py-16 px-4 overflow-scroll">
       <PageHeader>
