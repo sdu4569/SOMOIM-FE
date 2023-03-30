@@ -17,7 +17,7 @@ export default function ClubBoardPostList({
   const params = useParams();
 
   const getPostKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
-    if (previousPageData && !previousPageData.data.length) return null;
+    if (previousPageData && !previousPageData.data?.length) return null;
     return `clubs/${params.clubId}/boards?page=${pageIndex}`;
   };
   const { data, isLoading, isValidating, setSize, size } =
@@ -47,7 +47,7 @@ export default function ClubBoardPostList({
     );
   }
 
-  if (!isLoading && data && data[0].data.length === 0) {
+  if (!isLoading && data && data[0].data?.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center">
         <p className="text-gray-400 text-2xl">게시글이 없습니다.</p>
@@ -63,8 +63,8 @@ export default function ClubBoardPostList({
             .flat()
             .map((post: any) => (
               <Link
-                to={`/clubs/1/post/${post.id}`}
-                key={post.id}
+                to={`/clubs/1/post/${post?.id}`}
+                key={post?.id}
                 className="py-2 cursor-pointer"
               >
                 <header className="flex justify-between items-center">
@@ -79,10 +79,10 @@ export default function ClubBoardPostList({
                 <div className="py-4 flex justify-between items-start">
                   <div className="flex flex-col flex-1 space-y-2">
                     <p className="text-blue-500 pr-4 line-clamp-1">
-                      {post.title}
+                      {post?.title}
                     </p>
                     <p className="flex-1 line-clamp-3 pr-4 leading-5">
-                      {post.content}
+                      {post?.content}
                     </p>
                   </div>
                   <div className="w-28 aspect-video bg-gray-500 rounded-lg"></div>
@@ -91,7 +91,7 @@ export default function ClubBoardPostList({
                   <div className="flex space-x-4">
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faThumbsUp} />
-                      <p className="text-sm ">좋아요 {post.id}</p>
+                      <p className="text-sm ">좋아요 {post?.id}</p>
                     </div>
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faMessage} />

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
@@ -6,20 +6,19 @@ import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
 import { InterestList } from "@/libs/InterestList";
 import usePostRequest from "@/hooks/usePostRequest";
+import useUser from "@/hooks/useUser";
 
 interface InterestSelectProps {
   closeModal: () => void;
   maxSelect: number;
 }
 
-export interface interestFormData {
-  favorites: string[];
-}
-
 export default function InterestSelect({
   closeModal,
   maxSelect,
 }: InterestSelectProps) {
+  const { user, mutate: mutateUser } = useUser();
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const { mutate: updateInterest, isLoading: updateLoading } = usePostRequest(
     "users/favorites",
     {
@@ -27,36 +26,39 @@ export default function InterestSelect({
     }
   );
 
-  const {
-    watch,
-    register,
-    formState: { errors },
-    handleSubmit,
-    setValue,
-  } = useForm<interestFormData>();
-
   const formRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    if (errors.favorites) {
-      alert(errors.favorites.message);
+  const changeInterestFunction = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const targetValue = event.target.value;
+    // 선택된 항목 추가
+    if (event.target.checked) {
+      if (selectedInterests.length < 7) {
+        setSelectedInterests([...selectedInterests, targetValue]);
+      } else {
+        alert(`최대 ${maxSelect}개까지 선택해주세요.`);
+      }
+    } else {
+      // 7개 이상일 때 추가된 항목 제외
+      setSelectedInterests(
+        selectedInterests.filter((interest) => interest !== targetValue)
+      );
     }
-  }, [errors.favorites]);
+  };
 
-  useEffect(() => {
-    const selectedInterests = watch("favorites");
-
-    if (selectedInterests.length > maxSelect) {
-      alert(`최대 ${maxSelect}개까지 선택해주세요.`);
-      setValue("favorites", selectedInterests.slice(0, maxSelect));
+  const onSubmit = async () => {
+    if (selectedInterests.length == 0) {
+      alert("최소 1개의 관심사를 선택해주세요");
+      return;
     }
-  }, [watch("favorites")]);
-
-  const onSubmit = async (interestForm: interestFormData) => {
-    console.log(interestForm);
     const result = await updateInterest({
-      favorites: interestForm.favorites,
+      favorites: selectedInterests,
     });
+
+    if (result.ok && user) {
+      mutateUser({ ok: true, data: { ...user, favorites: selectedInterests } });
+    }
     console.log(result);
     closeModal();
   };
@@ -80,11 +82,7 @@ export default function InterestSelect({
           저장
         </button>
       </PageHeader>
-      <form
-        className="pt-16 px-4"
-        onSubmit={handleSubmit(onSubmit)}
-        ref={formRef}
-      >
+      <form className="pt-16 px-4" onSubmit={onSubmit} ref={formRef}>
         <div className="grid grid-cols-4 gap-x-2 gap-y-6">
           {InterestList.map((item, idx) => {
             return (
@@ -94,20 +92,17 @@ export default function InterestSelect({
                 className="flex flex-col justify-center items-center"
               >
                 <input
-                  {...register("favorites", {
-                    required: "적어도 한 개의 관심사를 선택해주세요.",
-                    maxLength: maxSelect,
-                  })}
                   type="checkbox"
                   id={item.title}
                   className="hidden"
                   value={item.interest}
+                  onChange={changeInterestFunction}
+                  checked={selectedInterests.includes(item.interest)}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
-                    watch("favorites") &&
-                    watch("favorites").includes(item.interest) &&
+                    selectedInterests.includes(item.interest) &&
                     "border-blue-500"
                   }`}
                 />
