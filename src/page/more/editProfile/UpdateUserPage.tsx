@@ -33,7 +33,7 @@ export interface userFormData {
 }
 
 const UpdateUserPage = () => {
-  const { user, loading } = useUser();
+  const { user, loading, mutate } = useUser();
   const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
     "users",
     {
@@ -131,6 +131,21 @@ const UpdateUserPage = () => {
       profileUrl,
     });
     // console.log(fileUrl);
+
+    if (user) {
+      mutate({
+        ok: true,
+        data: {
+          ...user,
+          area: userForm.area,
+          birth: userForm.birth,
+          name: userForm.name,
+          gender: userForm.gender,
+          introduction: userForm.introduction,
+          profileUrl: profileUrl || "",
+        },
+      });
+    }
 
     navigate("/more", {
       replace: true,

@@ -9,47 +9,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import FloatButton from "@/components/FloatButton";
-
-const userClubList: any[] = [
-  {
-    id: 1,
-    clubTitle: "테스트",
-    clubDescription: "테스트중입니다",
-    interest: "outdoor",
-    interestDetail: "",
-    interestTitle: "아웃도어/여행",
-    interestImage: Images.outdoor,
-    clubImage: Images.clubImage,
-    region: "남구",
-    city: "부산광역시",
-    member: 1,
-  },
-  {
-    id: 4,
-    clubTitle: "테스트4",
-    clubDescription: "테스트중입니다",
-    interest: "game",
-    interestDetail: "보드게임",
-    interestTitle: "게임/오락",
-    interestImage: Images.game,
-    clubImage: Images.clubImage,
-    region: "남구",
-    city: "서울특별시",
-    member: 7,
-  },
-];
+import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
+import Club from "@/components/Club";
 
 const MyActivityPage = () => {
+  const token = useAccessToken();
+  const { data: joinedClubs, isLoading } = useSWR(["users/join-clubs", token]);
+
   useEffect(() => {
-    const userClub = document.querySelector("#userClub") as HTMLInputElement;
-    if (userClubList.length == 0) {
-      userClub.classList.add("text-blue-500");
-    } else {
-      userClub.classList.remove("text-blue-500");
-    }
-  }, []);
+    console.log(joinedClubs);
+  }, [joinedClubs]);
+
   return (
-    <div className="h-full py-16 px-4 overflow-scroll">
+    <div className="h-full pt-16 pb-20 px-4 overflow-scroll">
       <PageHeader>
         <h2 className="text-xl">내 활동</h2>
         <div className="flex space-x-8 items-center">
@@ -59,15 +32,21 @@ const MyActivityPage = () => {
         </div>
       </PageHeader>
 
-      <main>
-        <h2 className="text-[14px] font-semibold mb-5" id="userClub">
-          {userClubList.length !== 0 ? "가입한 클럽" : "클럽에 가입해 보세요!"}
-        </h2>
+      <main className="flex flex-col space-y-4">
+        <section className="flex flex-col space-y-4">
+          <h2 className="text-lg" id="userClub">
+            {joinedClubs?.data?.length
+              ? "가입한 클럽"
+              : "클럽에 가입해 보세요!"}
+          </h2>
 
-        {userClubList?.map((item, idx) => {
-          return (
-            <Link to={`/clubs/${item.id}`} key={idx} state={item}>
-              <div className="relative mt-4 h-12">
+          <ul className="flex flex-col space-y-4">
+            {joinedClubs?.data?.length ? (
+              joinedClubs.data.map((club: any) => {
+                return (
+                  <Link to={`/clubs/${club.id}`} key={club.id}>
+                    <Club data={club} />
+                    {/* <div className="relative mt-4 h-12">
                 <img
                   src={item.clubImage}
                   alt="클럽 이미지"
@@ -87,12 +66,23 @@ const MyActivityPage = () => {
                   </span>
                   <span className="text-gray-400">멤버 {item.member} </span>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
-        <h2 className="text-[14px] font-semibold mb-5 mt-5">클럽찾기</h2>
-        <ClubSearch />
+              </div> */}
+                  </Link>
+                );
+              })
+            ) : (
+              <p className="w-full text-center text-base text-gray-300 py-4">
+                가입한 클럽이 없습니다.
+              </p>
+            )}
+          </ul>
+        </section>
+        <section className="flex flex-col space-y-4">
+          <h2 className="text-lg">클럽찾기</h2>
+          <div>
+            <ClubSearch />
+          </div>
+        </section>
         <UpdateInterestButton />
         <Recommendation />
         <div className="absolute bottom-20 right-8">

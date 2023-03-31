@@ -12,9 +12,14 @@ interface greetingFormData {
 interface JoinClubProps {
   closeModal: () => void;
   clubId: string;
+  membersBoundMutate: any;
 }
 
-export default function JoinClub({ closeModal, clubId }: JoinClubProps) {
+export default function JoinClub({
+  closeModal,
+  clubId,
+  membersBoundMutate,
+}: JoinClubProps) {
   const [secondModal, setSecondModal] = useState<Boolean>(false);
 
   const {
@@ -38,6 +43,7 @@ export default function JoinClub({ closeModal, clubId }: JoinClubProps) {
 
     if (result.ok) {
       alert("가입되었습니다.");
+      membersBoundMutate();
       closeModal();
     } else {
       alert(result.message);

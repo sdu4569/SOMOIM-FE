@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import PostSkeleton from "./PostSkeleton";
 import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
 
 interface ClubBoardPostListProps {
   category: string;
@@ -16,10 +17,12 @@ export default function ClubBoardPostList({
   category,
 }: ClubBoardPostListProps) {
   const params = useParams();
+  const token = useAccessToken();
 
   const getPostKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+    if (!token) return null;
     if (previousPageData && !previousPageData.data?.length) return null;
-    return `clubs/${params.clubId}/boards?page=${pageIndex}`;
+    return [`clubs/${params.clubId}/boards?page=${pageIndex}`, token];
   };
   const { data, isLoading, isValidating, setSize, size } =
     useSWRInfinite(getPostKey);
@@ -37,6 +40,10 @@ export default function ClubBoardPostList({
   useEffect(() => {
     setSize(1);
   }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -67,6 +74,7 @@ export default function ClubBoardPostList({
                 to={`/clubs/1/post/${post?.id}`}
                 key={post?.id}
                 className="py-2 cursor-pointer"
+                state={{ post }}
               >
                 <header className="flex justify-between items-center">
                   <div className="flex space-x-2 items-center ">
@@ -79,14 +87,20 @@ export default function ClubBoardPostList({
                 </header>
                 <div className="py-4 flex justify-between items-start">
                   <div className="flex flex-col flex-1 space-y-2">
-                    <p className="text-blue-500 pr-4 line-clamp-1">
+                    <p className="text-blue-500 pr-4 w-60 overflow-hidden overflow-ellipsis">
                       {post?.title}
                     </p>
                     <p className="flex-1 line-clamp-3 pr-4 leading-5">
                       {post?.content}
                     </p>
                   </div>
-                  <div className="w-28 aspect-video bg-gray-500 rounded-lg"></div>
+                  {post?.imageUrl && (
+                    <img
+                      src={post.imageUrl + "/public"}
+                      alt=""
+                      className="rounded-md max-w-[110px] max-h-[150px]"
+                    />
+                  )}
                 </div>
                 <div className="flex py-2 justify-between items-center border-y-2 border-gray-200">
                   <div className="flex space-x-4">

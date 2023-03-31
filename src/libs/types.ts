@@ -14,6 +14,7 @@ export interface LoginResponse {
 }
 
 export interface User {
+  id: number;
   name: string;
   area: string;
   birth: string;
@@ -21,4 +22,11 @@ export interface User {
   gender: string;
   introduction: string;
   profileUrl?: string;
+}
+
+export interface Member {
+  userId: number;
+  name: string;
+  profileUrl?: string;
+  introduction?: string;
 }

@@ -4,9 +4,8 @@ import { useState } from "react";
 import FloatButton from "@/components/FloatButton";
 import ClubBoardNoticeList from "@/components/ClubBoardNoticeList";
 import ClubBoardPostList from "@/components/ClubBoardPostList";
-import useUser from "@/hooks/useUser";
 
-export default function ClubBoard() {
+export default function ClubBoard({ isMember }: { isMember: boolean }) {
   const [category, setCategory] = useState("all");
 
   return (
@@ -33,10 +32,12 @@ export default function ClubBoard() {
         </section>
       </div>
       <div className="absolute bottom-8 right-8">
-        <FloatButton to="write">
-          <FontAwesomeIcon icon={faPlus} />
-          <p className="text-sm">작성</p>
-        </FloatButton>
+        {isMember && (
+          <FloatButton to="write">
+            <FontAwesomeIcon icon={faPlus} />
+            <p className="text-sm">작성</p>
+          </FloatButton>
+        )}
       </div>
     </>
   );

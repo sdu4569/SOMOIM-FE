@@ -8,13 +8,14 @@ import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
 import usePostRequest from "@/hooks/usePostRequest";
-import useSWR from "swr";
 import useUploadImage from "@/hooks/useUploadImage";
 import Spinner from "@/components/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 interface writeFormData {
   title: string;
-  contents: string;
+  content: string;
   category: string;
   image: FileList;
 }
@@ -32,6 +33,7 @@ export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
   const [category, setCategory] = useState<categoryType>("free");
+  const [preview, setPreview] = useState<string>("");
   const params = useParams();
   const navigate = useNavigate();
 
@@ -42,6 +44,8 @@ export default function ClubBoardWrite() {
     handleSubmit,
     setValue,
   } = useForm<writeFormData>();
+
+  const postPicture = watch("image");
 
   const {
     uploadImage,
@@ -54,7 +58,7 @@ export default function ClubBoardWrite() {
     { authorized: true }
   );
 
-  const { ref } = register("contents");
+  const { ref } = register("content");
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleResizeHeight = useCallback(() => {
@@ -73,19 +77,15 @@ export default function ClubBoardWrite() {
   };
 
   useEffect(() => {
-    setCategoryModal(true);
-  }, []);
+    if (postPicture && postPicture.length > 0) {
+      const file = postPicture[0];
+      setPreview(URL.createObjectURL(file));
+    }
+  }, [postPicture]);
 
   useEffect(() => {
-    // 이미지 미리보기
-    if (watch("image")[0]) {
-      const file = URL.createObjectURL(watch("image")[0]);
-      const previewImage = document.querySelector(
-        "#firstPreview"
-      ) as HTMLInputElement;
-      previewImage.src = file;
-    }
-  }, [watch("image")]);
+    setCategoryModal(true);
+  }, []);
 
   const onSubmit = async (writeForm: writeFormData) => {
     writeForm.category = category;
@@ -99,7 +99,7 @@ export default function ClubBoardWrite() {
 
     const result = await uploadPost({
       title: writeForm.title,
-      content: writeForm.contents,
+      content: writeForm.content,
       category: "자유",
       imageUrl,
     });
@@ -107,6 +107,9 @@ export default function ClubBoardWrite() {
     if (result.ok) {
       navigate("/clubs/" + params.clubId + "/post/" + result.data.id, {
         replace: true,
+        state: {
+          post: result.data,
+        },
       });
     } else {
       alert(result.message);
@@ -214,8 +217,8 @@ export default function ClubBoardWrite() {
           maxLength={30000}
           placeholder="가입인사는 작성 후 하루가 지나면&#13;&#10;가입인사 탭에만 보입니다."
           className=" w-full p-2 outline-none leading-5 relative resize-none"
-          {...register("contents", { required: "내용을 입력해주세요." })}
-          onInput={handleResizeHeight}
+          {...register("content", { required: "내용을 입력해주세요." })}
+          // onInput={handleResizeHeight}
           ref={(e) => {
             ref(e);
             contentRef.current = e;
@@ -223,7 +226,7 @@ export default function ClubBoardWrite() {
         />
         <ErrorMessage
           errors={errors}
-          name="contents"
+          name="content"
           render={({ message }) => (
             <p className="text-[14px] text-red-500 inline-block absolute left-[20px] top-[150px]">
               {message}
@@ -235,14 +238,13 @@ export default function ClubBoardWrite() {
           <div className="flex space-x-2 ">
             <label
               htmlFor="image"
-              className="relative border rounded-md p-2 border-gray-300  w-[65px] h-[65px]"
+              className="relative border rounded-md p-2 border-gray-300 w-32 aspect-square flex justify-center items-center cursor-pointer"
             >
-              <img
-                src={Images.preview}
-                alt="첫번째 미리보기"
-                className="w-[49px] h-[49px] rounded-md"
-                id="firstPreview"
-              />
+              {preview ? (
+                <img src={preview} alt="이미지 미리보기" />
+              ) : (
+                <FontAwesomeIcon icon={faCamera} size="2x" />
+              )}
             </label>
             <input
               type="file"
@@ -253,7 +255,7 @@ export default function ClubBoardWrite() {
             />
           </div>
           <p className="flex items-end text-gray-400">
-            {watch("contents")?.length} / 30000자
+            {watch("content")?.length} / 30000자
           </p>
         </div>
       </form>

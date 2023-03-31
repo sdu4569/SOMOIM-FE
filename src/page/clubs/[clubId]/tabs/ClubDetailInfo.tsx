@@ -13,44 +13,67 @@ import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
 import { Link, useParams } from "react-router-dom";
-import useUser from "@/hooks/useUser";
+import { Member, User } from "@/libs/types";
+import Avatar from "@/components/Avatar";
+import { imageMap } from "@/libs/Images";
+
+interface ClubDetailInfoProps {
+  like: boolean;
+  handleClick?: any;
+  members: Member[];
+  club: any;
+  isMember: boolean;
+  membersBoundMutate: any;
+}
 
 export default function ClubDetailInfo({
   like,
   handleClick,
-}: {
-  like: boolean;
-  handleClick?: any;
-}) {
+  members,
+  isMember = true,
+  club,
+  membersBoundMutate,
+}: ClubDetailInfoProps) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const params = useParams();
-  const { user } = useUser();
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
   return (
     <>
       {inJoinModal && params.clubId && (
         <Overlay onClick={() => setInJoinModal(false)}>
           <JoinClub
+            membersBoundMutate={membersBoundMutate}
             closeModal={() => setInJoinModal(false)}
             clubId={params.clubId}
           />
         </Overlay>
       )}
-      <div className="flex flex-col space-y-4 pb-16 p-4">
-        <div className="h-32 bg-red-500 flex justify-center items-center">
-          이미지
+      <div className={`flex flex-col space-y-4 ${!isMember && "pb-16"} p-4`}>
+        <div className="aspect-twenty-nine w-full bg-gray-300 flex justify-center items-center">
+          {club?.imageUrl ? (
+            <img
+              src={club.imageUrl}
+              alt="클럽 배너"
+              className="w-full aspect-twenty-nine object-fit"
+            />
+          ) : (
+            "이미지"
+          )}
         </div>
         <div className="flex space-x-4">
-          <div className="w-10 h-10 rounded-full bg-blue-500"></div>
+          <div className="w-10 h-10 flex rounded-full bg-gray-200 overflow-hidden justify-center items-center">
+            <img
+              src={imageMap.get(club.favorite)}
+              alt="클럽 관심사 이미지"
+              className="w-3/5 h-3/5"
+            />
+          </div>
           <div className="flex-1 flex flex-col space-y-2">
-            <h3>클럽 이름</h3>
+            <h3>{club.name}</h3>
             <div className="flex space-x-1">
-              <span className="text-xs">지역</span>
+              <span className="text-xs">{club.area}</span>
               <span className="">&middot;</span>
-              <span className="text-xs">멤버 237</span>
+              <span className="text-xs">멤버 {club.memberCnt}</span>
             </div>
           </div>
           <Link to={"./edit"}>
@@ -61,8 +84,49 @@ export default function ClubDetailInfo({
             </div>
           </Link>
         </div>
-        <section className="h-[500px] bg-blue-500 flex justify-center items-center">
-          클럽 소개
+        <section className="flex flex-col space-y-4">
+          <header>
+            <h4 className="text-lg">클럽 소개</h4>
+          </header>
+          <article className="h-[500px] overflow-scroll">
+            <p className="leading-5">
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+              {club.description} Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
+              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
+              Corrupti laudantium maiores adipisci velit quas voluptatibus
+              fugit.
+            </p>
+          </article>
         </section>
         <section>
           <header>
@@ -143,54 +207,38 @@ export default function ClubDetailInfo({
         </section>
         <section>
           <header>
-            <p className="text-lg">클럽 멤버 (30명)</p>
+            <p className="text-lg">클럽 멤버 ({members?.length}명)</p>
           </header>
           <ul className="flex flex-col my-4 space-y-4">
-            <li className="flex space-x-4">
-              <div className="w-10 h-10 rounded-full bg-green-500"></div>
-              <div className="flex-1 flex flex-col justify-center text-sm">
-                <p>이름</p>
-                <p className="text-gray-400">소개</p>
-              </div>
-            </li>
-            <li className="flex space-x-4">
-              <div className="w-10 h-10 rounded-full bg-green-500"></div>
-              <div className="flex-1 flex flex-col justify-center text-sm">
-                <p>이름</p>
-                <p className="text-gray-400">소개</p>
-              </div>
-            </li>
-            <li className="flex space-x-4">
-              <div className="w-10 h-10 rounded-full bg-green-500"></div>
-              <div className="flex-1 flex flex-col justify-center text-sm">
-                <p>이름</p>
-                <p className="text-gray-400">소개</p>
-              </div>
-            </li>
-            <li className="flex space-x-4">
-              <div className="w-10 h-10 rounded-full bg-green-500"></div>
-              <div className="flex-1 flex flex-col justify-center text-sm">
-                <p>이름</p>
-                <p className="text-gray-400">소개</p>
-              </div>
-            </li>
+            {members?.map((member: Member) => (
+              <li key={member.userId} className="flex space-x-4">
+                {/* <div className="w-10 h-10 rounded-full bg-green-500"></div> */}
+                <Avatar size="md" src={member.profileUrl} />
+                <div className="flex-1 flex flex-col justify-center text-sm">
+                  <p>{member.name}</p>
+                  <p className="text-gray-400">{member.introduction}</p>
+                </div>
+              </li>
+            ))}
           </ul>
         </section>
-        <BottomTabNavigator className="space-x-4 px-4 py-2">
-          <div className="" onClick={handleClick}>
-            <FontAwesomeIcon
-              icon={like ? solidHeart : regularHeart}
-              size="2xl"
-              className="text-red-500"
-            />
-          </div>
-          <div
-            onClick={() => setInJoinModal(true)}
-            className="flex-1 flex justify-center items-center h-full border rounded-lg bg-blue-500 text-white"
-          >
-            <p>가입하기</p>
-          </div>
-        </BottomTabNavigator>
+        {!isMember && (
+          <BottomTabNavigator className="space-x-4 px-4 py-2">
+            <div className="" onClick={handleClick}>
+              <FontAwesomeIcon
+                icon={like ? solidHeart : regularHeart}
+                size="2xl"
+                className="text-red-500"
+              />
+            </div>
+            <div
+              onClick={() => setInJoinModal(true)}
+              className="flex-1 flex justify-center items-center h-full border rounded-lg bg-blue-500 text-white"
+            >
+              <p>가입하기</p>
+            </div>
+          </BottomTabNavigator>
+        )}
       </div>
     </>
   );

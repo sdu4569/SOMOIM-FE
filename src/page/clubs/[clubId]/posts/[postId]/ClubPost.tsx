@@ -7,9 +7,11 @@ import PageHeader from "@/components/PageHeader";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import Button from "@/components/Button";
 import Overlay from "@/components/Overlay";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import UpdateComment from "@/components/UpdateComment";
+import useUser from "@/hooks/useUser";
+import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
 
 interface commentFormData {
   comment: string;
@@ -37,6 +39,10 @@ export default function ClubPost() {
   const [selectKey, setSelectKey] = useState<number>();
   const [selectComment, setSelectComment] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<any[]>([]);
+  const location = useLocation();
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const _ = useAutoResizeTextArea(textareaRef);
+  const { user: userData } = useUser();
 
   const {
     register,
@@ -57,6 +63,15 @@ export default function ClubPost() {
       setCommentList(commentArr);
     }
   }, []);
+
+  useEffect(() => {
+    if (!location?.state?.post) {
+      alert("잘못된 접근입니다.");
+      return navigate(-1);
+    }
+
+    console.log(location.state.post);
+  }, [location]);
 
   const handleUpdate = () => {
     navigate(`/clubs/${params.clubId}/update_post/${params.postId}`);
@@ -229,7 +244,7 @@ export default function ClubPost() {
   };
 
   return (
-    <>
+    <div className="flex flex-col overflow-scroll h-full">
       {inModal &&
         modalType &&
         {
@@ -338,10 +353,12 @@ export default function ClubPost() {
           ),
         }[modalType]}
 
-      <PageHeader className="!bg-gray-100 relative">
-        <div className="flex space-x-2 items-center">
+      <PageHeader className="!bg-gray-100">
+        <div className="flex space-x-2 items-center overflow-ellipsis">
           <HeaderBackButton />
-          <h1 className="text-lg ">게시글</h1>
+          <h1 className="text-lg whitespace-nowrap">
+            {location?.state?.post?.title}
+          </h1>
         </div>
         <button
           className={`flex items-center ${userId !== 1 ? "hidden" : ""}`}
@@ -353,7 +370,7 @@ export default function ClubPost() {
           <FontAwesomeIcon icon={faEllipsisV} />
         </button>
       </PageHeader>
-      <section className="mb-12 h-full overflow-scroll p-4">
+      <section className="p-4 py-16">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
             <div className="w-10 aspect-square rounded-full bg-blue-500"></div>
@@ -369,11 +386,21 @@ export default function ClubPost() {
             <p className="text-blue-500">공지사항</p>
           </div>
         </header>
-        <div className="pt-4 pb-12">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur,
-          maiores? A temporibus rem voluptate ad cumque ea ipsum eius.
-          Asperiores rem deleniti laudantium atque ad delectus dolores. Libero,
-          sunt modi?
+        <div className="pt-4 pb-12 flex flex-col space-y-4">
+          {location?.state?.post?.imageUrl && (
+            <img
+              src={location.state.post.imageUrl + "/post"}
+              alt="게시글 사진"
+              className="w-min rounded-md"
+            />
+          )}
+          <textarea
+            ref={textareaRef}
+            cols={30}
+            className="h-max focus:outline-none resize-none"
+            value={location.state.post.content}
+            readOnly
+          />
         </div>
         <div className="grid grid-cols-2 gap-3">
           <button
@@ -413,7 +440,7 @@ export default function ClubPost() {
             <p className="text-sm">댓글 {commentList.length}개</p>
           </div>
         </div>
-        <section className="mt-4 h-full overflow-scroll">
+        <section className="mt-4 overflow-scroll">
           <ul>
             {commentList.map((item, idx) => {
               return (
@@ -466,6 +493,6 @@ export default function ClubPost() {
         </form>
         <Button onClick={clickHandler}>전송</Button>
       </BottomTabNavigator>
-    </>
+    </div>
   );
 }

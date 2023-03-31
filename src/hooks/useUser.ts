@@ -17,19 +17,13 @@ export default function useUser() {
   const token = useAccessToken();
   const location = useLocation();
 
-  const { data, isLoading, error, mutate } = useSWR<UserResponse>("users", {
-    fetcher: (url: string) =>
-      fetch(`${API_ENDPOINT}/users`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }).then((res) => res.json()),
-  });
+  const { data, isLoading, error, mutate } = useSWR<UserResponse>([
+    "users",
+    token,
+  ]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && data) {
       if (!data.ok) {
         alert(data.message);
         navigate("/landing", {

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
-import { LoginResponse } from "@/libs/types";
+import { LoginResponse, User } from "@/libs/types";
 import { useSetRecoilState } from "recoil";
 import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
+import { API_ENDPOINT } from "@/App";
 
 export default function GoogleCallback() {
   const location = useLocation();
@@ -24,19 +25,51 @@ export default function GoogleCallback() {
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error("로그인에 실패했습니다.");
+          console.log(res);
         }
         return res.json();
       })
-      .then((data: LoginResponse) => {
-        setAccessTokenAtom(data.data.accessToken);
+      .then(async (data: LoginResponse) => {
+        if (!data.data.accessToken) {
+          alert("로그인에 실패했습니다.");
+          navigate("/landing");
+          return;
+        }
+        const accessToken = data.data.accessToken;
+        const accessTokenExpirationDateTime = new Date(
+          data.data.accessTokenExpirationDateTime
+        ).getTime();
+        setAccessTokenAtom(accessToken);
         setAccessTokenExpiration(
-          new Date(data.data.accessTokenExpirationDateTime).getTime()
+          new Date(accessTokenExpirationDateTime).getTime()
         );
+
+        const response = await (
+          await fetch(`${API_ENDPOINT}/users`, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+        ).json();
+
+        const user: User = response.data;
+
+        if (!user.area || !user.name) {
+          navigate("/signup/profile");
+
+          return;
+        }
+
+        if (!user.favorites || user.favorites.length === 0) {
+          navigate("/signup/interest");
+          return;
+        }
         navigate("/clubs");
       })
       .catch((e) => {
         alert("로그인에 실패했습니다.");
+        console.log(e);
         navigate("/landing");
       });
   });
