@@ -9,6 +9,7 @@ import PostSkeleton from "./PostSkeleton";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 
+
 interface ClubBoardPostListProps {
   category: string;
 }

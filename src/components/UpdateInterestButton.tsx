@@ -1,7 +1,7 @@
 import useUser from "@/hooks/useUser";
-import { imageMap, Images } from "@/libs/Images";
+import { imageMap } from "@/libs/Images";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import InterestSelect from "./InterestSelect";
 
 const UpdateInterestButton = () => {
@@ -22,7 +22,6 @@ const UpdateInterestButton = () => {
         {user &&
           user.favorites.map((item, idx) => {
             const srcImg = imageMap.get(item);
-            console.log(srcImg);
             return (
               <img
                 key={idx}
