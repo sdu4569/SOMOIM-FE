@@ -23,6 +23,7 @@ interface ClubDetailInfoProps {
   members: Member[];
   club: any;
   isMember: boolean;
+  isManager: boolean;
   membersBoundMutate: any;
 }
 
@@ -31,6 +32,7 @@ export default function ClubDetailInfo({
   handleClick,
   members,
   isMember = true,
+  isManager = false,
   club,
   membersBoundMutate,
 }: ClubDetailInfoProps) {
@@ -76,7 +78,9 @@ export default function ClubDetailInfo({
               <span className="text-xs">멤버 {club.memberCnt}</span>
             </div>
           </div>
-          <Link to={"./edit"}>
+          {/* {isManager && (
+          )} */}
+          <Link to={"edit"} state={{ club }}>
             <div
               className={`text-[14px] inline-block underline text-gray-400 `}
             >

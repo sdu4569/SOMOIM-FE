@@ -46,27 +46,6 @@ const MyActivityPage = () => {
                 return (
                   <Link to={`/clubs/${club.id}`} key={club.id}>
                     <Club data={club} />
-                    {/* <div className="relative mt-4 h-12">
-                <img
-                  src={item.clubImage}
-                  alt="클럽 이미지"
-                  className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
-                />
-                <div className="text-[12px] absolute top-2 left-16">
-                  <img
-                    src={item.interestImage}
-                    className="h-3 inline-block mr-1"
-                    alt="관심사 이미지"
-                  />
-                  {item.clubTitle}
-                </div>
-                <div className="text-[10px] absolute bottom-2 left-16">
-                  <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
-                    {item.region}
-                  </span>
-                  <span className="text-gray-400">멤버 {item.member} </span>
-                </div>
-              </div> */}
                   </Link>
                 );
               })

@@ -45,6 +45,7 @@ export default function ClubDetail() {
   ]);
 
   const [isMember, setIsMember] = useState<boolean>(true);
+  const [isManager, setIsManager] = useState<boolean>(false);
 
   useEffect(() => {
     if (members && user) {
@@ -53,6 +54,12 @@ export default function ClubDetail() {
       );
     }
   }, [members, user]);
+
+  useEffect(() => {
+    if (club && user) {
+      setIsManager(club.data.managerId === user.id);
+    }
+  }, [club, user]);
 
   const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
 
@@ -105,6 +112,7 @@ export default function ClubDetail() {
                 like={like}
                 members={members?.data as Member[]}
                 isMember={isMember}
+                isManager={isManager}
                 membersBoundMutate={membersBoundMutate}
                 club={club?.data}
                 // handleClick={handleClick}
