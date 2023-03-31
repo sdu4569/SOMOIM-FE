@@ -2,7 +2,7 @@ import FloatButton from "@/components/FloatButton";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function ClubGallery() {
+export default function ClubGallery({ isMember }: { isMember: boolean }) {
   return (
     <>
       <ul className="grid grid-cols-2 gap-2 w-full p-4">
@@ -11,9 +11,11 @@ export default function ClubGallery() {
         ))}
       </ul>
       <div className="absolute bottom-8 right-8">
-        <FloatButton to="upload">
-          <FontAwesomeIcon icon={faCamera} />
-        </FloatButton>
+        {isMember && (
+          <FloatButton to="upload">
+            <FontAwesomeIcon icon={faCamera} />
+          </FloatButton>
+        )}
       </div>
     </>
   );

@@ -13,8 +13,12 @@ import ClubDetailInfo from "@/page/clubs/[clubId]/tabs/ClubDetailInfo";
 import ClubBoard from "./tabs/ClubBoard";
 import ClubChat from "./tabs/ClubChat";
 import ClubGallery from "@/page/clubs/[clubId]/tabs/ClubGallery";
-import { useLocation } from "react-router-dom";
-import { stringify } from "querystring";
+import { useLocation, useParams } from "react-router-dom";
+import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
+import useUser from "@/hooks/useUser";
+import { Member } from "@/libs/types";
+import Spinner from "@/components/Spinner";
 
 enum Tabs {
   INFO,
@@ -27,9 +31,45 @@ const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
   const [like, setLike] = useState<boolean>(false);
-  const location = useLocation();
+  const token = useAccessToken();
+  const params = useParams();
+  const { user } = useUser();
+  const {
+    data: members,
+    mutate: membersBoundMutate,
+    isLoading: membersLoading,
+  } = useSWR([`clubs/${params.clubId}/members`, token]);
+  const { data: club, isLoading: clubLoading } = useSWR([
+    `clubs/${params.clubId}`,
+    token,
+  ]);
+
+  const [isMember, setIsMember] = useState<boolean>(true);
+  const [isManager, setIsManager] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (members && user) {
+      setIsMember(
+        members.data.some((member: any) => member.userId === user.id)
+      );
+    }
+  }, [members, user]);
+
+  useEffect(() => {
+    if (club && user) {
+      setIsManager(club.data.managerId === user.id);
+    }
+  }, [club, user]);
 
   const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
+
+  if (clubLoading || membersLoading)
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Spinner size="lg" />
+      </div>
+    );
+
   return (
     <div className="h-full overflow-scroll">
       <PageHeader>
@@ -70,11 +110,16 @@ export default function ClubDetail() {
             0: (
               <ClubDetailInfo
                 like={like}
+                members={members?.data as Member[]}
+                isMember={isMember}
+                isManager={isManager}
+                membersBoundMutate={membersBoundMutate}
+                club={club?.data}
                 // handleClick={handleClick}
               />
             ),
-            1: <ClubBoard />,
-            2: <ClubGallery />,
+            1: <ClubBoard isMember={isMember} />,
+            2: <ClubGallery isMember={isMember} />,
             3: <ClubChat />,
           }[selectedTab]
         }

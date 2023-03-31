@@ -5,27 +5,25 @@ import { useEffect, useRef } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "./Spinner";
 import ClubSkeleton from "./ClubSkeleton";
+import useAccessToken from "@/hooks/useAccessToken";
 
 const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
 
-const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
-  if (previousPageData && !previousPageData.length) return null;
-  return `${API_ENTRYPOINT}/posts?_page=${pageIndex + 1}`;
-};
+export default function ClubsList({ selectedTab }: { selectedTab: string }) {
+  const token = useAccessToken();
 
-export default function ClubsList() {
-  const { data, isLoading, isValidating, size, setSize } = useSWRInfinite(
-    getKey,
-    {
-      revalidateOnFocus: false,
-      fetcher: (url: string) =>
-        fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => res.json()),
-    }
-  );
+  const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+    if (previousPageData && !previousPageData.length) return null;
+    return [
+      `clubs/${
+        selectedTab === "추천클럽" ? "random" : "newclub"
+      }?page=${pageIndex}`,
+      token,
+    ];
+  };
+
+  const { data, isLoading, isValidating, size, setSize } =
+    useSWRInfinite(getKey);
   const targetRef = useRef<HTMLDivElement>(null);
 
   const isIntersecting = useIntersectionObserver(targetRef, {});
@@ -35,6 +33,10 @@ export default function ClubsList() {
       setSize(size + 1);
     }
   }, [isIntersecting]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (isLoading) {
     return (
@@ -50,11 +52,14 @@ export default function ClubsList() {
     <>
       <ul className="flex flex-col space-y-5 mt-4 px-4">
         {data &&
-          data.flat().map((post) => (
-            <Link to={`/clubs/${post.id}`} key={post.id}>
-              <ClubComponent data={post} />
-            </Link>
-          ))}
+          data
+            .map((e) => e.data)
+            .flat()
+            .map((post) => (
+              <Link to={`/clubs/${post.id}`} key={post.id}>
+                <ClubComponent data={post} />
+              </Link>
+            ))}
       </ul>
       <div ref={targetRef} className="w-full flex justify-center items-center">
         {isValidating && <Spinner size="md" className="my-5" />}

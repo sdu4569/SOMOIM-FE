@@ -13,12 +13,11 @@ function App() {
       <RecoilRoot>
         <SWRConfig
           value={{
-            fetcher: (url: string) =>
+            fetcher: ([url, token]: [string, string]) =>
               fetch(`${API_ENDPOINT}/${url}`, {
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization:
-                    "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI3IiwiaWF0IjoxNjc5Mzg0MzI3LCJleHAiOjE3MTA5MjAzMjd9.qltmshE27_Qsyc-EnkcpLgl3nfPJ9X5E12e7nrKMYeM",
+                  Authorization: `Bearer ${token}`,
                 },
               }).then((res) => res.json()),
           }}

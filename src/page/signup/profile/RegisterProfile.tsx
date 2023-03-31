@@ -45,13 +45,13 @@ export default function RegisterProfile() {
   const closeModal = () => setInRegionModal(false);
 
   // prevent direct access
-  // useEffect(() => {
-  //   if (user && user.name) {
-  //     navigate("/clubs", {
-  //       replace: true,
-  //     });
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user && user.name) {
+      navigate("/clubs", {
+        replace: true,
+      });
+    }
+  }, [user]);
 
   if (loading) {
     return (

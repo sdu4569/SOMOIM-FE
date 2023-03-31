@@ -19,7 +19,6 @@ import SignupLayout from "./page/signup/SignupLayout";
 import Register from "./page/signup/register/Register";
 import RegisterProfile from "./page/signup/profile/RegisterProfile";
 import RegisterInterest from "./page/signup/interest/RegisterInterest";
-import RegisterInterestDetail from "./page/signup/interest/detail/RegisterInterestDetail";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
 import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 import InterestDetailChoicePage from "./page/search/[category]/InterestDetailChoicePage";
@@ -38,7 +37,6 @@ const PageNavigator = () => {
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<RegisterProfile />} />
         <Route path="interest" element={<RegisterInterest />} />
-        <Route path="interest/detail" element={<RegisterInterestDetail />} />
       </Route>
 
       <Route path="/interest" element={<InterestPage />} />
@@ -71,10 +69,6 @@ const PageNavigator = () => {
       <Route path="/more" element={<MorePage />} />
       <Route path="/more/editProfile" element={<UpdateUserPage />} />
 
-      <Route
-        path="/more/editInterest/update/detail"
-        element={<RegisterInterestDetail />}
-      />
       <Route path="/more/recent" element={<RecentClubPage />} />
       <Route path="/more/favorite" element={<FavoriteClubPage />} />
 

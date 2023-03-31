@@ -16,11 +16,12 @@ import ClubsList from "@/components/ClubsList";
 import useSWR from "swr";
 import useUser from "@/hooks/useUser";
 import Spinner from "@/components/Spinner";
+import useAccessToken from "@/hooks/useAccessToken";
 
 const tabs = ["추천클럽", "신규클럽"];
 
 export default function ClubPage() {
-  const { data, isLoading } = useSWR("clubs/newclub?area=서울&page=0");
+  const token = useAccessToken();
   const [selectedTab, setSelectedTab] = useState<string>(
     localStorage.getItem("clubListTab") || "추천클럽"
   );
@@ -30,12 +31,6 @@ export default function ClubPage() {
     setSelectedTab(tab);
     localStorage.setItem("clubListTab", tab);
   };
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      console.log(data);
-    }
-  }, [isLoading, data]);
 
   return (
     <div className="h-full overflow-scroll pt-16 pb-20">
@@ -87,7 +82,7 @@ export default function ClubPage() {
             ))}
           </ul>
         </nav>
-        <ClubsList />
+        <ClubsList selectedTab={selectedTab} />
       </section>
       <div className="absolute bottom-20 right-8">
         <FloatButton to="create" className="">
