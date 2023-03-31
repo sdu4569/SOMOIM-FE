@@ -22,3 +22,14 @@ export interface User {
   introduction: string;
   profileUrl?: string;
 }
+
+export interface UserClub {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  area: string;
+  memberLimit: number;
+  memberCnt: number;
+  favorite: string;
+}

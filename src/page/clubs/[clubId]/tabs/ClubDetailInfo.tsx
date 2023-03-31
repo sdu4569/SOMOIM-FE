@@ -26,9 +26,6 @@ export default function ClubDetailInfo({
   const params = useParams();
   const { user } = useUser();
 
-  useEffect(() => {
-    console.log(user);
-  }, []);
   return (
     <>
       {inJoinModal && params.clubId && (

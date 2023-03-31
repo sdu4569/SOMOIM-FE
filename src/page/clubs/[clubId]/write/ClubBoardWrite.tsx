@@ -8,7 +8,6 @@ import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
 import usePostRequest from "@/hooks/usePostRequest";
-import useSWR from "swr";
 import useUploadImage from "@/hooks/useUploadImage";
 import Spinner from "@/components/Spinner";
 

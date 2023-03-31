@@ -59,8 +59,6 @@ const UpdateUserPage = () => {
   const { ref } = register("avatar");
   const fileInput = useRef<HTMLInputElement | null>(null);
 
-  const { onChange } = register("introduction");
-
   // populate form with user data
   useEffect(() => {
     if (user) {
