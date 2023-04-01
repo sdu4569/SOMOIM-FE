@@ -12,6 +12,10 @@ import { useForm } from "react-hook-form";
 import UpdateComment from "@/components/UpdateComment";
 import useUser from "@/hooks/useUser";
 import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
+import usePostRequest from "@/hooks/usePostRequest";
+import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
+import { API_ENDPOINT } from "@/App";
 
 interface commentFormData {
   comment: string;
@@ -29,20 +33,22 @@ let commentArr: any[] = [];
 let postLikeArr: any[] = [];
 
 export default function ClubPost() {
-  const userId: number = 4;
+  const userId: number = 1;
   const params = useParams();
   const navigate = useNavigate();
+  const token = useAccessToken();
+  const { user: userData } = useUser();
+
   const formRef = useRef<HTMLFormElement>(null);
   const [like, setLike] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
-  const [selectKey, setSelectKey] = useState<number>();
+  const [selectId, setSelectId] = useState<number>();
   const [selectComment, setSelectComment] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<any[]>([]);
   const location = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const _ = useAutoResizeTextArea(textareaRef);
-  const { user: userData } = useUser();
 
   const {
     register,
@@ -52,17 +58,22 @@ export default function ClubPost() {
     setValue,
   } = useForm<commentFormData>();
 
-  //코멘트를 로컬저장소에서 들고옴
-  const getComment = localStorage.getItem(
-    `${params.clubId}_${params.postId} comment`
-  );
-  useEffect(() => {
-    //로컬 저장소에 댓글이 존재하면
-    if (getComment !== null) {
-      commentArr = JSON.parse(getComment);
-      setCommentList(commentArr);
+  const { mutate: comment, isLoading: joinLoading } = usePostRequest(
+    `boards/${params.postId}/comments`,
+    {
+      authorized: true,
     }
-  }, []);
+  );
+
+  const { data: commentData, mutate: refreshCommentData } = useSWR([
+    `boards/${params.postId}/comments`,
+    token,
+  ]);
+
+  useEffect(() => {
+    console.log(commentData);
+    commentData && setCommentList(commentData.data);
+  }, [commentData]);
 
   useEffect(() => {
     if (!location?.state?.post) {
@@ -102,7 +113,7 @@ export default function ClubPost() {
     let date = d.getDate();
     let hour: number | string = d.getHours();
     let minute: number | string = d.getMinutes();
-    let amPm = hour >= 12 ? "P.M" : "A.M";
+    let amPm = hour >= 12 ? "오후" : "오전";
     hour =
       hour > 12
         ? hour - 12 >= 10
@@ -112,60 +123,50 @@ export default function ClubPost() {
         ? hour
         : `0${hour}`;
     minute = minute < 10 ? `0${minute}` : minute;
-    return (
-      month + "월 " + date + "일 " + amPm + " " + hour + "시 " + minute + "분"
-    );
+    return month + "월 " + date + "일 " + amPm + " " + hour + ":" + minute;
   };
 
-  const onSubmit = (commentForm: commentFormData) => {
+  const onSubmit = async (commentForm: commentFormData) => {
     if (commentForm.comment.length == 0) {
       return;
     }
 
-    let d = Date.now();
-    commentArr.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    console.log(commentArr);
     let item;
-    if (commentArr.length !== 0) {
+    if (userData) {
       item = {
-        id: commentArr.at(-1)?.id + 1,
-        user_id: userId,
-        board_id: Number(params.postId),
+        userId: userData.id,
+        boardId: Number(params.postId),
         comment: commentForm.comment,
-        createTime: d,
-      };
-    } else {
-      item = {
-        id: 1,
-        user_id: userId,
-        board_id: Number(params.postId),
-        comment: commentForm.comment,
-        createTime: d,
+        userName: userData.name,
+        profileImg: userData.profileUrl,
       };
     }
 
-    commentArr.push(item);
-    localStorage.setItem(
-      `${params.clubId}_${params.postId} comment`,
-      JSON.stringify(commentArr)
-    );
-    setCommentList(commentArr);
+    const response = await comment(item);
+    console.log(response);
+
+    if (response.ok) {
+      refreshCommentData();
+    }
     setValue("comment", "");
   };
 
-  const commentDelete = () => {
-    commentArr = commentArr.filter((item) => item.id !== selectKey);
-    commentArr.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    localStorage.setItem(
-      `${params.clubId}_${params.postId} comment`,
-      JSON.stringify(commentArr)
+  const commentCall = async () => {
+    const response = await fetch(
+      `${API_ENDPOINT}/boards/comments/${selectId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
-    setCommentList(commentArr);
+    const data = await response.json();
+    console.log(data);
+    setSelectComment(data.data);
   };
+
+  const commentDelete = () => {};
 
   const { ref } = register("comment");
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -176,10 +177,6 @@ export default function ClubPost() {
     commentRef.current.style.height = "0";
     commentRef.current.style.height = commentRef.current?.scrollHeight + "px";
   }, [commentRef]);
-
-  useEffect(() => {
-    console.log(selectKey);
-  }, [selectKey]);
 
   // 좋아요 기능
   const getPostLike = localStorage.getItem(
@@ -270,9 +267,7 @@ export default function ClubPost() {
                 <div
                   className="h-[50px] p-4 text-[16px]"
                   onClick={() => {
-                    setSelectComment(
-                      commentList.filter((item) => item.id == selectKey)
-                    );
+                    commentCall();
                     setModalType(ModalType.UPDATE_COMMENT);
                   }}
                 >
@@ -317,10 +312,7 @@ export default function ClubPost() {
           updateComment: selectComment && (
             <UpdateComment
               selectComment={selectComment}
-              setCommentList={setCommentList}
               closeModal={closeModal}
-              commentArr={commentArr}
-              selectKey={selectKey}
             />
           ),
           delComment: (
@@ -445,23 +437,26 @@ export default function ClubPost() {
             {commentList.map((item, idx) => {
               return (
                 <li className="flex space-x-2 mb-3 relative" key={idx}>
-                  <div className="w-8 h-8 rounded-full bg-red-500"></div>
+                  <img
+                    src={`${item.profileImg}/avatar`}
+                    alt="유저 프로필"
+                    className="w-8 h-8 rounded-full"
+                  ></img>
                   <div className="w-36 flex flex-col space-y-1">
                     <div className="flex flex-col">
-                      <p className="text-sm">닉네임</p>
+                      <p className="text-sm">{item.userName}</p>
                       <p className="text-xs text-gray-500">
-                        {getDate(item.createTime)}
+                        {getDate(item.createdAt)}
                       </p>
                     </div>
                     <p className="p-2 rounded-md bg-blue-300">{item.comment}</p>
                   </div>
                   <button
                     className={`absolute right-1 ${
-                      userId !== item.user_id ? "hidden" : ""
+                      userData?.id !== item.userId ? "hidden" : ""
                     }`}
                     onClick={() => {
-                      setSelectKey(item.id);
-
+                      setSelectId(item.id);
                       setInModal(true);
                       setModalType(ModalType.COMMENT);
                     }}

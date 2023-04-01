@@ -54,7 +54,7 @@ export default function ClubDetail() {
         array = JSON.parse(getData);
 
         //최근 본 클럽에 이미 클럽이 들어가 있는지 체크
-        if (array.filter((item: any) => item.id == params.clubId).length == 0) {
+        if (!array.some((item: any) => item.id == params.clubId)) {
           array.unshift({
             id: club.data.id,
             imageUrl: club.data.imageUrl,

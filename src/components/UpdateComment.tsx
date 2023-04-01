@@ -1,28 +1,34 @@
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
 
 import Overlay from "./Overlay";
+import { API_ENDPOINT } from "@/App";
+import useAccessToken from "@/hooks/useAccessToken";
+import usePostRequest from "@/hooks/usePostRequest";
 
 interface commentFormData {
   comment: string;
 }
 
 interface CommentProps {
-  selectComment: any[];
-  setCommentList: React.Dispatch<React.SetStateAction<any[]>>;
+  selectComment: any;
   closeModal: () => void;
-  commentArr: any[];
-  selectKey?: number;
 }
 
 export default function UpdateComment({
   selectComment,
-  setCommentList,
   closeModal,
-  commentArr,
-  selectKey,
 }: CommentProps) {
+  console.log(selectComment.id);
+
+  // const { mutate: updateComment } = usePostRequest(
+  //   `boards/comments/${selectComment.id}`,
+  //   {
+  //     authorized: true,
+  //   }
+  // );
+
+  const token = useAccessToken();
   const {
     register,
     handleSubmit,
@@ -30,7 +36,6 @@ export default function UpdateComment({
     setValue,
   } = useForm<commentFormData>();
 
-  const params = useParams();
   const formRef = useRef<HTMLFormElement>(null);
   const { ref } = register("comment");
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
@@ -42,8 +47,7 @@ export default function UpdateComment({
   }, [errors.comment]);
 
   useEffect(() => {
-    setValue("comment", selectComment[0]?.comment);
-    console.log(selectComment[0]?.comment);
+    setValue("comment", selectComment.comment);
   }, [selectComment]);
 
   const clickHandler = () => {
@@ -54,20 +58,27 @@ export default function UpdateComment({
     }
     closeModal();
   };
-  const onUpdate = (commentForm: commentFormData) => {
-    console.log(commentForm.comment);
-    selectComment[0].comment = commentForm.comment;
-    commentArr = commentArr.filter((item) => item.id !== selectKey);
-    commentArr.push(selectComment[0]);
-    commentArr.sort(function (a, b) {
-      return a.id - b.id;
-    });
-    localStorage.setItem(
-      `${params.clubId}_${params.postId} comment`,
-      JSON.stringify(commentArr)
+
+  const onUpdate = async (commentForm: commentFormData) => {
+    console.log(commentForm);
+    // const response = await updateComment({
+    //   comment: commentForm.comment,
+    // });
+    const response2 = fetch(
+      `${API_ENDPOINT}/boards/comments/${selectComment.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          comment: commentForm.comment,
+        }),
+      }
     );
-    setCommentList(commentArr);
-    console.log(commentArr);
+    // console.log(response);
+    console.log(response2);
   };
 
   return (

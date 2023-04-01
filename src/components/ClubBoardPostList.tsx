@@ -11,7 +11,6 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
-
 interface ClubBoardPostListProps {
   category: PostCategory;
 }
@@ -89,7 +88,7 @@ export default function ClubBoardPostList({
             .flat()
             .map((post: any) => (
               <Link
-                to={`/clubs/1/post/${post?.id}`}
+                to={`/clubs/${params.clubId}/post/${post?.id}`}
                 key={post?.id}
                 className="py-2 cursor-pointer"
                 state={{ post }}
