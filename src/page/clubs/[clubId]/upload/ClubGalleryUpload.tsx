@@ -2,16 +2,20 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import Overlay from "@/components/Overlay";
 import PageHeader from "@/components/PageHeader";
 import Spinner from "@/components/Spinner";
+import usePostRequest from "@/hooks/usePostRequest";
 import useUploadImage from "@/hooks/useUploadImage";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function ClubGalleryUpload() {
   const [fileList, setFileList] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const { uploadImage, isLoading } = useUploadImage();
+  const { clubId } = useParams();
+  const { mutate: uploadGallery, isLoading: uploadGalleryLoading } =
+    usePostRequest(`clubs/${clubId}/albums`, { authorized: true });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,19 +23,20 @@ export default function ClubGalleryUpload() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let result = [];
-
     if (fileList.length === 0)
       return alert("적어도 한 장의 사진을 업로드해주세요.");
 
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
-      result.push(await uploadImage(file));
+      const imageUrl = await uploadImage(file);
+      if (imageUrl) {
+        const result = await uploadGallery({
+          imageUrl,
+        });
+      }
     }
 
-    console.log(result);
-
-    // to do : post to server
+    navigate(-1);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

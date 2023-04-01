@@ -32,7 +32,7 @@ const MyActivityPage = () => {
   console.log(userClub);
 
   return (
-    <div className="h-full py-16 px-4 overflow-scroll">
+    <div className="h-full pt-16 pb-20 px-4 overflow-scroll">
       <PageHeader>
         <h2 className="text-xl">내 활동</h2>
         <div className="flex space-x-8 items-center">

@@ -49,12 +49,10 @@ export default function ClubDetail() {
     if (club) {
       let array = [];
       const getData = localStorage.getItem("recentClub");
-
       if (getData !== null) {
         array = JSON.parse(getData);
-
         //최근 본 클럽에 이미 클럽이 들어가 있는지 체크
-        if (array.filter((item: any) => item.id == params.clubId).length == 0) {
+        if (!array.some((item: any) => item.id == params.clubId)) {
           array.unshift({
             id: club.data.id,
             imageUrl: club.data.imageUrl,
@@ -113,7 +111,9 @@ export default function ClubDetail() {
       <PageHeader>
         <div className="flex items-center space-x-4 h-full overflow-hidden">
           <HeaderBackButton />
-          <h1 className="text-xl whitespace-nowrap truncate ">클럽 이름</h1>
+          <h1 className="text-xl whitespace-nowrap truncate ">
+            {club.data.name}
+          </h1>
         </div>
         <div className="flex space-x-6 items-center ml-2">
           <FontAwesomeIcon
@@ -142,7 +142,7 @@ export default function ClubDetail() {
           ))}
         </ul>
       </nav>
-      <section className="mt-[72px]">
+      <section className="pt-[72px] h-full box-border">
         {
           {
             0: (
