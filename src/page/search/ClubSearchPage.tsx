@@ -41,10 +41,8 @@ const ClubSearchPage = () => {
     let array = [];
     const getStorage = localStorage.getItem("recentSearch");
 
-    const searchContents = notFilterList.filter(
-      (content) =>
-        content.clubTitle.includes(watch("search")) ||
-        content.clubDescription.includes(watch("search"))
+    const searchContents = notFilterList.filter((content) =>
+      content.clubTitle.includes(watch("search"))
     );
 
     // 제출시 localStorage 갱신

@@ -28,7 +28,7 @@ const ClubSearch = () => {
           variants={ClubSearchVariants}
           initial="initial"
           animate={expanded ? "expanded" : "base"}
-          transition={{ ease: "easeInOut", duration: 0.5 }}
+          transition={{ ease: "easeInOut", duration: 0.5, originY: 0 }}
           className={`grid grid-cols-5 gap-y-4 overflow-hidden`}
         >
           {InterestList.map((item, idx) => {
