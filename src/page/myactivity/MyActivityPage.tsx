@@ -11,6 +11,7 @@ import FloatButton from "@/components/FloatButton";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import Club from "@/components/Club";
+import { useEffect } from "react";
 
 const MyActivityPage = () => {
   const token = useAccessToken();
@@ -19,7 +20,6 @@ const MyActivityPage = () => {
   useEffect(() => {
     console.log(joinedClubs);
   }, [joinedClubs]);
-
 
   return (
     <div className="h-full pt-16 pb-20 px-4 overflow-scroll">
@@ -31,7 +31,6 @@ const MyActivityPage = () => {
           </Link>
         </div>
       </PageHeader>
-
 
       <main className="flex flex-col space-y-4">
         <section className="flex flex-col space-y-4">
