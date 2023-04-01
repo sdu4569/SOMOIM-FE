@@ -84,7 +84,7 @@ export default function ClubBoardPostList({
             .flat()
             .map((post: any) => (
               <Link
-                to={`/clubs/1/post/${post?.id}`}
+                to={`/clubs/${params.clubId}/post/${post?.id}`}
                 key={post?.id}
                 className="py-2 cursor-pointer"
                 state={{ post }}
