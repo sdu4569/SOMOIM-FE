@@ -78,15 +78,15 @@ export default function ClubDetailInfo({
               <span className="text-xs">멤버 {club.memberCnt}</span>
             </div>
           </div>
-          {/* {isManager && (
-          )} */}
-          <Link to={"edit"} state={{ club }}>
-            <div
-              className={`text-[14px] inline-block underline text-gray-400 `}
-            >
-              수정
-            </div>
-          </Link>
+          {isManager && (
+            <Link to={"edit"} state={{ club }}>
+              <div
+                className={`text-[14px] inline-block underline text-gray-400`}
+              >
+                수정
+              </div>
+            </Link>
+          )}
         </div>
         <section className="flex flex-col space-y-4">
           <header>

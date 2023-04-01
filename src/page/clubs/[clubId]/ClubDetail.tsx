@@ -13,7 +13,7 @@ import ClubDetailInfo from "@/page/clubs/[clubId]/tabs/ClubDetailInfo";
 import ClubBoard from "./tabs/ClubBoard";
 import ClubChat from "./tabs/ClubChat";
 import ClubGallery from "@/page/clubs/[clubId]/tabs/ClubGallery";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
@@ -43,6 +43,44 @@ export default function ClubDetail() {
     `clubs/${params.clubId}`,
     token,
   ]);
+
+  //최근 본 클럽 기능 시작
+  useEffect(() => {
+    if (club) {
+      let array = [];
+      const getData = localStorage.getItem("recentClub");
+
+      if (getData !== null) {
+        array = JSON.parse(getData);
+
+        //최근 본 클럽에 이미 클럽이 들어가 있는지 체크
+        if (array.filter((item: any) => item.id == params.clubId).length == 0) {
+          array.unshift({
+            id: club.data.id,
+            imageUrl: club.data.imageUrl,
+            name: club.data.name,
+            description: club.data.description,
+            area: club.data.area,
+            favorite: club.data.favorite,
+            member: club.data.memberCnt,
+          });
+          localStorage.setItem("recentClub", JSON.stringify(array));
+        }
+      } else {
+        array.unshift({
+          id: club.data.id,
+          imageUrl: club.data.imageUrl,
+          name: club.data.name,
+          description: club.data.description,
+          area: club.data.area,
+          favorite: club.data.favorite,
+          member: club.data.memberCnt,
+        });
+        localStorage.setItem("recentClub", JSON.stringify(array));
+      }
+    }
+  }, [club]);
+  //최근 본 클럽 끝
 
   const [isMember, setIsMember] = useState<boolean>(true);
   const [isManager, setIsManager] = useState<boolean>(false);
