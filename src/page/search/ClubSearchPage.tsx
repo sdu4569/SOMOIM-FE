@@ -6,6 +6,11 @@ import { testClubList } from "@/components/testClubList";
 import { useEffect, useRef, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
+import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
+import useUser from "@/hooks/useUser";
+import getInterestWithKey from "@/util/getInterestWithKey";
+import { API_ENDPOINT } from "@/App";
 
 interface searchFormData {
   search: string;
@@ -15,9 +20,8 @@ const ClubSearchPage = () => {
   const [filterList, setFilterList] = useState<any[]>([]);
   const [recentSearchList, setRecentSearchList] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
-  const userCity = "부산광역시";
-
-  const notFilterList = testClubList.filter((item) => item.city == userCity);
+  const { user } = useUser();
+  const token = useAccessToken();
 
   const {
     watch,
@@ -33,19 +37,26 @@ const ClubSearchPage = () => {
     }
   }, [watch("search")]);
 
-  const onSubmit = (searchForm: searchFormData) => {
+  const onSubmit = async (searchForm: searchFormData) => {
     if (searchForm.search == "") {
       return;
     }
 
+    const response = await fetch(
+      `${API_ENDPOINT}/clubs/search?name=${searchForm.search}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+
+    setFilterList(data.data);
+
     let array = [];
     const getStorage = localStorage.getItem("recentSearch");
-
-    const searchContents = notFilterList.filter(
-      (content) =>
-        content.clubTitle.includes(watch("search")) ||
-        content.clubDescription.includes(watch("search"))
-    );
 
     // 제출시 localStorage 갱신
     if (getStorage !== null) {
@@ -59,12 +70,6 @@ const ClubSearchPage = () => {
     } else {
       array.unshift(watch("search"));
       localStorage.setItem("recentSearch", JSON.stringify(array));
-    }
-
-    if (searchContents.length !== 0) {
-      setFilterList(searchContents);
-    } else {
-      alert("검색 결과가 없습니다.");
     }
   };
 
@@ -128,36 +133,40 @@ const ClubSearchPage = () => {
         </div>
       </PageHeader>
       <main>
-        {filterList.length !== 0 && (
+        {filterList?.length !== 0 && (
           //검색을 진행한 경우
           <div className=" border-t pt-4 border-solid border-gray-400 relative">
             <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
-              <span className="text-blue-500">{userCity}</span>의 클럽 리스트
+              <span className="text-blue-500">{user?.area}</span>의 클럽 리스트
             </p>
-            {filterList.map((item, idx) => {
+            {filterList?.map((item, idx) => {
               return (
-                <Link to={`/clubs/${item.id}`} key={idx} state={item}>
+                <Link to={`/clubs/${item.id}`} key={idx}>
                   <div className="relative mt-6 h-12">
                     <img
-                      src={item.clubImage}
+                      src={item.imageUrl}
                       alt="클럽 이미지"
-                      className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
+                      className={`w-12 h-12 rounded-2xl inline-block ${
+                        item.imageUrl === ""
+                          ? "border-dashed border-2 border-gray-500"
+                          : ""
+                      } `}
                     />
                     <div className="text-[12px] absolute top-0 left-16">
-                      {item.clubTitle}
+                      {item.name}
                     </div>
                     <div className="text-[10px] absolute top-5 left-16 text-gray-400">
-                      {item.clubDescription}
+                      {item.description}
                     </div>
                     <div className="text-[10px] absolute bottom-0 left-16">
                       <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
-                        {item.region}
+                        {item.area}
                       </span>
                       <span className="text-gray-400 mr-2">
-                        멤버 {item.member}
+                        멤버 {item.memberCnt}
                       </span>
                       <span className="text-gray-400 bg-gray-100 pl-1 pr-1 pt-0.5 pb-0.5 rounded-md">
-                        {item.interestTitle}
+                        {getInterestWithKey(item.favorite)}
                       </span>
                     </div>
                   </div>
@@ -166,7 +175,7 @@ const ClubSearchPage = () => {
             })}
           </div>
         )}
-        {filterList.length == 0 && watch("search") !== "" && (
+        {filterList?.length == 0 && watch("search") !== "" && (
           //검색 진행 전 검색창에 입력하는 경우
           <div className="mb-2.5 text-[12px]">
             <div className="text-gray-400">최근 검색</div>
