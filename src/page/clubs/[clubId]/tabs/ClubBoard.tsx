@@ -1,28 +1,29 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FloatButton from "@/components/FloatButton";
 import ClubBoardNoticeList from "@/components/ClubBoardNoticeList";
 import ClubBoardPostList from "@/components/ClubBoardPostList";
+import { PostCategory } from "@/libs/types";
+import postcss from "postcss";
 
 export default function ClubBoard({ isMember }: { isMember: boolean }) {
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState<PostCategory>(PostCategory.ALL);
 
   return (
     <>
       <div className="flex flex-col p-4">
         <select
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value as PostCategory)}
           name=""
           id=""
-          className="w-32 mt-4 rounded-full p-1 border-black border"
+          className="w-32 mt-4 rounded-full p-1 border-black border focus:outline-none"
         >
-          <option value="all">전체보기</option>
-          <option value="free">자유 글</option>
-          <option value="share">관심사 공유</option>
-          <option value="meeting">정모후기</option>
-          <option value="greeting">가입인사</option>
-          <option value="notice">공지사항</option>
+          <option value={PostCategory.ALL}>전체보기</option>
+          <option value={PostCategory.FREE}>자유 글</option>
+          <option value={PostCategory.FAVORITE}>관심사 공유</option>
+          <option value={PostCategory.MEET}>정모후기</option>
+          <option value={PostCategory.JOIN}>가입인사</option>
         </select>
         <section>
           <ClubBoardNoticeList />

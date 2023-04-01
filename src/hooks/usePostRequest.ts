@@ -35,17 +35,22 @@ export default function usePostRequest(
     if (isLoading) return Promise.reject("Already loading");
 
     setIsLoading(true);
-
-    const response = await fetch(`${API_ENDPOINT}/${url}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(authorized && {
-          Authorization: "Bearer " + token,
-        }),
-      },
-      body: data && JSON.stringify(data),
-    });
+    let response;
+    try {
+      response = await fetch(`${API_ENDPOINT}/${url}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(authorized && {
+            Authorization: "Bearer " + token,
+          }),
+        },
+        body: data && JSON.stringify(data),
+      });
+    } catch (error) {
+      console.log(error);
+      return { ok: false, message: "Request Failed" };
+    }
 
     setIsLoading(false);
 
@@ -56,6 +61,11 @@ export default function usePostRequest(
 
     if (response.status === 201) {
       return { ok: true };
+    }
+
+    if (response.status === 400) {
+      const data = await response.json();
+      return data;
     }
 
     if (response.status === 401) {
@@ -77,7 +87,7 @@ export default function usePostRequest(
       return { ok: false, message: "Internal server error" };
     }
 
-    return { ok: false, message: "Unknown error" };
+    return { ok: false, message: "Unknown Error" };
   };
 
   return { mutate, isLoading };

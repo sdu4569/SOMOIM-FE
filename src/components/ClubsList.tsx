@@ -6,6 +6,7 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "./Spinner";
 import ClubSkeleton from "./ClubSkeleton";
 import useAccessToken from "@/hooks/useAccessToken";
+import useSWR from "swr";
 
 const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
 
@@ -13,14 +14,20 @@ export default function ClubsList({ selectedTab }: { selectedTab: string }) {
   const token = useAccessToken();
 
   const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
-    if (previousPageData && !previousPageData.length) return null;
+    if (!token) return;
+    if (previousPageData && !previousPageData.data.length) return null;
     return [
-      `clubs/${
-        selectedTab === "추천클럽" ? "random" : "newclub"
-      }?page=${pageIndex}`,
+      `clubs/${selectedTab === "추천클럽" ? "random" : "newclub"}?page=${
+        pageIndex + 1
+      }`,
       token,
     ];
   };
+
+  const { data: page0 } = useSWR([`clubs/newclub?page=1`, token]);
+  const { data: page1 } = useSWR([`clubs/newclub?page=2`, token]);
+  const { data: page2 } = useSWR([`clubs/newclub?page=3`, token]);
+  const { data: page3 } = useSWR([`clubs/newclub?page=4`, token]);
 
   const { data, isLoading, isValidating, size, setSize } =
     useSWRInfinite(getKey);
@@ -34,9 +41,22 @@ export default function ClubsList({ selectedTab }: { selectedTab: string }) {
     }
   }, [isIntersecting]);
 
+  // useEffect(() => {
+  //   console.log(data);
+  // }, [data, size]);
+
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log("page0: ", page0);
+  }, [page0]);
+  useEffect(() => {
+    console.log("page1: ", page1);
+  }, [page1]);
+  useEffect(() => {
+    console.log("page2: ", page2);
+  }, [page2]);
+  useEffect(() => {
+    console.log("page3: ", page3);
+  }, [page3]);
 
   if (isLoading) {
     return (

@@ -30,3 +30,12 @@ export interface Member {
   profileUrl?: string;
   introduction?: string;
 }
+
+export enum PostCategory {
+  ALL = "ALL",
+  FREE = "FREE",
+  FAVORITE = "FAVORITE",
+  MEET = "MEET",
+  JOIN = "JOIN",
+  ANNOUNCEMENT = "ANNOUNCEMENT",
+}

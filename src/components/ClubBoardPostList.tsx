@@ -8,9 +8,11 @@ import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import PostSkeleton from "./PostSkeleton";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
+import { PostCategory } from "@/libs/types";
+import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
 interface ClubBoardPostListProps {
-  category: string;
+  category: PostCategory;
 }
 
 export default function ClubBoardPostList({
@@ -22,7 +24,15 @@ export default function ClubBoardPostList({
   const getPostKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
     if (!token) return null;
     if (previousPageData && !previousPageData.data?.length) return null;
-    return [`clubs/${params.clubId}/boards?page=${pageIndex}`, token];
+
+    if (category === PostCategory.ALL) {
+      return [`clubs/${params.clubId}/boards?page=${pageIndex}`, token];
+    }
+
+    return [
+      `clubs/${params.clubId}/boards/category?category=${category}&page=${pageIndex}`,
+      token,
+    ];
   };
   const { data, isLoading, isValidating, setSize, size } =
     useSWRInfinite(getPostKey);
@@ -38,7 +48,7 @@ export default function ClubBoardPostList({
   }, [isIntersecting]);
 
   useEffect(() => {
-    setSize(1);
+    setSize(0);
   }, []);
 
   useEffect(() => {
@@ -55,13 +65,20 @@ export default function ClubBoardPostList({
     );
   }
 
-  if (!isLoading && data && data[0].data?.length === 0) {
+  if (data && data[0]?.data?.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center">
-        <p className="text-gray-400 text-2xl">게시글이 없습니다.</p>
+      <div className="flex h-full items-center justify-center">
+        <p className="text-gray-400 text-lg">
+          {getPostCategoryWithKey(category) === "전체 글"
+            ? "첫 번째 게시글을 등록해보세요!"
+            : `${getPostCategoryWithKey(
+                category
+              )}에 해당하는 게시글이 없습니다.`}
+        </p>
       </div>
     );
   }
+
   return (
     <>
       <ul className="flex flex-col divide-gray-200 space-y-8 mt-4">
@@ -114,7 +131,9 @@ export default function ClubBoardPostList({
                     </div>
                   </div>
                   <div>
-                    <p className="text-gray-500 text-sm ">가입인사</p>
+                    <p className="text-gray-500 text-sm ">
+                      {getPostCategoryWithKey(post.category)}
+                    </p>
                   </div>
                 </div>
               </Link>

@@ -18,6 +18,18 @@ export default function Avatar({ size, src }: AvatarProps) {
     );
   }
 
+  if (!src.includes("imagedelivery")) {
+    return (
+      <img
+        src={src}
+        alt="유저 프로필 사진"
+        className={`${
+          size === "md" ? "w-10" : "w-20"
+        } aspect-square rounded-full bg-gray-200`}
+      ></img>
+    );
+  }
+
   return (
     <img
       src={`${src}/${size === "md" ? "avatar" : "avatarLarge"}`}

@@ -12,27 +12,20 @@ import useUploadImage from "@/hooks/useUploadImage";
 import Spinner from "@/components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { PostCategory } from "@/libs/types";
+import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
 interface writeFormData {
   title: string;
   content: string;
-  category: string;
+  category: PostCategory;
   image: FileList;
 }
-
-const textObject = {
-  free: "자유 글",
-  share: "관심사 공유",
-  meeting: "정모후기",
-  greeting: "가입인사",
-  notice: "공지사항",
-};
-type categoryType = keyof typeof textObject;
 
 export default function ClubBoardWrite() {
   const formRef = useRef<HTMLFormElement>(null);
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<categoryType>("free");
+  const [category, setCategory] = useState<PostCategory>(PostCategory.FREE);
   const [preview, setPreview] = useState<string>("");
   const params = useParams();
   const navigate = useNavigate();
@@ -100,7 +93,7 @@ export default function ClubBoardWrite() {
     const result = await uploadPost({
       title: writeForm.title,
       content: writeForm.content,
-      category: "자유",
+      category: writeForm.category,
       imageUrl,
     });
 
@@ -138,37 +131,37 @@ export default function ClubBoardWrite() {
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
-              data-category="free"
+              data-category={PostCategory.ANNOUNCEMENT}
             >
-              자유 글
+              {getPostCategoryWithKey(PostCategory.ANNOUNCEMENT)}
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
-              data-category="share"
+              data-category={PostCategory.FREE}
             >
-              관심사 공유
+              {getPostCategoryWithKey(PostCategory.FREE)}
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
-              data-category="meeting"
+              data-category={PostCategory.FAVORITE}
             >
-              정모후기
+              {getPostCategoryWithKey(PostCategory.FAVORITE)}
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
-              data-category="greeting"
+              data-category={PostCategory.MEET}
             >
-              가입인사
+              {getPostCategoryWithKey(PostCategory.MEET)}
             </div>
             <div
               className="h-[50px] p-4 text-[16px]"
               onClick={(e) => handleClick(e)}
-              data-category="notice"
+              data-category={PostCategory.JOIN}
             >
-              공지사항
+              {getPostCategoryWithKey(PostCategory.JOIN)}
             </div>
           </div>
         </Overlay>
@@ -193,7 +186,10 @@ export default function ClubBoardWrite() {
             type="text"
             className="outline-none p-2 text-lg flex-1 relative"
             placeholder="제목 (40자)"
-            {...register("title", { required: "제목을 입력해주세요." })}
+            {...register("title", {
+              required: "제목을 입력해주세요.",
+              maxLength: 40,
+            })}
           />
           <ErrorMessage
             errors={errors}
@@ -205,17 +201,18 @@ export default function ClubBoardWrite() {
             )}
           />
           <p
-            className="text-blue-500 text-sm absolute right-4"
+            onClick={() => setCategoryModal(true)}
+            className="text-blue-500 text-sm"
             {...register("category")}
           >
-            {textObject[category]}
+            {getPostCategoryWithKey(category)}
           </p>
         </div>
         <textarea
           cols={30}
           rows={10}
           maxLength={30000}
-          placeholder="가입인사는 작성 후 하루가 지나면&#13;&#10;가입인사 탭에만 보입니다."
+          placeholder="클럽원들과 공유하고 싶은 내용을 적어보세요."
           className=" w-full p-2 outline-none leading-5 relative resize-none"
           {...register("content", { required: "내용을 입력해주세요." })}
           // onInput={handleResizeHeight}

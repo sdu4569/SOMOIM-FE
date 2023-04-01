@@ -4,6 +4,8 @@ import { useState } from "react";
 import Overlay from "./Overlay";
 import usePostRequest from "@/hooks/usePostRequest";
 import Spinner from "./Spinner";
+import useUser from "@/hooks/useUser";
+import { PostCategory } from "@/libs/types";
 
 interface greetingFormData {
   introduction?: string;
@@ -29,9 +31,21 @@ export default function JoinClub({
     handleSubmit,
   } = useForm();
 
-  const { mutate, isLoading } = usePostRequest(`clubs/${clubId}/join`, {
-    authorized: true,
-  });
+  const { user } = useUser();
+
+  const { mutate: join, isLoading: joinLoading } = usePostRequest(
+    `clubs/${clubId}/join`,
+    {
+      authorized: true,
+    }
+  );
+
+  const { mutate: post, isLoading: postLoading } = usePostRequest(
+    `clubs/${clubId}/boards`,
+    {
+      authorized: true,
+    }
+  );
 
   const onSubmit = async (formData: greetingFormData) => {
     if (formData.introduction?.trim().length == 0) {
@@ -39,11 +53,16 @@ export default function JoinClub({
       return;
     }
 
-    const result = await mutate();
+    const result = await join();
 
     if (result.ok) {
-      alert("가입되었습니다.");
       membersBoundMutate();
+      await post({
+        category: PostCategory.JOIN,
+        title: `${user?.name}님의 가입인사`,
+        content: formData.introduction,
+      });
+      alert("가입되었습니다.");
       closeModal();
     } else {
       alert(result.message);
@@ -102,7 +121,7 @@ export default function JoinClub({
               type="submit"
               className="flex justify-center items-center flex-1"
             >
-              {isLoading ? <Spinner size="sm" /> : "가입"}
+              {joinLoading || postLoading ? <Spinner size="sm" /> : "가입"}
             </button>
           </div>
         </form>

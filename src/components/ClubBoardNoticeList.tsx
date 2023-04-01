@@ -1,19 +1,18 @@
+import useAccessToken from "@/hooks/useAccessToken";
+import { PostCategory } from "@/libs/types";
+import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import SkeletonBar from "./SkeletonBar";
 import Spinner from "./Spinner";
 
 export default function ClubBoardNoticeList() {
-  const { data: notices, isLoading: noticeLoading } = useSWR(
-    "https://jsonplaceholder.typicode.com/posts?_limit=3",
-    {
-      fetcher: (url: string) =>
-        fetch(url, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((res) => res.json()),
-    }
-  );
+  const params = useParams();
+  const token = useAccessToken();
+
+  const { data: notices, isLoading: noticeLoading } = useSWR([
+    `clubs/${params.clubId}/boards/category?category=${PostCategory.FAVORITE}`,
+    token,
+  ]);
 
   if (noticeLoading) {
     return (
@@ -30,11 +29,11 @@ export default function ClubBoardNoticeList() {
 
   return (
     <ul className="flex flex-col divide-y-[1px] divide-gray-300 mt-2">
-      {notices.map((notice: any) => {
+      {notices.data.map((notice: any) => {
         return (
           <li key={notice.id} className="flex space-x-2 py-2">
             <strong className="font-semibold text-blue-500">[필독]</strong>
-            <p>공지사항 제목</p>
+            <p>{notice.title}</p>
           </li>
         );
       })}
