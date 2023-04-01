@@ -166,7 +166,22 @@ export default function ClubPost() {
     setSelectComment(data.data);
   };
 
-  const commentDelete = () => {};
+  const commentDelete = async () => {
+    const response = await fetch(
+      `${API_ENDPOINT}/boards/comments/${selectId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    if (response.ok) {
+      refreshCommentData();
+    }
+  };
 
   const { ref } = register("comment");
   const commentRef = useRef<HTMLTextAreaElement | null>(null);

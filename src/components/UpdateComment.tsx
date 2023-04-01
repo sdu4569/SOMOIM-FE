@@ -64,7 +64,7 @@ export default function UpdateComment({
     // const response = await updateComment({
     //   comment: commentForm.comment,
     // });
-    const response2 = fetch(
+    const response2 = await fetch(
       `${API_ENDPOINT}/boards/comments/${selectComment.id}`,
       {
         method: "PATCH",
