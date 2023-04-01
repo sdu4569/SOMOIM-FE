@@ -24,6 +24,18 @@ export interface User {
   profileUrl?: string;
 }
 
+
+export interface UserClub {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  area: string;
+  memberLimit: number;
+  memberCnt: number;
+  favorite: string;
+}
+
 export interface Member {
   userId: number;
   name: string;

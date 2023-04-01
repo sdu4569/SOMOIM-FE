@@ -11,6 +11,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
+
 interface ClubBoardPostListProps {
   category: PostCategory;
 }
