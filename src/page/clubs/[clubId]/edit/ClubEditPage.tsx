@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import getInterestWithKey from "@/util/getInterestWithKey";
 import Spinner from "@/components/Spinner";
 import EditRegion from "@/components/EditRegion";
-import ClubInterestSelect from "@/components/ClubInterestSelect";
+import ClubFavoriteSelect from "@/components/ClubInterestSelect";
 import Club from "@/components/Club";
 import RegionSearch from "@/components/RegionSearch";
 
@@ -90,7 +90,7 @@ export default function ClubEditPage() {
             />
           ),
           Favorite: (
-            <ClubInterestSelect
+            <ClubFavoriteSelect
               prev={location.state.club.favorite}
               closeModal={closeModal}
               setInputValue={setValue}

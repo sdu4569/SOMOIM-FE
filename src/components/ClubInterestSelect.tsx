@@ -6,7 +6,7 @@ import HeaderBackButton from "./HeaderBackButton";
 import { InterestList } from "@/libs/InterestList";
 import getInterestWithKey from "@/util/getInterestWithKey";
 
-interface ClubInterestSelectProps {
+interface ClubFavoriteSelectProps {
   readonly closeModal: () => void;
   readonly setInputValue: any;
   readonly prev: string;
@@ -16,11 +16,11 @@ interface Favorite {
   readonly favorite: string;
 }
 
-export default function ClubInterestSelect({
+export default function ClubFavoriteSelect({
   closeModal,
   setInputValue,
   prev,
-}: ClubInterestSelectProps) {
+}: ClubFavoriteSelectProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const { handleSubmit, register, watch } = useForm<Favorite>({

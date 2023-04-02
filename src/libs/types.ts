@@ -57,3 +57,11 @@ export enum Tabs {
   PHOTO,
   CHAT,
 }
+
+export enum ModalType {
+  POST = "post",
+  DELETE_POST = "delPost",
+  COMMENT = "comment",
+  UPDATE_COMMENT = "updateComment",
+  DELETE_COMMENT = "delComment",
+}

@@ -1,4 +1,3 @@
-import { imageMap } from "@/libs/Images";
 import getInterestWithKey from "@/util/getInterestWithKey";
 
 interface ClubComponentProps {
@@ -6,7 +5,6 @@ interface ClubComponentProps {
 }
 
 export default function Club({ data }: ClubComponentProps) {
-  const interestImg = imageMap.get(data.favorite);
   return (
     <div className="flex space-x-4">
       <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative">

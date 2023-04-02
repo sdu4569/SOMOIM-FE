@@ -19,16 +19,16 @@ import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
+import { ModalType } from "@/libs/types";
+import Delete from "@/components/Delete";
+import PostMenuButton from "@/components/PostMenuButton";
+import CommentMenuButton from "@/components/CommentMenuButton";
+import { getDate } from "@/util/getDate";
+
+
+
 interface commentFormData {
   comment: string;
-}
-
-const enum ModalType {
-  POST = "post",
-  COMMENT = "comment",
-  DELETE_POST = "delPost",
-  UPDATE_COMMENT = "updateComment",
-  DELETE_COMMENT = "delComment",
 }
 
 let postLikeArr: any[] = [];
@@ -46,6 +46,7 @@ export default function ClubPost() {
   const {
     state: { post },
   } = useLocation();
+
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const _ = useAutoResizeTextArea(textareaRef);
 
@@ -76,6 +77,9 @@ export default function ClubPost() {
     }
   }, [post]);
 
+
+  //모달 닫기 기능
+
   const postDelete = async () => {
     const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
       method: "DELETE",
@@ -87,6 +91,7 @@ export default function ClubPost() {
     console.log(response);
     navigate(-1);
   };
+
 
   const closeModal = () => {
     setInModal(false);
@@ -103,33 +108,15 @@ export default function ClubPost() {
     }
   };
 
-  const getDate = (e: number) => {
-    let d = new Date(e);
-    let month = d.getMonth() + 1;
-    let date = d.getDate();
-    let hour: number | string = d.getHours();
-    let minute: number | string = d.getMinutes();
-    let amPm = hour >= 12 ? "오후" : "오전";
-    hour =
-      hour > 12
-        ? hour - 12 >= 10
-          ? hour - 12
-          : `0${hour - 12}`
-        : hour >= 10
-        ? hour
-        : `0${hour}`;
-    minute = minute < 10 ? `0${minute}` : minute;
-    return month + "월 " + date + "일 " + amPm + " " + hour + ":" + minute;
-  };
-
+  //댓글 전송 기능
   const onSubmit = async (commentForm: commentFormData) => {
     if (commentForm.comment.length == 0) {
       return;
     }
-    // let replaceComment = commentForm.comment.replace(
-    //   /(?:\r\n|\r|\n)/g,
-    //   "<br/>"
-    // );
+
+    if (commentLoading) {
+      return;
+    }
 
     if (commentLoading) {
       return;
@@ -147,13 +134,26 @@ export default function ClubPost() {
     }
 
     const response = await comment(item);
-    console.log(response);
 
     if (response.ok) {
       refreshCommentData();
     }
     setValue("comment", "");
   };
+
+
+  //글 삭제, 댓글 삭제
+  const postDelete = async () => {
+    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    navigate(-1);
+  };
+
 
   const commentDelete = async () => {
     if (!selectedComment) return;
@@ -177,28 +177,19 @@ export default function ClubPost() {
         ),
       });
     }
+    closeModal();
   };
 
-  const { ref } = register("comment");
-  const commentRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const handleResizeHeight = useCallback(() => {
-    if (!commentRef.current) return;
-
-    commentRef.current.style.height = "0";
-    commentRef.current.style.height = commentRef.current?.scrollHeight + "px";
-  }, [commentRef]);
-
-  // 좋아요 기능
-  const getPostLike = localStorage.getItem(
-    `${params.clubId}_${params.postId} like`
-  );
+  // // 좋아요 기능
+  // const getPostLike = localStorage.getItem(
+  //   `${params.clubId}_${params.postId} like`
+  // );
 
   // useEffect(() => {
   //   if (getPostLike !== null) {
   //     postLikeArr = JSON.parse(getPostLike);
   //     const likeUserArr = postLikeArr.filter(
-  //       (item: { id: number }) => item.id == userId
+  //       (item: { id: number }) => item.id == userData?.id
   //     );
 
   //     if (likeUserArr.length !== 0) {
@@ -216,12 +207,9 @@ export default function ClubPost() {
   //     postLikeArr = JSON.parse(getPostLike);
   //     console.log(postLikeArr);
   //     //유저가 이미 좋아요를 눌렀다면?
-  //     if (
-  //       postLikeArr.filter((item: { id: number }) => item.id == userId)
-  //         .length !== 0
-  //     ) {
+  //     if (postLikeArr.some((item: { id: number }) => item.id == userData?.id)) {
   //       postLikeArr = postLikeArr.filter(
-  //         (item: { id: number }) => item.id !== userId
+  //         (item: { id: number }) => item.id !== userData?.id
   //       );
   //       localStorage.setItem(
   //         `${params.clubId}_${params.postId} like`,
@@ -230,7 +218,7 @@ export default function ClubPost() {
   //     }
   //     //좋아요를 누르지 않았다면
   //     else {
-  //       postLikeArr.unshift(user);
+  //       postLikeArr.unshift({ id: userData?.id });
   //       localStorage.setItem(
   //         `${params.clubId}_${params.postId} like`,
   //         JSON.stringify(postLikeArr)
@@ -239,7 +227,7 @@ export default function ClubPost() {
   //   }
   //   // 글에 좋아요가 0일때
   //   else {
-  //     postLikeArr.unshift(user);
+  //     postLikeArr.unshift({ id: userData?.id });
   //     localStorage.setItem(
   //       `${params.clubId}_${params.postId} like`,
   //       JSON.stringify(postLikeArr)
@@ -253,71 +241,25 @@ export default function ClubPost() {
         modalType &&
         {
           post: (
-            <div className=" w-[200px] h-[90px] flex cursor-pointer bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]">
-              <Link
-                to={`/clubs/${params.clubId}/update_post/${params.postId}`}
-                state={{ post }}
-              >
-                <div className="h-[40px] p-3 text-[16px]">게시글 수정</div>
-              </Link>
-              <div
-                className="h-[40px] p-3 text-[16px]"
-                onClick={() => setModalType(ModalType.DELETE_POST)}
-              >
-                게시글 삭제
-              </div>
-            </div>
-          ),
-          comment: (
-            <Overlay onClick={closeModal}>
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className=" w-full h-[100px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col"
-              >
-                <div
-                  className="h-[50px] p-4 text-[16px]"
-                  onClick={() => {
-                    setModalType(ModalType.UPDATE_COMMENT);
-                  }}
-                >
-                  수정하기
-                </div>
-                <div
-                  className="h-[50px] p-4 text-[16px]"
-                  onClick={() => {
-                    setModalType(ModalType.DELETE_COMMENT);
-                  }}
-                >
-                  삭제하기
-                </div>
-              </div>
-            </Overlay>
+
+            <PostMenuButton post={post} setType={setModalType}></PostMenuButton>
+
           ),
           delPost: (
-            <Overlay onClick={closeModal}>
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="rounded-2xl w-full h-[100px] p-4 m-4 flex bg-white self-end flex-col justify-evenly "
-              >
-                <div className="h-[30px] p-1">게시글을 삭제하시겠습니까?</div>
-                <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">
-                  <button
-                    className="flex justify-center items-center flex-1"
-                    onClick={closeModal}
-                  >
-                    취소
-                  </button>
-                  <button
-                    type="button"
-                    className="flex justify-center items-center flex-1"
-                    onClick={postDelete}
-                  >
-                    확인
-                  </button>
-                </div>
-              </div>
-            </Overlay>
+            <Delete
+              onClose={closeModal}
+              onDelete={postDelete}
+              name="게시글"
+            ></Delete>
           ),
+
+          comment: (
+            <CommentMenuButton
+              onClose={closeModal}
+              setType={setModalType}
+            ></CommentMenuButton>
+          ),
+
           updateComment: selectedComment && (
             <UpdateComment
               selectComment={selectedComment}
@@ -325,32 +267,11 @@ export default function ClubPost() {
             />
           ),
           delComment: (
-            <Overlay onClick={closeModal}>
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="rounded-2xl w-full h-[100px] p-4 m-4 flex bg-white self-end flex-col justify-evenly "
-              >
-                <div className="h-[30px] p-1">댓글을 삭제하시겠습니까?</div>
-                <div className=" flex divide-x w-full divide-gray-300 mt-2 mb-2">
-                  <button
-                    className="flex justify-center items-center flex-1"
-                    onClick={closeModal}
-                  >
-                    취소
-                  </button>
-                  <button
-                    type="button"
-                    className="flex justify-center items-center flex-1"
-                    onClick={() => {
-                      commentDelete();
-                      closeModal();
-                    }}
-                  >
-                    확인
-                  </button>
-                </div>
-              </div>
-            </Overlay>
+            <Delete
+              onClose={closeModal}
+              onDelete={commentDelete}
+              name="댓글"
+            ></Delete>
           ),
         }[modalType]}
 
@@ -483,18 +404,10 @@ export default function ClubPost() {
       <BottomTabNavigator className="justify-between p-2 nav">
         <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
           <textarea
-            rows={1}
-            cols={20}
-            wrap="hard"
             required
             placeholder="댓글을 입력해주세요."
             className="bg-gray-100 py-4 px-3 rounded-lg flex-1 outline-none w-[300px] h-[48px] resize-none text-[16px] max-h-[48px]"
             {...register("comment")}
-            onChange={handleResizeHeight}
-            ref={(e) => {
-              ref(e);
-              commentRef.current = e;
-            }}
           />
         </form>
         <Button onClick={clickHandler}>전송</Button>
