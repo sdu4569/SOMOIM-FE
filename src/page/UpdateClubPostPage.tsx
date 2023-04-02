@@ -15,7 +15,7 @@ export interface postFormData {
 
 export default function UpdateClubPostPage() {
   const navigate = useNavigate();
-  const { state: post } = useLocation();
+  const { state } = useLocation();
   const token = useAccessToken();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -36,14 +36,14 @@ export default function UpdateClubPostPage() {
   };
 
   useEffect(() => {
-    setValue("category", post.category);
-    setValue("title", post.title);
-    setValue("contents", post.content);
+    setValue("category", state.post.category);
+    setValue("title", state.post.title);
+    setValue("contents", state.post.content);
   }, [location]);
 
   const onSubmit = async (postForm: postFormData) => {
     console.log(postForm);
-    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+    const response = await fetch(`${API_ENDPOINT}/boards/${state.post.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,7 @@ export default function UpdateClubPostPage() {
         category: postForm.category,
         title: postForm.title,
         content: postForm.contents,
-        imageUrl: post.imageUrl,
+        imageUrl: state.post.imageUrl,
       }),
     });
     console.log(response);
@@ -114,7 +114,6 @@ export default function UpdateClubPostPage() {
             />
           </div>
           <textarea
-            cols={30}
             rows={10}
             maxLength={30000}
             placeholder="가입인사는 작성 후 하루가 지나면&#13;&#10;가입인사 탭에만 보입니다."
