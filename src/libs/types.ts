@@ -24,7 +24,7 @@ export interface User {
   profileUrl?: string;
 }
 
-export interface UserClub {
+export interface Club {
   id: number;
   name: string;
   description: string;
@@ -33,6 +33,11 @@ export interface UserClub {
   memberLimit: number;
   memberCnt: number;
   favorite: string;
+}
+
+export interface ClubResponse {
+  ok: boolean;
+  data: Club[];
 }
 
 export interface Member {

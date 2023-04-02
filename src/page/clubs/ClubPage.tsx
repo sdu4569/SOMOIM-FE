@@ -6,17 +6,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import ClubSearch from "@/components/ClubSearch";
 import FloatButton from "@/components/FloatButton";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import ClubsList from "@/components/ClubsList";
-import useSWR from "swr";
 import useUser from "@/hooks/useUser";
 import Spinner from "@/components/Spinner";
 import useAccessToken from "@/hooks/useAccessToken";
+import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
+import { Club, ClubResponse } from "@/libs/types";
 
 const tabs = ["추천클럽", "신규클럽"];
 
@@ -31,6 +33,39 @@ export default function ClubPage() {
     setSelectedTab(tab);
     localStorage.setItem("clubListTab", tab);
   };
+
+  const getKey: SWRInfiniteKeyLoader = useCallback(
+    (pageIndex, previousPageData) => {
+      if (!token) return;
+      if (previousPageData && !previousPageData.data.length) return null;
+      return [
+        `clubs/${selectedTab === "추천클럽" ? "random" : "newclub"}?page=${
+          pageIndex + 1
+        }`,
+        token,
+      ];
+    },
+    [selectedTab, token]
+  );
+
+  const [clubs, setClubs] = useState<Club[] | undefined>(undefined);
+  const { data, isValidating, size, setSize } =
+    useSWRInfinite<ClubResponse>(getKey);
+  const targetRef = useRef<HTMLDivElement>(null);
+
+  const isIntersecting = useIntersectionObserver(targetRef, {});
+
+  useEffect(() => {
+    if (isIntersecting) {
+      setSize(size + 1);
+    }
+  }, [isIntersecting]);
+
+  useEffect(() => {
+    if (data) {
+      setClubs(data.map((page) => page.data).flat());
+    }
+  }, [data]);
 
   return (
     <div className="h-full overflow-scroll pt-16 pb-20">
@@ -82,7 +117,13 @@ export default function ClubPage() {
             ))}
           </ul>
         </nav>
-        <ClubsList selectedTab={selectedTab} />
+        <ClubsList clubs={clubs} />
+        <div
+          ref={targetRef}
+          className="w-full flex justify-center items-center"
+        >
+          {isValidating && <Spinner size="md" className="my-5" />}
+        </div>
       </section>
       <div className="absolute bottom-20 right-8">
         <FloatButton to="create" className="">
