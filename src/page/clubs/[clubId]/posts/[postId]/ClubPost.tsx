@@ -19,7 +19,6 @@ import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
-
 interface commentFormData {
   comment: string;
 }
@@ -43,9 +42,7 @@ export default function ClubPost() {
   const [like, setLike] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
-  const [selectId, setSelectId] = useState<number>();
-  const [selectComment, setSelectComment] = useState<any[]>([]);
-  const [commentList, setCommentList] = useState<any[]>([]);
+  const [selectedComment, setSelectedComment] = useState<any>(null);
   const {
     state: { post },
   } = useLocation();
@@ -73,11 +70,6 @@ export default function ClubPost() {
   ]);
 
   useEffect(() => {
-    console.log(commentData);
-    commentData && setCommentList(commentData.data);
-  }, [commentData]);
-
-  useEffect(() => {
     if (!post) {
       alert("잘못된 접근입니다.");
       return navigate(-1);
@@ -85,16 +77,13 @@ export default function ClubPost() {
   }, [post]);
 
   const postDelete = async () => {
-    const response = await fetch(
-      `${API_ENDPOINT}/boards/${location.state.post.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     console.log(response);
     navigate(-1);
   };
@@ -166,24 +155,11 @@ export default function ClubPost() {
     setValue("comment", "");
   };
 
-  const commentCall = async () => {
-    const response = await fetch(
-      `${API_ENDPOINT}/boards/comments/${selectId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await response.json();
-    console.log(data);
-    setSelectComment(data.data);
-  };
-
   const commentDelete = async () => {
+    if (!selectedComment) return;
+
     const response = await fetch(
-      `${API_ENDPOINT}/boards/comments/${selectId}`,
+      `${API_ENDPOINT}/boards/comments/${selectedComment.id}`,
       {
         method: "DELETE",
         headers: {
@@ -194,7 +170,12 @@ export default function ClubPost() {
     );
 
     if (response.ok) {
-      refreshCommentData();
+      refreshCommentData({
+        ok: true,
+        data: commentData?.data.filter(
+          (comment: any) => comment.id !== selectedComment.id
+        ),
+      });
     }
   };
 
@@ -275,7 +256,7 @@ export default function ClubPost() {
             <div className=" w-[200px] h-[90px] flex cursor-pointer bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]">
               <Link
                 to={`/clubs/${params.clubId}/update_post/${params.postId}`}
-                state={location.state}
+                state={{ post }}
               >
                 <div className="h-[40px] p-3 text-[16px]">게시글 수정</div>
               </Link>
@@ -296,7 +277,6 @@ export default function ClubPost() {
                 <div
                   className="h-[50px] p-4 text-[16px]"
                   onClick={() => {
-                    commentCall();
                     setModalType(ModalType.UPDATE_COMMENT);
                   }}
                 >
@@ -338,9 +318,9 @@ export default function ClubPost() {
               </div>
             </Overlay>
           ),
-          updateComment: selectComment && (
+          updateComment: selectedComment && (
             <UpdateComment
-              selectComment={selectComment}
+              selectComment={selectedComment}
               closeModal={closeModal}
             />
           ),
@@ -460,14 +440,14 @@ export default function ClubPost() {
             </div>
           </div>
           <div className="flex items-center">
-            <p className="text-sm">댓글 {commentList.length}개</p>
+            <p className="text-sm">댓글 {commentData?.data?.length}개</p>
           </div>
         </div>
         <section className="mt-4 overflow-scroll">
           <ul>
-            {commentList.map((item, idx) => {
+            {commentData?.data.map((item: any) => {
               return (
-                <li className="flex space-x-2 mb-3 relative" key={idx}>
+                <li className="flex space-x-2 mb-3 relative" key={item.id}>
                   <img
                     src={`${item.profileImg}/avatar`}
                     alt="유저 프로필"
@@ -487,7 +467,7 @@ export default function ClubPost() {
                       userData?.id !== item.userId ? "hidden" : ""
                     }`}
                     onClick={() => {
-                      setSelectId(item.id);
+                      setSelectedComment(item);
                       setInModal(true);
                       setModalType(ModalType.COMMENT);
                     }}
