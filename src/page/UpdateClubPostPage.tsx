@@ -1,10 +1,11 @@
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
 import PageHeader from "../components/PageHeader";
+import { API_ENDPOINT } from "@/App";
+import useAccessToken from "@/hooks/useAccessToken";
 
 export interface postFormData {
   title: string;
@@ -14,6 +15,9 @@ export interface postFormData {
 
 export default function UpdateClubPostPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const token = useAccessToken();
+
   const formRef = useRef<HTMLFormElement>(null);
   const {
     watch,
@@ -31,11 +35,31 @@ export default function UpdateClubPostPage() {
     }
   };
 
-  const onSubmit = (postForm: postFormData) => {
+  useEffect(() => {
+    setValue("category", location.state.post.category);
+    setValue("title", location.state.post.title);
+    setValue("contents", location.state.post.content);
+  }, [location]);
+
+  const onSubmit = async (postForm: postFormData) => {
     console.log(postForm);
-
-    // axios.patch("https://jsonplaceholder.typicode.com/users/1", postForm);
-
+    const response = await fetch(
+      `${API_ENDPOINT}/boards/${location.state.post.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify({
+          category: postForm.category,
+          title: postForm.title,
+          content: postForm.contents,
+          imageUrl: location.state.post.imageUrl,
+        }),
+      }
+    );
+    console.log(response);
     navigate(-1);
   };
 
@@ -67,11 +91,11 @@ export default function UpdateClubPostPage() {
               className="w-[150px] rounded-full p-1 border-black border"
               {...register("category")}
             >
-              <option value="free">자유 글</option>
-              <option value="share">관심사 공유</option>
-              <option value="meeting">정모후기</option>
-              <option value="greeting">가입인사</option>
-              <option value="notice">공지사항</option>
+              <option value="FREE">자유 글</option>
+              <option value="FAVORITE">관심사 공유</option>
+              <option value="MEETING">정모후기</option>
+              <option value="GREETING">가입인사</option>
+              <option value="NOTICE">공지사항</option>
             </select>
           </div>
 
