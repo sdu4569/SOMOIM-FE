@@ -12,7 +12,7 @@ const routes = [
     name: "회원가입",
   },
   {
-    path: "/interest",
+    path: "/favorite",
     name: "관심사",
   },
   {

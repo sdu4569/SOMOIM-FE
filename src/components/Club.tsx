@@ -1,4 +1,4 @@
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 
 interface ClubComponentProps {
   data: any;
@@ -32,7 +32,7 @@ export default function Club({ data }: ClubComponentProps) {
             <span className="pl-1 text-gray-500">멤버 {data.memberCnt}</span>
           </div>
           <div className="rounded-full bg-gray-200 text-gray-500 px-1 text-[8px]">
-            {getInterestWithKey(data.favorite)}
+            {getFavoriteWithKey(data.favorite)}
           </div>
         </div>
       </div>

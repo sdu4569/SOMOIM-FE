@@ -1,4 +1,4 @@
-const getUserChoiceInterest = () => {
+const getUserChoiceFavorite = () => {
   let getItem = localStorage.getItem("userChoice");
   if (getItem !== null) {
     const parsed = JSON.parse(getItem);
@@ -8,4 +8,4 @@ const getUserChoiceInterest = () => {
   return [];
 };
 
-export default getUserChoiceInterest;
+export default getUserChoiceFavorite;

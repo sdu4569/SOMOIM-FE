@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import HeaderBackButton from "@/components/HeaderBackButton";
@@ -10,21 +10,21 @@ import useMutation from "@/hooks/useMutation";
 import Overlay from "@/components/Overlay";
 import Spinner from "@/components/Spinner";
 
-interface RegisterInterestProps {
-  onComplete?: (data: InterestFormData) => void;
+interface RegisterFavoriteProps {
+  onComplete?: (data: FavoriteFormData) => void;
 }
 
-export interface InterestFormData {
+export interface FavoriteFormData {
   favorites: string[];
 }
 
-export default function RegisterInterest({
+export default function RegisterFavorite({
   onComplete,
-}: RegisterInterestProps) {
+}: RegisterFavoriteProps) {
   const { register, handleSubmit, setValue, watch } =
-    useForm<InterestFormData>();
+    useForm<FavoriteFormData>();
 
-  const { mutate: updateInterest, isLoading: updateLoading } = useMutation(
+  const { mutate: updateFavorite, isLoading: updateLoading } = useMutation(
     "users/favorites",
     {
       authorized: true,
@@ -32,25 +32,25 @@ export default function RegisterInterest({
   );
   const navigate = useNavigate();
 
-  const onSubmit = async (interestForm: InterestFormData) => {
-    if (!interestForm.favorites.length) {
+  const onSubmit = async (favoriteForm: FavoriteFormData) => {
+    if (!favoriteForm.favorites.length) {
       alert("적어도 한 개의 관심사를 선택해주세요.");
       return;
     }
-    console.log(interestForm);
-    const result = await updateInterest({
-      favorites: interestForm.favorites,
+    console.log(favoriteForm);
+    const result = await updateFavorite({
+      favorites: favoriteForm.favorites,
     });
     console.log(result);
     navigate("/clubs");
   };
 
   useEffect(() => {
-    const selectedInterests = watch("favorites");
+    const selectedFavorites = watch("favorites");
 
-    if (selectedInterests && selectedInterests.length > 7) {
+    if (selectedFavorites && selectedFavorites.length > 7) {
       alert("관심사는 최대 7개까지 선택할 수 있습니다.");
-      setValue("favorites", selectedInterests.slice(0, 7));
+      setValue("favorites", selectedFavorites.slice(0, 7));
     }
   }, [watch("favorites")]);
 
@@ -82,7 +82,7 @@ export default function RegisterInterest({
             </button>
           </PageHeader>
           <div className="grid grid-cols-4 gap-x-2 gap-y-6">
-            {InterestList.map((item, idx) => {
+            {FavoriteList.map((item, idx) => {
               return (
                 <label
                   key={idx}
@@ -96,13 +96,13 @@ export default function RegisterInterest({
                     type="checkbox"
                     id={item.title}
                     className="hidden"
-                    value={item.interest}
+                    value={item.favorite}
                   />
                   <img
                     src={item.image}
                     className={`border-2 border-solid rounded w-12 bg-gray-200 ${
                       watch("favorites") &&
-                      watch("favorites").includes(item.interest) &&
+                      watch("favorites").includes(item.favorite) &&
                       "border-blue-500"
                     }`}
                   />

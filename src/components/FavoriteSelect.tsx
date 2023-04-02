@@ -4,25 +4,25 @@ import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 import useMutation from "@/hooks/useMutation";
 import useUser from "@/hooks/useUser";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 
-interface InterestSelectProps {
+interface FavoriteSelectProps {
   closeModal: () => void;
   maxSelect: number;
   setValue?: any;
 }
 
-export default function InterestSelect({
+export default function FavoriteSelect({
   closeModal,
   maxSelect,
   setValue,
-}: InterestSelectProps) {
+}: FavoriteSelectProps) {
   const { user, mutate: mutateUser } = useUser();
-  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const { mutate: updateInterest, isLoading: updateLoading } = useMutation(
+  const [selectedFavorites, setSelectedFavorites] = useState<string[]>([]);
+  const { mutate: updateFavorite, isLoading: updateLoading } = useMutation(
     "users/favorites",
     {
       authorized: true,
@@ -31,42 +31,42 @@ export default function InterestSelect({
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const changeInterestFunction = (
+  const changeFavoriteFunction = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const targetValue = event.target.value;
     // 선택된 항목 추가
     if (event.target.checked) {
-      if (selectedInterests.length < maxSelect) {
-        setSelectedInterests([...selectedInterests, targetValue]);
+      if (selectedFavorites.length < maxSelect) {
+        setSelectedFavorites([...selectedFavorites, targetValue]);
       } else {
         alert(`최대 ${maxSelect}개까지 선택해주세요.`);
       }
     } else {
       // 7개 이상일 때 추가된 항목 제외
-      setSelectedInterests(
-        selectedInterests.filter((interest) => interest !== targetValue)
+      setSelectedFavorites(
+        selectedFavorites.filter((Favorite) => Favorite !== targetValue)
       );
     }
   };
 
   const onSubmit = async () => {
-    if (selectedInterests.length == 0) {
+    if (selectedFavorites.length == 0) {
       alert("최소 1개의 관심사를 선택해주세요");
       return;
     }
 
     if (setValue) {
-      setValue("favorite", getInterestWithKey(selectedInterests[0]));
+      setValue("favorite", getFavoriteWithKey(selectedFavorites[0]));
     } else {
-      const result = await updateInterest({
-        favorites: selectedInterests,
+      const result = await updateFavorite({
+        favorites: selectedFavorites,
       });
 
       if (result.ok && user) {
         mutateUser({
           ok: true,
-          data: { ...user, favorites: selectedInterests },
+          data: { ...user, favorites: selectedFavorites },
         });
       }
       console.log(result);
@@ -95,7 +95,7 @@ export default function InterestSelect({
       </PageHeader>
       <form className="pt-16 px-4" onSubmit={onSubmit} ref={formRef}>
         <div className="grid grid-cols-4 gap-x-2 gap-y-6">
-          {InterestList.map((item, idx) => {
+          {FavoriteList.map((item, idx) => {
             return (
               <label
                 key={idx}
@@ -106,14 +106,14 @@ export default function InterestSelect({
                   type="checkbox"
                   id={item.title}
                   className="hidden"
-                  value={item.interest}
-                  onChange={changeInterestFunction}
-                  checked={selectedInterests.includes(item.interest)}
+                  value={item.favorite}
+                  onChange={changeFavoriteFunction}
+                  checked={selectedFavorites.includes(item.favorite)}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
-                    selectedInterests.includes(item.interest) &&
+                    selectedFavorites.includes(item.favorite) &&
                     "border-blue-500"
                   }`}
                 />

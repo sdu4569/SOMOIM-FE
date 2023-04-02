@@ -5,7 +5,7 @@ import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import Club from "@/components/Club";
 
 const RecentClubPage = () => {

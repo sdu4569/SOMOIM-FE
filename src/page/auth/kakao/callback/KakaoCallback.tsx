@@ -66,7 +66,7 @@ export default function KakaoCallback() {
         }
 
         if (!user.favorites || user.favorites.length === 0) {
-          navigate("/signup/interest");
+          navigate("/signup/favorite");
           return;
         }
         navigate("/clubs");

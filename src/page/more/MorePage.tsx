@@ -1,9 +1,9 @@
 import PageHeader from "@/components/PageHeader";
-import UpdateInterestButton from "@/components/UpdateInterestButton";
+import UpdateFavoriteButton from "@/components/UpdateFavoriteButton";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import UpdateUserButton from "@/components/UpdateUserButton";
 import RecentClubButton from "@/components/RecentClubButton";
-import InterestClubButton from "@/components/FavoriteClubButton";
+import FavoriteClubButton from "@/components/FavoriteClubButton";
 import useUser from "@/hooks/useUser";
 import { useEffect } from "react";
 
@@ -21,8 +21,8 @@ const MorePage = () => {
 
       <main>
         <UpdateUserButton user={user} />
-        <UpdateInterestButton />
-        <InterestClubButton />
+        <UpdateFavoriteButton />
+        <FavoriteClubButton />
         <RecentClubButton />
       </main>
       <BottomTabNavigator />
