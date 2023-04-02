@@ -6,7 +6,7 @@ import Button from "@/components/Button";
 import PageHeader from "@/components/PageHeader";
 import { pageSlideIn } from "@/libs/variants";
 import EditRegion from "@/components/EditRegion";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import useUser from "@/hooks/useUser";
 import Spinner from "@/components/Spinner";
 
@@ -27,7 +27,7 @@ export default function RegisterProfile() {
     setValue,
   } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
-  const { mutate: updateUser } = usePostRequest("users", { authorized: true });
+  const { mutate: updateUser } = useMutation("users", { authorized: true });
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterProfileFormData) => {
     // to do : edit profile api call

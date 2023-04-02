@@ -12,10 +12,11 @@ import { useForm } from "react-hook-form";
 import UpdateComment from "@/components/UpdateComment";
 import useUser from "@/hooks/useUser";
 import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
+import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
 interface commentFormData {
   comment: string;
@@ -46,7 +47,9 @@ export default function ClubPost() {
   const [selectId, setSelectId] = useState<number>();
   const [selectComment, setSelectComment] = useState<any[]>([]);
   const [commentList, setCommentList] = useState<any[]>([]);
-  const location = useLocation();
+  const {
+    state: { post },
+  } = useLocation();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const _ = useAutoResizeTextArea(textareaRef);
 
@@ -58,7 +61,7 @@ export default function ClubPost() {
     setValue,
   } = useForm<commentFormData>();
 
-  const { mutate: comment, isLoading: joinLoading } = usePostRequest(
+  const { mutate: comment, isLoading: joinLoading } = useMutation(
     `boards/${params.postId}/comments`,
     {
       authorized: true,
@@ -76,13 +79,11 @@ export default function ClubPost() {
   }, [commentData]);
 
   useEffect(() => {
-    if (!location?.state?.post) {
+    if (!post) {
       alert("잘못된 접근입니다.");
       return navigate(-1);
     }
-
-    console.log(location.state.post);
-  }, [location]);
+  }, [post]);
 
   const handleUpdate = () => {
     navigate(`/clubs/${params.clubId}/update_post/${params.postId}`);
@@ -348,9 +349,7 @@ export default function ClubPost() {
       <PageHeader className="!bg-gray-100">
         <div className="flex space-x-2 items-center overflow-ellipsis">
           <HeaderBackButton />
-          <h1 className="text-lg whitespace-nowrap">
-            {location?.state?.post?.title}
-          </h1>
+          <h1 className="text-lg whitespace-nowrap">{post?.title}</h1>
         </div>
         <button
           className={`flex items-center ${userId !== 1 ? "hidden" : ""}`}
@@ -375,13 +374,15 @@ export default function ClubPost() {
             </div>
           </div>
           <div>
-            <p className="text-blue-500">공지사항</p>
+            <p className="text-blue-500">
+              {getPostCategoryWithKey(post?.category)}
+            </p>
           </div>
         </header>
         <div className="pt-4 pb-12 flex flex-col space-y-4">
-          {location?.state?.post?.imageUrl && (
+          {post?.imageUrl && (
             <img
-              src={location.state.post.imageUrl + "/post"}
+              src={post.imageUrl + "/post"}
               alt="게시글 사진"
               className="w-min rounded-md"
             />
@@ -390,7 +391,7 @@ export default function ClubPost() {
             ref={textareaRef}
             cols={30}
             className="h-max focus:outline-none resize-none"
-            value={location.state.post.content}
+            value={post.content}
             readOnly
           />
         </div>

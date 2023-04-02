@@ -13,19 +13,12 @@ import ClubDetailInfo from "@/page/clubs/[clubId]/tabs/ClubDetailInfo";
 import ClubBoard from "./tabs/ClubBoard";
 import ClubChat from "./tabs/ClubChat";
 import ClubGallery from "@/page/clubs/[clubId]/tabs/ClubGallery";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import { Member } from "@/libs/types";
+import { Member, Tabs } from "@/libs/types";
 import Spinner from "@/components/Spinner";
-
-enum Tabs {
-  INFO,
-  BOARD,
-  PHOTO,
-  CHAT,
-}
 
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
@@ -43,6 +36,9 @@ export default function ClubDetail() {
     `clubs/${params.clubId}`,
     token,
   ]);
+  const location = useLocation();
+  const prevTab = location.state?.prevTab;
+  const [selectedTab, setSelectedTab] = useState<number>(prevTab || Tabs.INFO);
 
   //최근 본 클럽 기능 시작
   useEffect(() => {
@@ -96,8 +92,6 @@ export default function ClubDetail() {
       setIsManager(club.data.managerId === user.id);
     }
   }, [club, user]);
-
-  const [selectedTab, setSelectedTab] = useState<number>(Tabs.INFO);
 
   if (clubLoading || membersLoading)
     return (

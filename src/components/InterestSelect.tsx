@@ -5,7 +5,7 @@ import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
 import { InterestList } from "@/libs/InterestList";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import useUser from "@/hooks/useUser";
 
 interface InterestSelectProps {
@@ -19,7 +19,7 @@ export default function InterestSelect({
 }: InterestSelectProps) {
   const { user, mutate: mutateUser } = useUser();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
-  const { mutate: updateInterest, isLoading: updateLoading } = usePostRequest(
+  const { mutate: updateInterest, isLoading: updateLoading } = useMutation(
     "users/favorites",
     {
       authorized: true,

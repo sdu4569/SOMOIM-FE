@@ -12,7 +12,7 @@ import useUser from "@/hooks/useUser";
 
 import { AnimatePresence } from "framer-motion";
 import EditRegion from "@/components/EditRegion";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import useUploadImage from "@/hooks/useUploadImage";
 import Avatar from "@/components/Avatar";
 import Overlay from "@/components/Overlay";
@@ -34,7 +34,7 @@ export interface userFormData {
 
 const UpdateUserPage = () => {
   const { user, loading, mutate } = useUser();
-  const { mutate: updateUser, isLoading: updateLoading } = usePostRequest(
+  const { mutate: updateUser, isLoading: updateLoading } = useMutation(
     "users",
     {
       authorized: true,

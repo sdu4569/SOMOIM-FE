@@ -12,7 +12,7 @@ import PageHeader from "@/components/PageHeader";
 import { pageSlideIn } from "@/libs/variants";
 import { emailRegex } from "@/libs/regex";
 import EmailVerifyModal from "@/components/EmailVerifyModal";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 
 export interface RegisterFormData {
   email: string;
@@ -40,10 +40,10 @@ export default function Register() {
   const navigate = useNavigate();
 
   const { mutate: sendVerifyEmail, isLoading: sendVerifyEmailLoading } =
-    usePostRequest("users/auth/email/send");
+    useMutation("users/auth/email/send");
   const { mutate: createAccount, isLoading: createAccountLoading } =
-    usePostRequest("users/auth/signup");
-  const { mutate: login } = usePostRequest("users/auth/signin");
+    useMutation("users/auth/signup");
+  const { mutate: login } = useMutation("users/auth/signin");
 
   const onVerifyClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>

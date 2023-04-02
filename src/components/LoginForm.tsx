@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import Button from "./Button";
 import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 
 interface LogInFormData {
   id: string;
@@ -24,7 +24,7 @@ export default function LoginForm() {
   const { register, handleSubmit, formState } = useForm<LogInFormData>();
 
   const { mutate: login, isLoading: loginLoading } =
-    usePostRequest("users/auth/signin");
+    useMutation("users/auth/signin");
 
   const navigate = useNavigate();
 

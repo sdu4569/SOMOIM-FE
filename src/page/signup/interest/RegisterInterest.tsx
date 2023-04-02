@@ -6,7 +6,7 @@ import { InterestList } from "@/libs/InterestList";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import Overlay from "@/components/Overlay";
 import Spinner from "@/components/Spinner";
 
@@ -24,7 +24,7 @@ export default function RegisterInterest({
   const { register, handleSubmit, setValue, watch } =
     useForm<InterestFormData>();
 
-  const { mutate: updateInterest, isLoading: updateLoading } = usePostRequest(
+  const { mutate: updateInterest, isLoading: updateLoading } = useMutation(
     "users/favorites",
     {
       authorized: true,
