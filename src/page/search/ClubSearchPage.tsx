@@ -9,6 +9,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import { API_ENDPOINT } from "@/App";
+import Club from "@/components/Club";
 
 interface searchFormData {
   search: string;
@@ -137,40 +138,17 @@ const ClubSearchPage = () => {
             <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
               <span className="text-blue-500">{user?.area}</span>의 클럽 리스트
             </p>
-            {filterList?.map((item, idx) => {
-              return (
-                <Link to={`/clubs/${item.id}`} key={idx}>
-                  <div className="relative mt-6 h-12">
-                    <img
-                      src={item.imageUrl}
-                      alt="클럽 이미지"
-                      className={`w-12 h-12 rounded-2xl inline-block ${
-                        item.imageUrl === ""
-                          ? "border-dashed border-2 border-gray-500"
-                          : ""
-                      } `}
-                    />
-                    <div className="text-[12px] absolute top-0 left-16">
-                      {item.name}
-                    </div>
-                    <div className="text-[10px] absolute top-5 left-16 text-gray-400">
-                      {item.description}
-                    </div>
-                    <div className="text-[10px] absolute bottom-0 left-16">
-                      <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
-                        {item.area}
-                      </span>
-                      <span className="text-gray-400 mr-2">
-                        멤버 {item.memberCnt}
-                      </span>
-                      <span className="text-gray-400 bg-gray-100 pl-1 pr-1 pt-0.5 pb-0.5 rounded-md">
-                        {getFavoriteWithKey(item.favorite)}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+            <ul className="mt-7">
+              {filterList?.map((item) => {
+                return (
+                  <li key={item.id} className="mt-3">
+                    <Link to={`/clubs/${item.id}`}>
+                      <Club data={item} />
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         )}
         {filterList?.length == 0 && watch("search") !== "" && (
@@ -209,10 +187,10 @@ const ClubSearchPage = () => {
           //검색창이 비어 있는 경우
           <div className="mb-2.5">
             <div className="flex justify-evenly flex-wrap">
-              {FavoriteList.map((item, idx) => {
+              {FavoriteList.map((item) => {
                 return (
                   <div
-                    key={idx}
+                    key={item.id}
                     className=" w-40 mb-2.5 border rounded-lg h-9 relative"
                   >
                     <Link to={`/search/${item.favorite}`} className="m-0">

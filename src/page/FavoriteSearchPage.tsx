@@ -7,6 +7,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { useEffect, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
+import useUser from "@/hooks/useUser";
 
 interface searchFormData {
   search: string;
@@ -14,7 +15,7 @@ interface searchFormData {
 
 export const FavoriteSearchPage = () => {
   const params = useParams();
-
+  const { user } = useUser();
   const favorite = FavoriteList.filter(
     (item) => item.favorite == params.favorite
   );
@@ -30,8 +31,9 @@ export const FavoriteSearchPage = () => {
     watch,
   } = useForm<searchFormData>();
 
-  const [select, setSelect] = useState("전체");
-
+  useEffect(() => {
+    setValue("search", "");
+  }, []);
   const onSubmit = () => {
     if (watch("search") == "") {
       return;
@@ -46,7 +48,6 @@ export const FavoriteSearchPage = () => {
 
   const onDelete = () => {
     setValue("search", "");
-    setSelect("전체");
     setFilterList([]);
   };
 
@@ -119,7 +120,8 @@ export const FavoriteSearchPage = () => {
                 key={idx}
               >
                 <p className="text-[12px] inline-block float-left font-semibold">
-                  <span className="text-blue-500"></span>의 클럽 리스트
+                  <span className="text-blue-500">{user?.area}</span>의 클럽
+                  리스트
                 </p>
                 {filterList.map((item, idx) => {
                   return (

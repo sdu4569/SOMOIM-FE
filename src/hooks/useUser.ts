@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { API_ENDPOINT } from "@/App";
 import useSWR from "swr";
 import useAccessToken from "./useAccessToken";
 import { User } from "@/libs/types";
