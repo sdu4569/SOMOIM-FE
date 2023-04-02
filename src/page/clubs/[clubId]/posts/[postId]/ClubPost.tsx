@@ -7,7 +7,7 @@ import PageHeader from "@/components/PageHeader";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import Button from "@/components/Button";
 import Overlay from "@/components/Overlay";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import UpdateComment from "@/components/UpdateComment";
 import useUser from "@/hooks/useUser";
@@ -16,6 +16,7 @@ import usePostRequest from "@/hooks/usePostRequest";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
+import Textarea from "@/components/Textarea";
 
 interface commentFormData {
   comment: string;
@@ -29,16 +30,13 @@ const enum ModalType {
   DELETE_COMMENT = "delComment",
 }
 
-let commentArr: any[] = [];
 let postLikeArr: any[] = [];
 
 export default function ClubPost() {
-  const userId: number = 1;
   const params = useParams();
   const navigate = useNavigate();
   const token = useAccessToken();
   const { user: userData } = useUser();
-
   const formRef = useRef<HTMLFormElement>(null);
   const [like, setLike] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
@@ -84,11 +82,18 @@ export default function ClubPost() {
     console.log(location.state.post);
   }, [location]);
 
-  const handleUpdate = () => {
-    navigate(`/clubs/${params.clubId}/update_post/${params.postId}`);
-  };
-
-  const handleDelete = () => {
+  const postDelete = async () => {
+    const response = await fetch(
+      `${API_ENDPOINT}/boards/${location.state.post.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    console.log(response);
     navigate(-1);
   };
 
@@ -130,6 +135,10 @@ export default function ClubPost() {
     if (commentForm.comment.length == 0) {
       return;
     }
+    // let replaceComment = commentForm.comment.replace(
+    //   /(?:\r\n|\r|\n)/g,
+    //   "<br/>"
+    // );
 
     let item;
     if (userData) {
@@ -198,62 +207,58 @@ export default function ClubPost() {
     `${params.clubId}_${params.postId} like`
   );
 
-  useEffect(() => {
-    if (getPostLike !== null) {
-      postLikeArr = JSON.parse(getPostLike);
-      const likeUserArr = postLikeArr.filter(
-        (item: { id: number }) => item.id == userId
-      );
+  // useEffect(() => {
+  //   if (getPostLike !== null) {
+  //     postLikeArr = JSON.parse(getPostLike);
+  //     const likeUserArr = postLikeArr.filter(
+  //       (item: { id: number }) => item.id == userId
+  //     );
 
-      if (likeUserArr.length !== 0) {
-        setLike(true);
-      } else {
-        setLike(false);
-      }
-    }
-  }, [getPostLike]);
+  //     if (likeUserArr.length !== 0) {
+  //       setLike(true);
+  //     } else {
+  //       setLike(false);
+  //     }
+  //   }
+  // }, [getPostLike]);
 
-  const user = {
-    id: userId,
-  };
+  // const likeClick = () => {
+  //   setLike((prev) => !prev);
 
-  const likeClick = () => {
-    setLike((prev) => !prev);
-
-    if (getPostLike !== null) {
-      postLikeArr = JSON.parse(getPostLike);
-      console.log(postLikeArr);
-      //유저가 이미 좋아요를 눌렀다면?
-      if (
-        postLikeArr.filter((item: { id: number }) => item.id == userId)
-          .length !== 0
-      ) {
-        postLikeArr = postLikeArr.filter(
-          (item: { id: number }) => item.id !== userId
-        );
-        localStorage.setItem(
-          `${params.clubId}_${params.postId} like`,
-          JSON.stringify(postLikeArr)
-        );
-      }
-      //좋아요를 누르지 않았다면
-      else {
-        postLikeArr.unshift(user);
-        localStorage.setItem(
-          `${params.clubId}_${params.postId} like`,
-          JSON.stringify(postLikeArr)
-        );
-      }
-    }
-    // 글에 좋아요가 0일때
-    else {
-      postLikeArr.unshift(user);
-      localStorage.setItem(
-        `${params.clubId}_${params.postId} like`,
-        JSON.stringify(postLikeArr)
-      );
-    }
-  };
+  //   if (getPostLike !== null) {
+  //     postLikeArr = JSON.parse(getPostLike);
+  //     console.log(postLikeArr);
+  //     //유저가 이미 좋아요를 눌렀다면?
+  //     if (
+  //       postLikeArr.filter((item: { id: number }) => item.id == userId)
+  //         .length !== 0
+  //     ) {
+  //       postLikeArr = postLikeArr.filter(
+  //         (item: { id: number }) => item.id !== userId
+  //       );
+  //       localStorage.setItem(
+  //         `${params.clubId}_${params.postId} like`,
+  //         JSON.stringify(postLikeArr)
+  //       );
+  //     }
+  //     //좋아요를 누르지 않았다면
+  //     else {
+  //       postLikeArr.unshift(user);
+  //       localStorage.setItem(
+  //         `${params.clubId}_${params.postId} like`,
+  //         JSON.stringify(postLikeArr)
+  //       );
+  //     }
+  //   }
+  //   // 글에 좋아요가 0일때
+  //   else {
+  //     postLikeArr.unshift(user);
+  //     localStorage.setItem(
+  //       `${params.clubId}_${params.postId} like`,
+  //       JSON.stringify(postLikeArr)
+  //     );
+  //   }
+  // };
 
   return (
     <div className="flex flex-col overflow-scroll h-full">
@@ -261,10 +266,13 @@ export default function ClubPost() {
         modalType &&
         {
           post: (
-            <div className=" w-[200px] h-[90px] flex bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]">
-              <div className="h-[40px] p-3 text-[16px]" onClick={handleUpdate}>
-                게시글 수정
-              </div>
+            <div className=" w-[200px] h-[90px] flex cursor-pointer bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]">
+              <Link
+                to={`/clubs/${params.clubId}/update_post/${params.postId}`}
+                state={location.state}
+              >
+                <div className="h-[40px] p-3 text-[16px]">게시글 수정</div>
+              </Link>
               <div
                 className="h-[40px] p-3 text-[16px]"
                 onClick={() => setModalType(ModalType.DELETE_POST)}
@@ -316,7 +324,7 @@ export default function ClubPost() {
                   <button
                     type="button"
                     className="flex justify-center items-center flex-1"
-                    onClick={handleDelete}
+                    onClick={postDelete}
                   >
                     확인
                   </button>
@@ -368,7 +376,9 @@ export default function ClubPost() {
           </h1>
         </div>
         <button
-          className={`flex items-center ${userId !== 1 ? "hidden" : ""}`}
+          // 작성자 Id와 로그인한 유저 id 비교
+          //${location.state.post.id !== userData?.id ? "hidden" : ""}
+          className={`flex items-center `}
           onClick={() => {
             setInModal(true);
             setModalType(ModalType.POST);
@@ -411,7 +421,7 @@ export default function ClubPost() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <button
-            onClick={likeClick}
+            // onClick={likeClick}
             className={`border rounded-md p-2 text-sm border-black flex justify-center space-x-1 items-center ${
               like ? "text-blue-500" : "text-black"
             }`}
@@ -464,7 +474,7 @@ export default function ClubPost() {
                         {getDate(item.createdAt)}
                       </p>
                     </div>
-                    <p className="p-2 rounded-md bg-blue-300">{item.comment}</p>
+                    <Textarea value={item.comment} />
                   </div>
                   <button
                     className={`absolute right-1 ${
