@@ -7,12 +7,12 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import useUploadImage from "@/hooks/useUploadImage";
 import Spinner from "@/components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import { PostCategory } from "@/libs/types";
+import { PostCategory, Tabs } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
 interface writeFormData {
@@ -46,7 +46,7 @@ export default function ClubBoardWrite() {
     error,
   } = useUploadImage();
 
-  const { mutate: uploadPost, isLoading: uploadPostLoading } = usePostRequest(
+  const { mutate: uploadPost, isLoading: uploadPostLoading } = useMutation(
     `clubs/${params.clubId}/boards`,
     { authorized: true }
   );
@@ -168,7 +168,16 @@ export default function ClubBoardWrite() {
       )}
       <PageHeader>
         <div className="flex space-x-4 items-center">
-          <HeaderBackButton />
+          <HeaderBackButton
+            onClick={() =>
+              navigate(`/clubs/${params.clubId}`, {
+                state: {
+                  prevTab: Tabs.BOARD,
+                },
+                replace: true,
+              })
+            }
+          />
           <h1 className="text-xl whitespace-nowrap truncate ">게시글 작성</h1>
         </div>
         <button type="submit" className="text-xl" onClick={clickHandler}>

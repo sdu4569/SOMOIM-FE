@@ -8,7 +8,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import InterestSelect from "@/components/InterestSelect";
 import PageHeader from "@/components/PageHeader";
 import RegionSelect from "@/components/RegionSearch";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import { useNavigate } from "react-router-dom";
 
 export interface CreateClubForm {
@@ -44,7 +44,7 @@ export default function CreateClub() {
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
 
-  const { mutate, isLoading } = usePostRequest("clubs", {
+  const { mutate, isLoading } = useMutation("clubs", {
     authorized: true,
   });
 

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Images } from "@/libs/Images";
 import { useState } from "react";
 import Overlay from "./Overlay";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 import Spinner from "./Spinner";
 import useUser from "@/hooks/useUser";
 import { PostCategory } from "@/libs/types";
@@ -33,14 +33,14 @@ export default function JoinClub({
 
   const { user } = useUser();
 
-  const { mutate: join, isLoading: joinLoading } = usePostRequest(
+  const { mutate: join, isLoading: joinLoading } = useMutation(
     `clubs/${clubId}/join`,
     {
       authorized: true,
     }
   );
 
-  const { mutate: post, isLoading: postLoading } = usePostRequest(
+  const { mutate: post, isLoading: postLoading } = useMutation(
     `clubs/${clubId}/boards`,
     {
       authorized: true,

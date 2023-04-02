@@ -12,7 +12,7 @@ export default function ClubBoard({ isMember }: { isMember: boolean }) {
 
   return (
     <>
-      <div className="flex flex-col p-4">
+      <div className="flex flex-col p-4 h-full">
         <select
           onChange={(e) => setCategory(e.target.value as PostCategory)}
           name=""
@@ -28,7 +28,7 @@ export default function ClubBoard({ isMember }: { isMember: boolean }) {
         <section>
           <ClubBoardNoticeList />
         </section>
-        <section>
+        <section className="h-full">
           <ClubBoardPostList category={category} />
         </section>
       </div>

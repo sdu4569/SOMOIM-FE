@@ -24,7 +24,6 @@ export interface User {
   profileUrl?: string;
 }
 
-
 export interface UserClub {
   id: number;
   name: string;
@@ -50,4 +49,11 @@ export enum PostCategory {
   MEET = "MEET",
   JOIN = "JOIN",
   ANNOUNCEMENT = "ANNOUNCEMENT",
+}
+
+export enum Tabs {
+  INFO,
+  BOARD,
+  PHOTO,
+  CHAT,
 }

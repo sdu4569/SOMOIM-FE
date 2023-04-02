@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Overlay from "./Overlay";
 import { API_ENDPOINT } from "@/App";
 import useAccessToken from "@/hooks/useAccessToken";
-import usePostRequest from "@/hooks/usePostRequest";
+import useMutation from "@/hooks/useMutation";
 
 interface commentFormData {
   comment: string;
@@ -21,7 +21,7 @@ export default function UpdateComment({
 }: CommentProps) {
   console.log(selectComment.id);
 
-  // const { mutate: updateComment } = usePostRequest(
+  // const { mutate: updateComment } = useMutation(
   //   `boards/comments/${selectComment.id}`,
   //   {
   //     authorized: true,

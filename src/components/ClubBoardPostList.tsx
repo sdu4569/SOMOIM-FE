@@ -51,10 +51,6 @@ export default function ClubBoardPostList({
     setSize(0);
   }, []);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   if (isLoading) {
     return (
       <ul className="flex flex-col space-y-8 mt-4">

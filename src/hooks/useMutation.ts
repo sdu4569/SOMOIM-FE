@@ -12,18 +12,19 @@ interface APIResponse {
 
 interface PostRequestOptions {
   authorized?: boolean;
+  method?: "POST" | "PUT" | "DELETE" | "PATCH";
   [key: string]: any;
 }
 
-export default function usePostRequest(
+export default function useMutation(
   url: string,
-  { authorized }: PostRequestOptions = {
-    authorized: false,
-  }
+  { authorized = false, method = "POST" }: PostRequestOptions
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const token = useAccessToken();
   const navigate = useNavigate();
+
+  console.log(method);
 
   // if (authorized && !token) {
   //   navigate("/landing", {
@@ -38,7 +39,7 @@ export default function usePostRequest(
     let response;
     try {
       response = await fetch(`${API_ENDPOINT}/${url}`, {
-        method: "POST",
+        method,
         headers: {
           "Content-Type": "application/json",
           ...(authorized && {
