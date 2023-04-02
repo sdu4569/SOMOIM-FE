@@ -9,6 +9,7 @@ import EditRegion from "@/components/EditRegion";
 import useMutation from "@/hooks/useMutation";
 import useUser from "@/hooks/useUser";
 import Spinner from "@/components/Spinner";
+import RegionSearch from "@/components/RegionSearch";
 
 interface RegisterProfileFormData {
   name: string;
@@ -18,7 +19,7 @@ interface RegisterProfileFormData {
 }
 
 export default function RegisterProfile() {
-  const { user, loading } = useUser();
+  const { user, loading, mutate: userMutate } = useUser();
   const {
     handleSubmit,
     register,
@@ -30,10 +31,10 @@ export default function RegisterProfile() {
   const { mutate: updateUser } = useMutation("users", { authorized: true });
   const navigate = useNavigate();
   const onSubmit = async (data: RegisterProfileFormData) => {
-    // to do : edit profile api call
     const updateResponse = await updateUser(data);
 
     if (updateResponse.ok) {
+      userMutate();
       navigate("/signup/interest", {
         replace: true,
       });
@@ -43,15 +44,6 @@ export default function RegisterProfile() {
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
-
-  // prevent direct access
-  useEffect(() => {
-    if (user && user.name) {
-      navigate("/clubs", {
-        replace: true,
-      });
-    }
-  }, [user]);
 
   if (loading) {
     return (
@@ -65,7 +57,12 @@ export default function RegisterProfile() {
     <>
       <AnimatePresence>
         {inRegionModal && (
-          <EditRegion setInputValue={setValue} closeModal={closeModal} />
+          <RegionSearch
+            closeModal={closeModal}
+            inputId="area"
+            setValue={setValue}
+            title=""
+          />
         )}
       </AnimatePresence>
       <motion.div
@@ -87,7 +84,14 @@ export default function RegisterProfile() {
           <div className="p-4 rounded-md border border-black w-full flex flex-col space-y-4">
             <div className="flex justify-between space-x-2">
               <label htmlFor="name" className="flex flex-1 flex-col space-y-2">
-                <p>이름</p>
+                <div className="flex space-x-2">
+                  <p>이름</p>
+                  {errors.name && (
+                    <p className="text-red-500 text-xs">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
                 <input
                   {...register("name", {
                     required: "이름을 입력해주세요.",
@@ -174,7 +178,17 @@ export default function RegisterProfile() {
                 />
               </label>
             </div>
-            <Button className="w-full">다음</Button>
+            <Button
+              className={`w-full ${
+                (!watch("name") ||
+                  !watch("area") ||
+                  !watch("birth") ||
+                  !watch("gender")) &&
+                "!bg-gray-300"
+              }`}
+            >
+              다음
+            </Button>
           </div>
         </form>
       </motion.div>

@@ -9,6 +9,7 @@ import { useSetRecoilState } from "recoil";
 import Button from "./Button";
 import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
 import useMutation from "@/hooks/useMutation";
+import useLogin from "@/hooks/useLogin";
 
 interface LogInFormData {
   id: string;
@@ -16,29 +17,18 @@ interface LogInFormData {
 }
 
 export default function LoginForm() {
-  const setAccessToken = useSetRecoilState(accessTokenAtom);
-  const setAccessTokenExpiration = useSetRecoilState(accessTokenExpirationAtom);
-
   const [isMasked, setIsMasked] = useState<boolean>(true);
 
   const { register, handleSubmit, formState } = useForm<LogInFormData>();
 
-  const { mutate: login, isLoading: loginLoading } =
-    useMutation("users/auth/signin");
-
   const navigate = useNavigate();
 
+  const { login, isLoading } = useLogin();
+
   const onSubmit = async (data: LogInFormData) => {
-    const response = await login({ email: data.id, password: data.password });
+    const ok = await login(data.id, data.password);
 
-    if (!response.ok) {
-      alert("로그인에 실패했습니다.");
-    } else {
-      const { accessToken, accessTokenExpirationDateTime } = response.data;
-
-      setAccessToken(accessToken);
-      setAccessTokenExpiration(accessTokenExpirationDateTime);
-
+    if (ok) {
       navigate("/clubs");
     }
   };

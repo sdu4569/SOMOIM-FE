@@ -14,9 +14,11 @@ import { AnimatePresence } from "framer-motion";
 import EditRegion from "@/components/EditRegion";
 import useMutation from "@/hooks/useMutation";
 import useUploadImage from "@/hooks/useUploadImage";
-import Avatar from "@/components/Avatar";
 import Overlay from "@/components/Overlay";
 import Spinner from "@/components/Spinner";
+
+import { motion } from "framer-motion";
+import { pageSlideIn } from "@/libs/variants";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -163,7 +165,12 @@ const UpdateUserPage = () => {
           <EditRegion setInputValue={setValue} closeModal={closeModal} />
         )}
       </AnimatePresence>
-      <div className="h-full py-16 p-4 overflow-auto">
+      <motion.div
+        variants={pageSlideIn}
+        initial="initial"
+        animate="animate"
+        className="h-full py-16 p-4 overflow-auto"
+      >
         <PageHeader>
           <div className="flex items-center space-x-4 h-full overflow-hidden">
             <HeaderBackButton />
@@ -328,7 +335,7 @@ const UpdateUserPage = () => {
             </div>
           </div>
         </form>
-      </div>
+      </motion.div>
     </>
   );
 };

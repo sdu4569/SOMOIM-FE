@@ -85,6 +85,11 @@ export default function useMutation(
       return data;
     }
 
+    if (response.status === 409) {
+      const data = await response.json();
+      return data;
+    }
+
     if (response.status === 500) {
       return { ok: false, message: "Internal server error" };
     }

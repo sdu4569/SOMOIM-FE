@@ -5,6 +5,7 @@ import { LoginResponse, User } from "@/libs/types";
 import { useSetRecoilState } from "recoil";
 import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
 import { API_ENDPOINT } from "@/App";
+import isUserRequiredFieldsFilled from "@/util/isRequiredFieldsFilled";
 
 export default function GoogleCallback() {
   const location = useLocation();
@@ -55,7 +56,7 @@ export default function GoogleCallback() {
 
         const user: User = response.data;
 
-        if (!user.area || !user.name) {
+        if (!isUserRequiredFieldsFilled(user)) {
           navigate("/signup/profile");
 
           return;

@@ -10,14 +10,16 @@ import PageHeader from "@/components/PageHeader";
 import RegionSelect from "@/components/RegionSearch";
 import useMutation from "@/hooks/useMutation";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { pageSlideIn } from "@/libs/variants";
+import { InterestList } from "@/libs/InterestList";
 
 export interface CreateClubForm {
   area: string;
   name: string;
   description: string;
   memberLimit: number;
-  favorite: "GAME" | "OUTDOOR" | "EXERCISE" | "HUMANITIES";
-  imageUrl?: string;
+  favorite: string;
 }
 
 enum ModalType {
@@ -25,21 +27,8 @@ enum ModalType {
   AREA = "area",
 }
 
-const interests = {
-  "게임/오락": "GAME",
-  "아웃도어/여행": "OUTDOOR",
-  "운동/스포츠": "EXERCISE",
-  "인문학/책/글": "HUMANITIES",
-};
-
-type InterestType = keyof typeof interests;
-
 export default function CreateClub() {
-  const { register, handleSubmit, setValue, watch } = useForm<CreateClubForm>({
-    defaultValues: {
-      imageUrl: "",
-    },
-  });
+  const { register, handleSubmit, setValue, watch } = useForm<CreateClubForm>();
 
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
@@ -57,12 +46,17 @@ export default function CreateClub() {
   const onSubmit = async (data: CreateClubForm) => {
     console.log(data);
 
-    const result = await mutate(data);
+    const result = await mutate({
+      ...data,
+      favorite: InterestList.find(
+        (interest) => interest.title === data.favorite
+      )?.interest,
+    });
 
     if (!result.ok) {
-      alert("클럽 개설에 실패했습니다. 다시 시도해주세요.");
+      alert(result.message);
     } else {
-      navigate(`/clubs/${result.data.id}`);
+      navigate(`/clubs/${result.data.id}`, { replace: true });
     }
   };
 
@@ -84,15 +78,17 @@ export default function CreateClub() {
               <InterestSelect
                 closeModal={closeModal}
                 maxSelect={1}
-                onComplete={(data) => {
-                  setValue("favorite", "EXERCISE");
-                  closeModal();
-                }}
+                setValue={setValue}
               />
             </div>
           ),
         }[modalType]}
-      <div className="overflow-scroll h-full p-4">
+      <motion.div
+        variants={pageSlideIn}
+        initial="initial"
+        animate="animate"
+        className="overflow-scroll h-full p-4"
+      >
         <PageHeader>
           <div className="flex space-x-4 items-center">
             <HeaderBackButton />
@@ -119,7 +115,7 @@ export default function CreateClub() {
                 id="area"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="동&middot;읍&middot;면 찾기"
-                {...register("area")}
+                {...register("area", { required: true })}
               />
             </label>
             <label htmlFor="interest" className="flex items-center">
@@ -137,7 +133,7 @@ export default function CreateClub() {
                 id="interest"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 관심사 선택"
-                {...register("favorite")}
+                {...register("favorite", { required: true })}
               />
             </label>
             <label htmlFor="clubName" className="flex items-center">
@@ -156,7 +152,7 @@ export default function CreateClub() {
               />
             </label>
             <textarea
-              {...register("description")}
+              {...register("description", { required: true })}
               placeholder="클럽 목표를 설명해주세요."
               cols={30}
               rows={8}
@@ -169,6 +165,7 @@ export default function CreateClub() {
               </div>
               <input
                 {...register("memberLimit", {
+                  required: true,
                   min: 25,
                   max: 300,
                 })}
@@ -177,12 +174,12 @@ export default function CreateClub() {
                 className="p-2 none rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
               />
             </label>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className={`w-full`}>
               클럽 만들기
             </Button>
           </form>
         </section>
-      </div>
+      </motion.div>
     </>
   );
 }

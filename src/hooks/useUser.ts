@@ -4,6 +4,7 @@ import { API_ENDPOINT } from "@/App";
 import useSWR from "swr";
 import useAccessToken from "./useAccessToken";
 import { User } from "@/libs/types";
+import isUserRequiredFieldsFilled from "@/util/isRequiredFieldsFilled";
 
 interface UserResponse {
   ok: boolean;
@@ -31,14 +32,16 @@ export default function useUser() {
         });
         return;
       }
-      if (data.data && !data.data.name) {
+      if (data.data && !isUserRequiredFieldsFilled(data.data)) {
+        if (location.pathname === "/signup/profile") {
+          return;
+        }
         if (location.pathname !== "/more/editProfile") {
           alert("프로필을 설정해주세요.");
+          navigate("/more/editProfile", {
+            replace: true,
+          });
         }
-        navigate("/more/editProfile", {
-          replace: true,
-        });
-        return;
       }
       if (error) {
         console.log(error);

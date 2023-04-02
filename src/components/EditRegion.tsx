@@ -87,7 +87,7 @@ const EditRegion = ({ closeModal, setInputValue }: RegionPageProps) => {
           <section className="mt-12">
             <header className="my-8">
               <span className="text-black text-lg">
-                집, 직장 인근의 클럽을 찾습니다.
+                지역의 클럽을 찾습니다.
               </span>
             </header>
             <ul className="flex flex-col space-y-4 text-lg">

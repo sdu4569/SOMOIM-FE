@@ -1,4 +1,5 @@
 import { API_ENDPOINT } from "@/App";
+import useMutation from "@/hooks/useMutation";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
 
@@ -18,27 +19,21 @@ export default function EmailVerifyModal({
   setVerified,
 }: EmailVerifyModalProps) {
   const { register, handleSubmit } = useForm<EmailVerifyForm>();
+  const { mutate: verifyEmail } = useMutation("users/auth/email/check");
 
   const onSubmit = async (data: EmailVerifyForm) => {
-    const response = await fetch(`${API_ENDPOINT}/users/auth/email/check`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        code: data.code,
-      }),
+    const response = await verifyEmail({
+      email,
+      code: data.code,
     });
 
-    const parsed = await response.json();
-
-    if (parsed) {
+    if (response.ok && response.data.correct) {
       setVerified();
       closeModal();
       return;
     } else {
-      alert("인증에 실패했습니다.");
+      alert("코드가 일치하지 않습니다.");
+      return;
     }
   };
   return (

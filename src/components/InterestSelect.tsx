@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormSetValue } from "react-hook-form";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";
@@ -7,15 +7,18 @@ import HeaderBackButton from "./HeaderBackButton";
 import { InterestList } from "@/libs/InterestList";
 import useMutation from "@/hooks/useMutation";
 import useUser from "@/hooks/useUser";
+import getInterestWithKey from "@/util/getInterestWithKey";
 
 interface InterestSelectProps {
   closeModal: () => void;
   maxSelect: number;
+  setValue?: any;
 }
 
 export default function InterestSelect({
   closeModal,
   maxSelect,
+  setValue,
 }: InterestSelectProps) {
   const { user, mutate: mutateUser } = useUser();
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
@@ -34,7 +37,7 @@ export default function InterestSelect({
     const targetValue = event.target.value;
     // 선택된 항목 추가
     if (event.target.checked) {
-      if (selectedInterests.length < 7) {
+      if (selectedInterests.length < maxSelect) {
         setSelectedInterests([...selectedInterests, targetValue]);
       } else {
         alert(`최대 ${maxSelect}개까지 선택해주세요.`);
@@ -52,14 +55,22 @@ export default function InterestSelect({
       alert("최소 1개의 관심사를 선택해주세요");
       return;
     }
-    const result = await updateInterest({
-      favorites: selectedInterests,
-    });
 
-    if (result.ok && user) {
-      mutateUser({ ok: true, data: { ...user, favorites: selectedInterests } });
+    if (setValue) {
+      setValue("favorite", getInterestWithKey(selectedInterests[0]));
+    } else {
+      const result = await updateInterest({
+        favorites: selectedInterests,
+      });
+
+      if (result.ok && user) {
+        mutateUser({
+          ok: true,
+          data: { ...user, favorites: selectedInterests },
+        });
+      }
+      console.log(result);
     }
-    console.log(result);
     closeModal();
   };
 
