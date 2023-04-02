@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { overlayVariants } from "@/libs/variants";
 
-interface OverlayPorps {
+interface OverlayProps {
   onClick?: () => void;
   children?: React.ReactNode;
   className?: string;
@@ -11,7 +11,7 @@ export default function Overlay({
   children,
   onClick,
   className,
-}: OverlayPorps) {
+}: OverlayProps) {
   return (
     <motion.div
       initial="initial"

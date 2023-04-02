@@ -2,7 +2,7 @@ import useUser from "@/hooks/useUser";
 import { imageMap } from "@/libs/Images";
 
 import { useState } from "react";
-import InterestSelect from "./InterestSelect";
+import FavoriteSelect from "./FavoriteSelect";
 
 const UpdateInterestButton = () => {
   const { user } = useUser();
@@ -15,7 +15,7 @@ const UpdateInterestButton = () => {
     <>
       {inModal && (
         <div className="w-full h-full z-[200] absolute top-0 left-0 bg-white">
-          <InterestSelect closeModal={closeModal} maxSelect={7} />
+          <FavoriteSelect closeModal={closeModal} maxSelect={7} />
         </div>
       )}
       <div className="w-full mt-6 h-[32px] relative">

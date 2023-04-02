@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import InterestSelect from "@/components/InterestSelect";
+import FavoriteSelect from "@/components/FavoriteSelect";
 import PageHeader from "@/components/PageHeader";
 import RegionSelect from "@/components/RegionSearch";
 import useMutation from "@/hooks/useMutation";
@@ -75,7 +75,7 @@ export default function CreateClub() {
           ),
           interest: (
             <div className="w-full h-full z-[200] absolute bg-white">
-              <InterestSelect
+              <FavoriteSelect
                 closeModal={closeModal}
                 maxSelect={1}
                 setValue={setValue}

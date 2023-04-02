@@ -5,7 +5,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import getUserChoiceInterest from "@/util/getUserChoiceInterest";
-import InterestSelect from "@/components/InterestSelect";
+import InterestSelect from "@/components/FavoriteSelect";
 import InterestDetailSelect from "@/components/InterestDetailSelect";
 
 interface InterestWithDetails {
