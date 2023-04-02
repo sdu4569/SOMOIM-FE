@@ -9,7 +9,7 @@ export default function Textarea(value: any) {
       className="p-2 rounded-md resize-none bg-blue-300 "
       disabled
       ref={commentRef}
-      defaultValue={value.value}
+      value={value.value}
     ></textarea>
   );
 }

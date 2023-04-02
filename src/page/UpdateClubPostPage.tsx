@@ -15,7 +15,7 @@ export interface postFormData {
 
 export default function UpdateClubPostPage() {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state: post } = useLocation();
   const token = useAccessToken();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -36,29 +36,26 @@ export default function UpdateClubPostPage() {
   };
 
   useEffect(() => {
-    setValue("category", location.state.post.category);
-    setValue("title", location.state.post.title);
-    setValue("contents", location.state.post.content);
+    setValue("category", post.category);
+    setValue("title", post.title);
+    setValue("contents", post.content);
   }, [location]);
 
   const onSubmit = async (postForm: postFormData) => {
     console.log(postForm);
-    const response = await fetch(
-      `${API_ENDPOINT}/boards/${location.state.post.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify({
-          category: postForm.category,
-          title: postForm.title,
-          content: postForm.contents,
-          imageUrl: location.state.post.imageUrl,
-        }),
-      }
-    );
+    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      body: JSON.stringify({
+        category: postForm.category,
+        title: postForm.title,
+        content: postForm.contents,
+        imageUrl: post.imageUrl,
+      }),
+    });
     console.log(response);
     navigate(-1);
   };

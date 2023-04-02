@@ -19,7 +19,6 @@ import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 
-
 interface commentFormData {
   comment: string;
 }
@@ -45,7 +44,6 @@ export default function ClubPost() {
   const [modalType, setModalType] = useState<ModalType>();
   const [selectId, setSelectId] = useState<number>();
   const [selectComment, setSelectComment] = useState<any[]>([]);
-  const [commentList, setCommentList] = useState<any[]>([]);
   const {
     state: { post },
   } = useLocation();
@@ -72,10 +70,7 @@ export default function ClubPost() {
     token,
   ]);
 
-  useEffect(() => {
-    console.log(commentData);
-    commentData && setCommentList(commentData.data);
-  }, [commentData]);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (!post) {
@@ -85,16 +80,13 @@ export default function ClubPost() {
   }, [post]);
 
   const postDelete = async () => {
-    const response = await fetch(
-      `${API_ENDPOINT}/boards/${location.state.post.id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     console.log(response);
     navigate(-1);
   };
@@ -271,7 +263,7 @@ export default function ClubPost() {
             <div className=" w-[200px] h-[90px] flex cursor-pointer bg-white text-left flex-col absolute justify-evenly top-2 right-0 border-[1px] border-solid z-[100]">
               <Link
                 to={`/clubs/${params.clubId}/update_post/${params.postId}`}
-                state={location.state}
+                state={post}
               >
                 <div className="h-[40px] p-3 text-[16px]">게시글 수정</div>
               </Link>
@@ -456,12 +448,15 @@ export default function ClubPost() {
             </div>
           </div>
           <div className="flex items-center">
-            <p className="text-sm">댓글 {commentList.length}개</p>
+            <p className="text-sm">
+              댓글{" "}
+              {commentData?.data.length !== 0 ? commentData?.data.length : 0}개
+            </p>
           </div>
         </div>
         <section className="mt-4 overflow-scroll">
           <ul>
-            {commentList.map((item, idx) => {
+            {commentData?.data.map((item: any, idx: number) => {
               return (
                 <li className="flex space-x-2 mb-3 relative" key={idx}>
                   <img

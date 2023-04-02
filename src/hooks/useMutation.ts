@@ -18,7 +18,10 @@ interface PostRequestOptions {
 
 export default function useMutation(
   url: string,
-  { authorized = false, method = "POST" }: PostRequestOptions
+  { authorized = false, method = "POST" }: PostRequestOptions = {
+    authorized: false,
+    method: "POST",
+  }
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const token = useAccessToken();
