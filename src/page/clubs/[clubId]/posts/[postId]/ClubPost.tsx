@@ -61,7 +61,7 @@ export default function ClubPost() {
     setValue,
   } = useForm<commentFormData>();
 
-  const { mutate: comment, isLoading: joinLoading } = useMutation(
+  const { mutate: comment, isLoading: commentLoading } = useMutation(
     `boards/${params.postId}/comments`,
     {
       authorized: true,
@@ -129,6 +129,10 @@ export default function ClubPost() {
 
   const onSubmit = async (commentForm: commentFormData) => {
     if (commentForm.comment.length == 0) {
+      return;
+    }
+
+    if (commentLoading) {
       return;
     }
 
