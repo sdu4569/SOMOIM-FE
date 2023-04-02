@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 
-import { InterestList } from "@/libs/InterestList";
-import getUserChoiceInterest from "@/util/getUserChoiceInterest";
+import { FavoriteList } from "@/libs/FavoriteList";
+import getUserChoiceFavorite from "@/util/getUserChoiceFavorite";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import { useForm } from "react-hook-form";
-import { InterestFormData } from "./signup/interest/RegisterInterest";
+import { FavoriteFormData } from "./signup/favorite/RegisterFavorite";
 
-const InterestPage = () => {
-  const userChoice = getUserChoiceInterest().map((item: any) => item.title);
+const FavoritePage = () => {
+  const userChoice = getUserChoiceFavorite().map((item: any) => item.title);
   const [checkedList, setCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -19,7 +19,7 @@ const InterestPage = () => {
     formState: { errors },
     setValue,
     watch,
-  } = useForm<InterestFormData>();
+  } = useForm<FavoriteFormData>();
 
   const checkedItemHandler = (value: string, isChecked: boolean) => {
     //체크 되어 있는 관심사 해제 기능
@@ -71,7 +71,7 @@ const InterestPage = () => {
           <h1 className="text-xl whitespace-nowrap truncate">관심사 선택</h1>
         </div>
         <Link
-          to={"/interest/detail"}
+          to={"/favorite/detail"}
           state={checkedList}
           onClick={clickHandler}
         >
@@ -83,7 +83,7 @@ const InterestPage = () => {
       <main>
         <form>
           <div className="flex justify-evenly flex-wrap">
-            {InterestList.map((item, idx) => {
+            {FavoriteList.map((item, idx) => {
               return (
                 <div key={idx} className="min-w-[80px] mb-3 ">
                   <input
@@ -113,4 +113,4 @@ const InterestPage = () => {
   );
 };
 
-export default InterestPage;
+export default FavoritePage;

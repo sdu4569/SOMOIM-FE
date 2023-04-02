@@ -1,4 +1,4 @@
-export interface InterestWithDetails {
+export interface FavoriteWithDetails {
   name: string;
   detail: string[];
 }

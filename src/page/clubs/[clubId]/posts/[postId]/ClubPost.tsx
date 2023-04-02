@@ -25,8 +25,6 @@ import PostMenuButton from "@/components/PostMenuButton";
 import CommentMenuButton from "@/components/CommentMenuButton";
 import { getDate } from "@/util/getDate";
 
-
-
 interface commentFormData {
   comment: string;
 }
@@ -77,21 +75,7 @@ export default function ClubPost() {
     }
   }, [post]);
 
-
   //모달 닫기 기능
-
-  const postDelete = async () => {
-    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    console.log(response);
-    navigate(-1);
-  };
-
 
   const closeModal = () => {
     setInModal(false);
@@ -141,7 +125,6 @@ export default function ClubPost() {
     setValue("comment", "");
   };
 
-
   //글 삭제, 댓글 삭제
   const postDelete = async () => {
     const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
@@ -153,7 +136,6 @@ export default function ClubPost() {
     });
     navigate(-1);
   };
-
 
   const commentDelete = async () => {
     if (!selectedComment) return;
@@ -241,9 +223,7 @@ export default function ClubPost() {
         modalType &&
         {
           post: (
-
             <PostMenuButton post={post} setType={setModalType}></PostMenuButton>
-
           ),
           delPost: (
             <Delete

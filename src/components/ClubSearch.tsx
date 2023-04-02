@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { InterestList } from "@/libs/InterestList";
-import { Images } from "@/libs/Images";
-import { useState } from "react";
+import { FavoriteList } from "@/libs/FavoriteList";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import useUser from "@/hooks/useUser";
 
 const ClubSearchVariants = {
   initial: {
@@ -16,8 +16,33 @@ const ClubSearchVariants = {
   },
 };
 
+interface FavoriteListProps {
+  id: number;
+  title: string;
+  favorite: string;
+  image: string;
+}
+
 const ClubSearch = () => {
+  const { user } = useUser();
   const [expanded, setExpanded] = useState(false);
+  const [selectFavorite, setSelectFavorite] = useState<FavoriteListProps[]>([]);
+  const [notSelectFavorite, setNotSelectFavorite] = useState<
+    FavoriteListProps[]
+  >([]);
+
+  useEffect(() => {
+    if (user) {
+      const SelectList = FavoriteList.filter((item) =>
+        user.favorites.includes(item.favorite)
+      );
+      setSelectFavorite(SelectList);
+      const notSelectList = FavoriteList.filter(
+        (item) => !user.favorites.includes(item.favorite)
+      );
+      setNotSelectFavorite(notSelectList);
+    }
+  }, [user]);
 
   const onExpandClick = () => setExpanded((prev) => !prev);
 
@@ -31,10 +56,24 @@ const ClubSearch = () => {
           transition={{ ease: "easeInOut", duration: 0.5, originY: 0 }}
           className={`grid grid-cols-5 gap-y-4 overflow-hidden`}
         >
-          {InterestList.map((item, idx) => {
+          {selectFavorite.map((item) => {
             return (
-              <div key={idx}>
-                <Link to={`/search/${item.interest}`} className="">
+              <div key={item.id}>
+                <Link to={`/search/${item.favorite}`} className="">
+                  <img
+                    src={item.image}
+                    alt="관심사 이미지"
+                    className="rounded-md w-8 mx-auto mb-2 bg-gray-300"
+                  />
+                  <div className="text-[10px] text-center">{item.title}</div>
+                </Link>
+              </div>
+            );
+          })}
+          {notSelectFavorite.map((item) => {
+            return (
+              <div key={item.id}>
+                <Link to={`/search/${item.favorite}`} className="">
                   <img
                     src={item.image}
                     alt="관심사 이미지"
@@ -46,10 +85,10 @@ const ClubSearch = () => {
             );
           })}
           {/* {expanded
-            ? InterestList.map((item, idx) => {
+            ? FavoriteList.map((item, idx) => {
                 return (
                   <div key={idx}>
-                    <Link to={`/search/${item.interest}`} className="">
+                    <Link to={`/search/${item.favorite}`} className="">
                       <img
                         src={item.image}
                         alt="관심사 이미지"
@@ -62,10 +101,10 @@ const ClubSearch = () => {
                   </div>
                 );
               })
-            : InterestList.slice(0, 10).map((item, idx) => {
+            : FavoriteList.slice(0, 10).map((item, idx) => {
                 return (
                   <div key={idx}>
-                    <Link to={`/search/${item.interest}`} className="">
+                    <Link to={`/search/${item.favorite}`} className="">
                       <img
                         src={item.image}
                         alt="관심사 이미지"

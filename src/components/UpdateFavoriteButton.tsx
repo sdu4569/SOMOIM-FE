@@ -1,10 +1,9 @@
 import useUser from "@/hooks/useUser";
 import { imageMap } from "@/libs/Images";
-
 import { useState } from "react";
 import FavoriteSelect from "./FavoriteSelect";
 
-const UpdateInterestButton = () => {
+const UpdateFavoriteButton = () => {
   const { user } = useUser();
   const [inModal, setInModal] = useState<boolean>(false);
   const closeModal = () => {
@@ -45,4 +44,4 @@ const UpdateInterestButton = () => {
   );
 };
 
-export default UpdateInterestButton;
+export default UpdateFavoriteButton;

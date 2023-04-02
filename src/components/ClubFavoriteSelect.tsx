@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { motion } from "framer-motion";
 import PageHeader from "./PageHeader";
 import HeaderBackButton from "./HeaderBackButton";
-import { InterestList } from "@/libs/InterestList";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import { FavoriteList } from "@/libs/FavoriteList";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 
 interface ClubFavoriteSelectProps {
   readonly closeModal: () => void;
@@ -30,7 +30,7 @@ export default function ClubFavoriteSelect({
   });
 
   const onSubmit = (data: Favorite) => {
-    setInputValue("favorite", getInterestWithKey(data.favorite));
+    setInputValue("favorite", getFavoriteWithKey(data.favorite));
     closeModal();
   };
 
@@ -65,7 +65,7 @@ export default function ClubFavoriteSelect({
         ref={formRef}
       >
         <div className="grid grid-cols-4 gap-x-2 gap-y-6">
-          {InterestList.map((item, idx) => {
+          {FavoriteList.map((item, idx) => {
             return (
               <label
                 key={idx}
@@ -77,12 +77,12 @@ export default function ClubFavoriteSelect({
                   type="radio"
                   id={item.title}
                   className="hidden"
-                  value={item.interest}
+                  value={item.favorite}
                 />
                 <img
                   src={item.image}
                   className={`border-2 border-solid rounded w-12 bg-gray-200 ${
-                    watch("favorite") === item.interest && "border-blue-500"
+                    watch("favorite") === item.favorite && "border-blue-500"
                   }`}
                 />
                 <div className="text-[12px] mt-2">{item.title}</div>

@@ -7,10 +7,10 @@ import Button from "@/components/Button";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import PageHeader from "@/components/PageHeader";
 import { useLocation, useNavigate } from "react-router-dom";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import Spinner from "@/components/Spinner";
 import EditRegion from "@/components/EditRegion";
-import ClubFavoriteSelect from "@/components/ClubInterestSelect";
+import ClubFavoriteSelect from "@/components/ClubFavoriteSelect";
 import Club from "@/components/Club";
 import RegionSearch from "@/components/RegionSearch";
 
@@ -54,7 +54,7 @@ export default function ClubEditPage() {
 
   useEffect(() => {
     if (location.state?.club) {
-      setValue("favorite", getInterestWithKey(location.state.club.favorite));
+      setValue("favorite", getFavoriteWithKey(location.state.club.favorite));
       setValue("area", location.state.club.area);
       setValue("clubName", location.state.club.name);
       setValue("description", location.state.club.description);

@@ -12,7 +12,7 @@ import useMutation from "@/hooks/useMutation";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 
 export interface CreateClubForm {
   area: string;
@@ -23,7 +23,7 @@ export interface CreateClubForm {
 }
 
 enum ModalType {
-  INTEREST = "interest",
+  FAVORITE = "favorite",
   AREA = "area",
 }
 
@@ -48,9 +48,9 @@ export default function CreateClub() {
 
     const result = await mutate({
       ...data,
-      favorite: InterestList.find(
-        (interest) => interest.title === data.favorite
-      )?.interest,
+      favorite: FavoriteList.find(
+        (favorite) => favorite.title === data.favorite
+      )?.favorite,
     });
 
     if (!result.ok) {
@@ -73,7 +73,7 @@ export default function CreateClub() {
               inputId="area"
             />
           ),
-          interest: (
+          favorite: (
             <div className="w-full h-full z-[200] absolute bg-white">
               <FavoriteSelect
                 closeModal={closeModal}
@@ -118,7 +118,7 @@ export default function CreateClub() {
                 {...register("area", { required: true })}
               />
             </label>
-            <label htmlFor="interest" className="flex items-center">
+            <label htmlFor="favorite" className="flex items-center">
               <div className="flex space-x-2 w-24 items-center">
                 <FontAwesomeIcon icon={faHeart} className="text-red-500" />
                 <p>관심사</p>
@@ -126,11 +126,11 @@ export default function CreateClub() {
               <input
                 onFocus={() => {
                   setInModal(true);
-                  setModalType(ModalType.INTEREST);
+                  setModalType(ModalType.FAVORITE);
                 }}
                 disabled={inModal}
                 type="text"
-                id="interest"
+                id="favorite"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 관심사 선택"
                 {...register("favorite", { required: true })}

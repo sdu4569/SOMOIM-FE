@@ -1,61 +1,62 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
+// import { useEffect, useState } from "react";
 // import { useLocation, useNavigate } from "react-router-dom";
-// import HeaderBackButton from "@/components/HeaderBackButton";
-// import PageHeader from "@/components/PageHeader";
-// import { InterestList } from "@/libs/InterestList";
 // import { motion } from "framer-motion";
-// import { pageSlideIn } from "@/libs/variants";
 // import { useForm } from "react-hook-form";
+// import { FavoriteList } from "@/libs/FavoriteList";
+// import { pageSlideIn } from "@/libs/variants";
+// import PageHeader from "../src/components/PageHeader";
+// import HeaderBackButton from "../src/components/HeaderBackButton";
+// import { FavoriteWithDetails } from "@/libs/types";
 
-// interface Interest {
+// interface FavoriteDetailSelectProps {
+//   onComplete: (data: FavoriteWithDetails[]) => void;
+//   closeModal: () => void;
+//   favorites: string[];
+// }
+
+// interface Favorite {
 //   title: string;
-//   interest: string;
+//   favorite: string;
 //   image: string;
 //   detail: string[];
 // }
 
-// interface InterestDetailFormData {
+// interface FavoriteDetailFormData {
 //   [key: string]: string[];
 // }
 
-// export default function RegisterInterestDetail() {
-//   const [detailList, setDetailList] = useState<Interest[]>([]);
-//   const location = useLocation();
-//   const navigate = useNavigate();
+// export default function FavoriteDetailSelect({
+//   onComplete,
+//   closeModal,
+//   favorites,
+// }: FavoriteDetailSelectProps) {
+//   const [detailList, setDetailList] = useState<Favorite[]>([]);
 //   const {
 //     register,
 //     handleSubmit,
 //     formState: { errors },
 //     setValue,
 //     watch,
-//   } = useForm<InterestDetailFormData>();
+//   } = useForm<FavoriteDetailFormData>();
 
-//   const onSubmit = (data: InterestDetailFormData) => {
+//   const onSubmit = (data: FavoriteDetailFormData) => {
 //     const favorites = Object.entries(data).map((item) => {
 //       return {
 //         name: item[0],
 //         detail: item[1] ? item[1] : [],
 //       };
 //     });
-//     console.log(favorites);
+
+//     onComplete(favorites);
 //   };
 
 //   useEffect(() => {
-//     console.log(location.state);
-//   }, []);
-
-//   useEffect(() => {
-//     if (location.state && location.state.interests) {
-//       const { interests } = location.state;
-//       console.log(interests);
-//       const detailList = InterestList.filter((item) =>
-//         interests.includes(item.title)
-//       );
-//       setDetailList(detailList);
-//     }
-//   }, [location.state, location.state.interests]);
-
-//   // to do : prevent direct accesss
+//     console.log(favorites);
+//     const detailList = FavoriteList.filter((item) =>
+//       favorites.includes(item.title)
+//     );
+//     setDetailList(detailList);
+//   }, [favorites]);
 
 //   return (
 //     <motion.div
@@ -67,7 +68,7 @@
 //       <form onSubmit={handleSubmit(onSubmit)} className="pt-16 px-4 pb-10">
 //         <PageHeader>
 //           <div className="flex items-center space-x-2">
-//             <HeaderBackButton />
+//             <HeaderBackButton onClick={closeModal} />
 //             <h1 className="text-xl whitespace-nowrap truncate">
 //               상세 관심사 선택
 //             </h1>
@@ -77,30 +78,30 @@
 //           </button>
 //         </PageHeader>
 //         <div className="flex flex-col space-y-4">
-//           {detailList.map((interest, idx) => {
+//           {detailList.map((favorite, idx) => {
 //             return (
 //               <div key={idx} className="flex flex-col space-y-4">
 //                 <header className="flex space-x-2 items-center">
-//                   <img src={interest.image} className="w-6" />
-//                   <p className="text-14">{interest.title}</p>
+//                   <img src={favorite.image} className="w-6" />
+//                   <p className="text-14">{favorite.title}</p>
 //                 </header>
 //                 <div className="flex flex-wrap">
-//                   {interest.detail.map((detail, idx) => {
+//                   {favorite.detail.map((detail, idx) => {
 //                     return (
 //                       <label
 //                         key={idx}
 //                         htmlFor={detail}
 //                         className={`p-2 mr-2 mb-2 border-2 border-solid flex justify-center items-center rounded text-12
 //                         ${
-//                           watch(interest.title) &&
-//                           watch(interest.title).includes(detail)
+//                           watch(favorite.title) &&
+//                           watch(favorite.title).includes(detail)
 //                             ? "border-blue-500"
 //                             : "border-gray-300"
 //                         }
 //                         `}
 //                       >
 //                         <input
-//                           {...register(interest.title)}
+//                           {...register(favorite.title)}
 //                           value={detail}
 //                           type="checkbox"
 //                           id={detail}

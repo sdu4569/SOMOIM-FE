@@ -1,9 +1,10 @@
 import { Images } from "./Images";
 
-export const InterestList = [
+export const FavoriteList = [
   {
+    id: 1,
     title: "아웃도어/여행",
-    interest: "OUTDOOR",
+    favorite: "OUTDOOR",
     image: Images.OUTDOOR,
     detail: [
       "등산",
@@ -16,8 +17,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 2,
     title: "운동/스포츠",
-    interest: "EXERCISE",
+    favorite: "EXERCISE",
     image: Images.EXERCISE,
     detail: [
       "자전거",
@@ -52,8 +54,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 3,
     title: "인문학/책/글",
-    interest: "HUMANITIES",
+    favorite: "HUMANITIES",
     image: Images.HUMANITIES,
     detail: [
       "책/독서",
@@ -66,14 +69,16 @@ export const InterestList = [
     ],
   },
   {
+    id: 4,
     title: "외국/언어",
-    interest: "FOREIGN",
+    favorite: "FOREIGN",
     image: Images.FOREIGN,
     detail: ["영어", "일본어", "중국어", "프랑스어", "스페인어", "러시아어"],
   },
   {
+    id: 5,
     title: "문화/공연/축제",
-    interest: "CULTURE",
+    favorite: "CULTURE",
     image: Images.CULTURE,
     detail: [
       "뮤지컬/오페라",
@@ -86,8 +91,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 6,
     title: "음악/악기",
-    interest: "MUSIC",
+    favorite: "MUSIC",
     image: Images.MUSIC,
     detail: [
       "노래/보컬",
@@ -112,8 +118,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 7,
     title: "공예/만들기",
-    interest: "CRAFTS",
+    favorite: "CRAFTS",
     image: Images.CRAFTS,
     detail: [
       "미술/그림",
@@ -132,8 +139,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 8,
     title: "댄스/무용",
-    interest: "DANCE",
+    favorite: "DANCE",
     image: Images.DANCE,
     detail: [
       "라틴댄스",
@@ -149,8 +157,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 9,
     title: "봉사활동",
-    interest: "VOLUNTEER",
+    favorite: "VOLUNTEER",
     image: Images.VOLUNTEER,
     detail: [
       "양로원",
@@ -162,8 +171,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 10,
     title: "사교/인맥",
-    interest: "SOCIETY",
+    favorite: "SOCIETY",
     image: Images.SOCIETY,
     detail: [
       "지역",
@@ -177,8 +187,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 11,
     title: "차/오토바이",
-    interest: "CAR",
+    favorite: "CAR",
     image: Images.CAR,
     detail: [
       "현대",
@@ -193,14 +204,16 @@ export const InterestList = [
     ],
   },
   {
+    id: 12,
     title: "사진/영상",
-    interest: "PICTURE",
+    favorite: "PICTURE",
     image: Images.PICTURE,
     detail: ["DSLR", "필름카메라", "영상제작", "디지털카메라"],
   },
   {
+    id: 13,
     title: "야구관람",
-    interest: "BASEBALL",
+    favorite: "BASEBALL",
     image: Images.BASEBALL,
     detail: [
       "삼성라이온즈",
@@ -216,8 +229,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 14,
     title: "게임/오락",
-    interest: "GAME",
+    favorite: "GAME",
     image: Images.GAME,
     detail: [
       "다트",
@@ -232,8 +246,9 @@ export const InterestList = [
     ],
   },
   {
+    id: 15,
     title: "요리/제조",
-    interest: "COOK",
+    favorite: "COOK",
     image: Images.COOK,
     detail: [
       "한식",
@@ -247,20 +262,23 @@ export const InterestList = [
     ],
   },
   {
+    id: 16,
     title: "반려동물",
-    interest: "PET",
+    favorite: "PET",
     image: Images.PET,
     detail: ["강아지", "고양이", "물고기", "파충류", "설치류/중치류"],
   },
   {
+    id: 17,
     title: "가족/결혼",
-    interest: "FAMILY",
+    favorite: "FAMILY",
     image: Images.FAMILY,
     detail: ["결혼/웨딩", "육아/맘", "아빠/대디"],
   },
   {
+    id: 18,
     title: "자유주제",
-    interest: "FREE",
+    favorite: "FREE",
     image: Images.FREE,
     detail: [
       "스피치/발성",

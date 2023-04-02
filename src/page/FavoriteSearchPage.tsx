@@ -1,9 +1,9 @@
 import PageHeader from "@/components/PageHeader";
 
 import { Link, useParams } from "react-router-dom";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import { testClubList } from "@/components/testClubList";
+
 import { useEffect, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
@@ -12,24 +12,15 @@ interface searchFormData {
   search: string;
 }
 
-const InterestSearchPage = () => {
+export const FavoriteSearchPage = () => {
   const params = useParams();
 
-  const interest = InterestList.filter(
-    (item) => item.interest == params.interest
+  const favorite = FavoriteList.filter(
+    (item) => item.favorite == params.favorite
   );
 
-  const all = "전체";
-  const userCity = "부산광역시";
   const [detailList, setDetailList] = useState<string[]>([]);
   const [filterList, setFilterList] = useState<any[]>([]);
-  const notFilterList = testClubList.filter(
-    (item) => item.city == userCity && item.interest == params.interest
-  );
-  useEffect(() => {
-    setDetailList([all, ...interest[0].detail]);
-    setFilterList(notFilterList);
-  }, []);
 
   const {
     register,
@@ -41,29 +32,13 @@ const InterestSearchPage = () => {
 
   const [select, setSelect] = useState("전체");
 
-  const handleClickRadioButton = (e: any) => {
-    setSelect(e.target.value);
-
-    if (e.target.value == "전체") {
-      setFilterList(notFilterList);
-    } else {
-      const searchList = notFilterList.filter((item) => {
-        return item.interestDetail == e.target.value;
-      });
-
-      setFilterList(searchList);
-    }
-  };
-
   const onSubmit = () => {
     if (watch("search") == "") {
       return;
     }
 
-    const searchContents = notFilterList.filter(
-      (content) =>
-        content.clubTitle.includes(watch("search")) ||
-        content.clubDescription.includes(watch("search"))
+    const searchContents = filterList.filter((content) =>
+      content.clubTitle.includes(watch("search"))
     );
     console.log(searchContents);
     setFilterList(searchContents);
@@ -72,12 +47,12 @@ const InterestSearchPage = () => {
   const onDelete = () => {
     setValue("search", "");
     setSelect("전체");
-    setFilterList(notFilterList);
+    setFilterList([]);
   };
 
   return (
     <>
-      {interest.map((item, idx) => {
+      {favorite.map((item, idx) => {
         return (
           <div key={idx} className="h-full py-16 px-4 overflow-auto">
             <PageHeader className="mb-2 ml-1 ">
@@ -144,8 +119,7 @@ const InterestSearchPage = () => {
                 key={idx}
               >
                 <p className="text-[12px] inline-block float-left font-semibold">
-                  <span className="text-blue-500">{userCity}</span>의 클럽
-                  리스트
+                  <span className="text-blue-500"></span>의 클럽 리스트
                 </p>
                 {filterList.map((item, idx) => {
                   return (
@@ -185,5 +159,3 @@ const InterestSearchPage = () => {
     </>
   );
 };
-
-export default InterestSearchPage;

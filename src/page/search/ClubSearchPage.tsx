@@ -1,15 +1,13 @@
 import PageHeader from "@/components/PageHeader";
 import { Link } from "react-router-dom";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import { testClubList } from "@/components/testClubList";
 import { useEffect, useRef, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
-import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import { API_ENDPOINT } from "@/App";
 
 interface searchFormData {
@@ -166,7 +164,7 @@ const ClubSearchPage = () => {
                         멤버 {item.memberCnt}
                       </span>
                       <span className="text-gray-400 bg-gray-100 pl-1 pr-1 pt-0.5 pb-0.5 rounded-md">
-                        {getInterestWithKey(item.favorite)}
+                        {getFavoriteWithKey(item.favorite)}
                       </span>
                     </div>
                   </div>
@@ -211,13 +209,13 @@ const ClubSearchPage = () => {
           //검색창이 비어 있는 경우
           <div className="mb-2.5">
             <div className="flex justify-evenly flex-wrap">
-              {InterestList.map((item, idx) => {
+              {FavoriteList.map((item, idx) => {
                 return (
                   <div
                     key={idx}
                     className=" w-40 mb-2.5 border rounded-lg h-9 relative"
                   >
-                    <Link to={`/search/${item.interest}`} className="m-0">
+                    <Link to={`/search/${item.favorite}`} className="m-0">
                       <img
                         src={item.image}
                         alt="관심사 이미지"

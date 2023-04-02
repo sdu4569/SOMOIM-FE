@@ -35,7 +35,7 @@ export default function RegisterProfile() {
 
     if (updateResponse.ok) {
       userMutate();
-      navigate("/signup/interest", {
+      navigate("/signup/favorite", {
         replace: true,
       });
     } else {

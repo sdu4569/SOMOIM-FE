@@ -1,7 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import ClubSearch from "@/components/ClubSearch";
-import UpdateInterestButton from "@/components/UpdateInterestButton";
-import Recommendation from "@/components/Recommendation";
+import UpdateFavoriteButton from "@/components/UpdateFavoriteButton";
 import { imageMap } from "@/libs/Images";
 import { Link } from "react-router-dom";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
@@ -53,7 +52,7 @@ const MyActivityPage = () => {
         </h2>
 
         {userClub?.map((item) => {
-          const interestImg = imageMap.get(item.favorite);
+          const favoriteImg = imageMap.get(item.favorite);
           return (
             <Link to={`/clubs/${item.id}`} key={item.id} state={item}>
               <div className="flex space-x-4 mb-4">
@@ -71,7 +70,7 @@ const MyActivityPage = () => {
                 <div className="flex-1 flex flex-col justify-evenly">
                   <div>
                     <img
-                      src={interestImg}
+                      src={favoriteImg}
                       className="w-[16px] h-[16px] inline-block mr-1"
                       alt="관심사 이미지"
                     />
@@ -92,8 +91,7 @@ const MyActivityPage = () => {
         })}
         <h2 className="text-[14px] font-semibold mb-5 mt-5">클럽찾기</h2>
         <ClubSearch />
-        <UpdateInterestButton />
-        <Recommendation />
+        <UpdateFavoriteButton />
         <div className="absolute bottom-20 right-8">
           <FloatButton to={`/clubs/create`}>
             <FontAwesomeIcon icon={faPlus} />

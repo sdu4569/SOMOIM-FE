@@ -1,9 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import MyActivityPage from "./page/myactivity/MyActivityPage";
-import UpdateDetailPage from "./page/more/editInterest/UpdateDetailPage";
-import InterestSearchPage from "./page/InterestSearchPage";
+import { FavoriteSearchPage } from "./page/FavoriteSearchPage";
 import ClubPage from "./page/clubs/ClubPage";
-import InterestPage from "./page/InterestPage";
+import FavoritePage from "./page/FavoritePage";
 import MainPage from "./page/MainPage";
 import ClubPost from "./page/clubs/[clubId]/posts/[postId]/ClubPost";
 import ClubEditPage from "./page/clubs/[clubId]/edit/ClubEditPage";
@@ -18,10 +17,10 @@ import Landing from "./page/Landing";
 import SignupLayout from "./page/signup/SignupLayout";
 import Register from "./page/signup/register/Register";
 import RegisterProfile from "./page/signup/profile/RegisterProfile";
-import RegisterInterest from "./page/signup/interest/RegisterInterest";
+import RegisterFavorite from "./page/signup/favorite/RegisterFavorite";
 import KakaoCallback from "./page/auth/kakao/callback/KakaoCallback";
 import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
-import InterestDetailChoicePage from "./page/search/[category]/InterestDetailChoicePage";
+
 import FavoriteClubPage from "./page/more/favorite/FavoriteClubPage";
 import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
 import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
@@ -36,17 +35,15 @@ const PageNavigator = () => {
       <Route path="/signup" element={<SignupLayout />}>
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<RegisterProfile />} />
-        <Route path="interest" element={<RegisterInterest />} />
+        <Route path="favorite" element={<RegisterFavorite />} />
       </Route>
 
-      <Route path="/interest" element={<InterestPage />} />
-      <Route path="/interest/detail" element={<InterestDetailChoicePage />} />
+      <Route path="/favorite" element={<FavoritePage />} />
 
       <Route path="/search" element={<ClubSearchPage />} />
-      <Route path="/search/:interest" element={<InterestSearchPage />} />
+      <Route path="/search/:favorite" element={<FavoriteSearchPage />} />
 
       <Route path="/activity" element={<MyActivityPage />} />
-      <Route path="/activity/editInterest" element={<UpdateDetailPage />} />
 
       <Route path="/clubs" element={<ClubPage />} />
       <Route path="/clubs/create" element={<CreateClub />}></Route>

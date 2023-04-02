@@ -1,16 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
-import { InterestList } from "@/libs/InterestList";
+import { FavoriteList } from "@/libs/FavoriteList";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import getUserChoiceInterest from "@/util/getUserChoiceInterest";
+import getUserChoiceFavorite from "@/util/getUserChoiceFavorite";
 
-const InterestDetailChoicePage = () => {
+const FavoriteDetailChoicePage = () => {
   const location = useLocation();
-  const detailList = InterestList.filter((item) =>
+  const detailList = FavoriteList.filter((item) =>
     location.state.includes(item.title)
   );
-  const userChoice = getUserChoiceInterest()
+  const userChoice = getUserChoiceFavorite()
     .map((item: any) => item.detail)
     .flat();
 
@@ -47,7 +47,7 @@ const InterestDetailChoicePage = () => {
       const userChoiceList = detailList.map((item) => {
         return {
           title: item.title,
-          interest: item.interest,
+          favorite: item.favorite,
           image: item.image,
           detail: item.detail.filter((item) => checkedList.includes(item)),
         };
@@ -134,4 +134,4 @@ const InterestDetailChoicePage = () => {
   );
 };
 
-export default InterestDetailChoicePage;
+export default FavoriteDetailChoicePage;

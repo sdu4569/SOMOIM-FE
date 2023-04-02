@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 
 const FavoriteClubPage = () => {
-  const [favoriteClubList, setfavoriteClubList] = useState<any[]>([]);
+  const [favoriteClubList, setFavoriteClubList] = useState<any[]>([]);
   const getData = localStorage.getItem("favoriteClub");
   useEffect(() => {
     if (getData !== null) {
       const parseData = JSON.parse(getData);
-      setfavoriteClubList(parseData);
+      setFavoriteClubList(parseData);
     }
   }, []);
 
