@@ -9,6 +9,7 @@ import {
   loginState,
 } from "@/libs/atoms";
 import { API_ENDPOINT } from "@/App";
+import isUserRequiredFieldsFilled from "@/util/isRequiredFieldsFilled";
 
 export default function KakaoCallback() {
   const location = useLocation();
@@ -59,9 +60,8 @@ export default function KakaoCallback() {
 
         const user: User = response.data;
 
-        if (!user.area) {
+        if (!isUserRequiredFieldsFilled(user)) {
           navigate("/signup/profile");
-
           return;
         }
 

@@ -18,11 +18,14 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
+
 import { ModalType } from "@/libs/types";
 import Delete from "@/components/Delete";
 import PostMenuButton from "@/components/PostMenuButton";
 import CommentMenuButton from "@/components/CommentMenuButton";
 import { getDate } from "@/util/getDate";
+
+
 
 interface commentFormData {
   comment: string;
@@ -39,7 +42,6 @@ export default function ClubPost() {
   const [like, setLike] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
-
   const [selectedComment, setSelectedComment] = useState<any>(null);
   const {
     state: { post },
@@ -75,7 +77,22 @@ export default function ClubPost() {
     }
   }, [post]);
 
+
   //모달 닫기 기능
+
+  const postDelete = async () => {
+    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    console.log(response);
+    navigate(-1);
+  };
+
+
   const closeModal = () => {
     setInModal(false);
   };
@@ -94,6 +111,10 @@ export default function ClubPost() {
   //댓글 전송 기능
   const onSubmit = async (commentForm: commentFormData) => {
     if (commentForm.comment.length == 0) {
+      return;
+    }
+
+    if (commentLoading) {
       return;
     }
 
@@ -120,6 +141,7 @@ export default function ClubPost() {
     setValue("comment", "");
   };
 
+
   //글 삭제, 댓글 삭제
   const postDelete = async () => {
     const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
@@ -131,6 +153,7 @@ export default function ClubPost() {
     });
     navigate(-1);
   };
+
 
   const commentDelete = async () => {
     if (!selectedComment) return;
@@ -218,7 +241,9 @@ export default function ClubPost() {
         modalType &&
         {
           post: (
+
             <PostMenuButton post={post} setType={setModalType}></PostMenuButton>
+
           ),
           delPost: (
             <Delete
@@ -227,12 +252,14 @@ export default function ClubPost() {
               name="게시글"
             ></Delete>
           ),
+
           comment: (
             <CommentMenuButton
               onClose={closeModal}
               setType={setModalType}
             ></CommentMenuButton>
           ),
+
           updateComment: selectedComment && (
             <UpdateComment
               selectComment={selectedComment}

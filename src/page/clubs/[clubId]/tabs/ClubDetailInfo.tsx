@@ -59,7 +59,7 @@ export default function ClubDetailInfo({
               className="w-full aspect-twenty-nine object-fit"
             />
           ) : (
-            "이미지"
+            "클럽 배너를 등록해보세요!"
           )}
         </div>
         <div className="flex space-x-4">
@@ -93,43 +93,11 @@ export default function ClubDetailInfo({
             <h4 className="text-lg">클럽 소개</h4>
           </header>
           <article className="h-[500px] overflow-scroll">
-            <p className="leading-5">
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-              {club.description} Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Illo doloremque ipsam alias provident. Facilis
-              sint odit assumenda doloremque obcaecati aperiam voluptas saepe.
-              Corrupti laudantium maiores adipisci velit quas voluptatibus
-              fugit.
-            </p>
+            <textarea
+              className="leading-5 h-full w-full resize-none bg-white"
+              disabled
+              value={club.description}
+            ></textarea>
           </article>
         </section>
         <section>
