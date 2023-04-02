@@ -9,14 +9,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSearch } from "@fortawesome/free-solid-svg-icons";
 import FloatButton from "@/components/FloatButton";
 import useSWR from "swr";
-import { UserClub } from "@/libs/types";
+import { Club } from "@/libs/types";
 import useAccessToken from "@/hooks/useAccessToken";
+import useUser from "@/hooks/useUser";
+import { useEffect, useState } from "react";
+import { API_ENDPOINT } from "@/App";
+import ClubsListWithFavorite from "@/components/ClubsListWithFavorite";
+import getInterestWithKey from "@/util/getInterestWithKey";
 
 interface UserResponse {
   ok: boolean;
-  data?: UserClub[];
+  data?: Club[];
   code?: number;
   message?: string;
+}
+
+interface FavoriteClubsList {
+  favorite: string;
+  favoriteClubs: Club[];
 }
 
 const MyActivityPage = () => {
@@ -29,7 +39,7 @@ const MyActivityPage = () => {
 
   const userClub = data?.data;
 
-  console.log(userClub);
+  const { user } = useUser();
 
   return (
     <div className="h-full pt-16 pb-20 px-4 overflow-scroll">
@@ -42,9 +52,9 @@ const MyActivityPage = () => {
         </div>
       </PageHeader>
 
-      <main>
+      <main className="flex flex-col space-y-8">
         <h2
-          className={`text-[14px] font-semibold mb-5 ${
+          className={`text-[14px] font-semibold ${
             userClub?.length !== 0 ? "" : "text-blue-500"
           }`}
           id="userClub"
@@ -84,10 +94,19 @@ const MyActivityPage = () => {
             </Link>
           );
         })}
-        <h2 className="text-[14px] font-semibold mb-5 mt-5">클럽찾기</h2>
+        <h2 className="text-[14px] font-semibold">클럽찾기</h2>
         <ClubSearch />
         <UpdateInterestButton />
-        <Recommendation />
+        <section className="flex flex-col space-y-8">
+          {user?.favorites.map((favorite) => (
+            <div key={favorite} className="flex flex-col space-y-4">
+              <h2 className="text-[14px] font-semibold">
+                {getInterestWithKey(favorite)} 추천 클럽
+              </h2>
+              <ClubsListWithFavorite favorite={favorite} />
+            </div>
+          ))}
+        </section>
         <div className="absolute bottom-20 right-8">
           <FloatButton to={`/clubs/create`}>
             <FontAwesomeIcon icon={faPlus} />
