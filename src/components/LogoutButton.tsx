@@ -4,15 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function LogoutButton() {
   const { logout } = useLogout();
-  const navigate = useNavigate();
+
   const token = useAccessToken();
 
   const onClick = async () => {
     const ok = await logout(token);
-
-    if (ok) {
-      navigate("/landing");
-    }
   };
   return (
     <button

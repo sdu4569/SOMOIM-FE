@@ -5,7 +5,6 @@ import { accessTokenAtom } from "@/libs/atoms";
 import { useRecoilState } from "recoil";
 
 export default function useAccessToken() {
-  const navigate = useNavigate();
   const [token, setToken] = useRecoilState(accessTokenAtom);
   const [tokenExpiration, setTokenExpiration] = useRecoilState(
     accessTokenExpirationAtom
