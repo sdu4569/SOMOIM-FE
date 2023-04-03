@@ -50,7 +50,7 @@ const MyActivityPage = () => {
       </PageHeader>
 
       <main className="flex flex-col space-y-8">
-        <section>
+        <section className="flex flex-col space-y-4">
           <h2
             className={`text-[14px] font-semibold ${
               userClub?.length !== 0 ? "" : "text-blue-500"
@@ -65,7 +65,7 @@ const MyActivityPage = () => {
               return (
                 <li key={item.id}>
                   <Link to={`/clubs/${item.id}`} state={item}>
-                    <div className="flex space-x-4 mt-4">
+                    <div className="flex space-x-4 mb-4">
                       <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500">
                         {item.imageUrl && (
                           <div className="w-full h-full overflow-hidden rounded-2xl">
@@ -102,7 +102,8 @@ const MyActivityPage = () => {
             })}
           </ul>
         </section>
-        <section>
+        <section className="flex flex-col">
+
           <h2 className="text-[14px] font-semibold mb-4">클럽찾기</h2>
           <ClubSearch />
           <UpdateFavoriteButton />

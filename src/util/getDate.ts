@@ -1,4 +1,4 @@
-export const getDate = (e: number) => {
+export const getDate = (e: number | string) => {
   let d = new Date(e);
   let month = d.getMonth() + 1;
   let date = d.getDate();

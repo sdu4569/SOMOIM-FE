@@ -40,6 +40,17 @@ export interface ClubResponse {
   data: Club[];
 }
 
+export interface Comment {
+  id: number;
+  boardId: number;
+  userId: number;
+  comment: string;
+  userName: string;
+  profileImg?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Member {
   userId: number;
   name: string;
@@ -69,4 +80,19 @@ export enum ModalType {
   COMMENT = "comment",
   UPDATE_COMMENT = "updateComment",
   DELETE_COMMENT = "delComment",
+}
+
+export interface Post {
+  id: number;
+  category: PostCategory;
+  commentCnt: number;
+  content: string;
+  createdAt: string;
+  imageUrl?: string;
+  likeCnt: number;
+  title: string;
+  updatedAt: string;
+  userId: number;
+  userImg?: string;
+  userName: string;
 }

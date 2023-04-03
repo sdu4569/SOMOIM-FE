@@ -17,14 +17,21 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
-import { ModalType } from "@/libs/types";
+import { Comment, ModalType, Post } from "@/libs/types";
 import Delete from "@/components/Delete";
 import PostMenuButton from "@/components/PostMenuButton";
 import CommentMenuButton from "@/components/CommentMenuButton";
 import { getDate } from "@/util/getDate";
+import formatDate from "@/util/formatDate";
+import Avatar from "@/components/Avatar";
 
 interface commentFormData {
   comment: string;
+}
+
+interface CommentResponse {
+  ok: boolean;
+  data: Comment[];
 }
 
 let postLikeArr: any[] = [];
@@ -41,6 +48,10 @@ export default function ClubPost() {
   const [selectedComment, setSelectedComment] = useState<any>(null);
   const {
     state: { post },
+  }: {
+    state: {
+      post: Post;
+    };
   } = useLocation();
   useEffect(() => {});
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -61,10 +72,11 @@ export default function ClubPost() {
     }
   );
 
-  const { data: commentData, mutate: refreshCommentData } = useSWR([
-    `boards/${params.postId}/comments`,
-    token,
-  ]);
+  const {
+    data: commentData,
+    isLoading: getCommentLoading,
+    mutate: refreshCommentData,
+  } = useSWR<CommentResponse>([`boards/${params.postId}/comments`, token]);
 
   useEffect(() => {
     if (!post) {
@@ -72,6 +84,10 @@ export default function ClubPost() {
       return navigate(-1);
     }
   }, [post]);
+
+  useEffect(() => {
+    console.log(commentData);
+  }, [commentData]);
 
   //모달 닫기 기능
   const closeModal = () => {
@@ -92,10 +108,6 @@ export default function ClubPost() {
   //댓글 전송 기능
   const onSubmit = async (commentForm: commentFormData) => {
     if (commentForm.comment.length == 0) {
-      return;
-    }
-
-    if (commentLoading) {
       return;
     }
 
@@ -152,68 +164,14 @@ export default function ClubPost() {
     if (response.ok) {
       refreshCommentData({
         ok: true,
-        data: commentData?.data.filter(
-          (comment: any) => comment.id !== selectedComment.id
-        ),
+        data:
+          commentData?.data?.filter(
+            (comment: any) => comment.id !== selectedComment.id
+          ) || [],
       });
     }
     closeModal();
   };
-
-  // // 좋아요 기능
-  // const getPostLike = localStorage.getItem(
-  //   `${params.clubId}_${params.postId} like`
-  // );
-
-  // useEffect(() => {
-  //   if (getPostLike !== null) {
-  //     postLikeArr = JSON.parse(getPostLike);
-  //     const likeUserArr = postLikeArr.filter(
-  //       (item: { id: number }) => item.id == userData?.id
-  //     );
-
-  //     if (likeUserArr.length !== 0) {
-  //       setLike(true);
-  //     } else {
-  //       setLike(false);
-  //     }
-  //   }
-  // }, [getPostLike]);
-
-  // const likeClick = () => {
-  //   setLike((prev) => !prev);
-
-  //   if (getPostLike !== null) {
-  //     postLikeArr = JSON.parse(getPostLike);
-  //     console.log(postLikeArr);
-  //     //유저가 이미 좋아요를 눌렀다면?
-  //     if (postLikeArr.some((item: { id: number }) => item.id == userData?.id)) {
-  //       postLikeArr = postLikeArr.filter(
-  //         (item: { id: number }) => item.id !== userData?.id
-  //       );
-  //       localStorage.setItem(
-  //         `${params.clubId}_${params.postId} like`,
-  //         JSON.stringify(postLikeArr)
-  //       );
-  //     }
-  //     //좋아요를 누르지 않았다면
-  //     else {
-  //       postLikeArr.unshift({ id: userData?.id });
-  //       localStorage.setItem(
-  //         `${params.clubId}_${params.postId} like`,
-  //         JSON.stringify(postLikeArr)
-  //       );
-  //     }
-  //   }
-  //   // 글에 좋아요가 0일때
-  //   else {
-  //     postLikeArr.unshift({ id: userData?.id });
-  //     localStorage.setItem(
-  //       `${params.clubId}_${params.postId} like`,
-  //       JSON.stringify(postLikeArr)
-  //     );
-  //   }
-  // };
 
   return (
     <div className="flex flex-col overflow-scroll h-full">
@@ -248,8 +206,9 @@ export default function ClubPost() {
         </div>
         <button
           // 작성자 Id와 로그인한 유저 id 비교
-          //${location.state.post.id !== userData?.id ? "hidden" : ""}
-          className={`flex items-center `}
+          className={`flex items-center 
+          ${post.userId !== userData?.id ? "hidden" : ""}
+          `}
           onClick={() => {
             setInModal(true);
             setModalType(ModalType.POST);
@@ -261,13 +220,15 @@ export default function ClubPost() {
       <section className="p-4 py-16">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
-            <div className="w-10 aspect-square rounded-full bg-blue-500"></div>
+            <div className="w-10 aspect-square rounded-full bg-blue-500">
+              <Avatar src={post?.userImg} size="md" />
+            </div>
             <div className="flex flex-col h-full justify-between  text-sm">
               <div className="flex space-x-1">
-                <p>포마</p>
-                <p className="font-semibold text-blue-500">클럽장</p>
+                <p>{post?.userName}</p>
+                {/* <p className="font-semibold text-blue-500"></p> */}
               </div>
-              <p className="text-gray-500">3월 3일 오후 12시 57분</p>
+              <p className="text-gray-500">{formatDate(post?.createdAt)}</p>
             </div>
           </div>
           <div>
@@ -332,29 +293,27 @@ export default function ClubPost() {
         </div>
         <section className="mt-4 overflow-scroll">
           <ul>
-            {commentData?.data.map((item: any) => {
+            {commentData?.data.map((comment: Comment) => {
               return (
-                <li className="flex space-x-2 mb-3 relative" key={item.id}>
-                  <img
-                    src={`${item.profileImg}/avatar`}
-                    alt="유저 프로필"
-                    className="w-8 h-8 rounded-full"
-                  ></img>
+                <li className="flex space-x-2 mb-3 relative" key={comment.id}>
+                  <div className="w-10 aspect-square">
+                    <Avatar src={comment.profileImg} size="md" />
+                  </div>
                   <div className="w-36 flex flex-col space-y-1">
                     <div className="flex flex-col">
-                      <p className="text-sm">{item.userName}</p>
+                      <p className="text-sm">{comment.userName}</p>
                       <p className="text-xs text-gray-500">
-                        {getDate(item.createdAt)}
+                        {getDate(comment.createdAt)}
                       </p>
                     </div>
-                    <Textarea value={item.comment} />
+                    <Textarea value={comment.comment} />
                   </div>
                   <button
                     className={`absolute right-1 ${
-                      userData?.id !== item.userId ? "hidden" : ""
+                      userData?.id !== comment.userId ? "hidden" : ""
                     }`}
                     onClick={() => {
-                      setSelectedComment(item);
+                      setSelectedComment(comment);
                       setInModal(true);
                       setModalType(ModalType.COMMENT);
                     }}
