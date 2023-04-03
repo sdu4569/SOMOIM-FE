@@ -39,9 +39,9 @@ export default function ClubPage() {
       if (!token) return;
       if (previousPageData && !previousPageData.data.length) return null;
       return [
-        `clubs/${selectedTab === "추천클럽" ? "random" : "newclub"}?page=${
-          pageIndex + 1
-        }`,
+        `clubs/${
+          selectedTab === "추천클럽" ? "random" : "newclub"
+        }?page=${pageIndex}`,
         token,
       ];
     },

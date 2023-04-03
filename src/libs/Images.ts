@@ -1,4 +1,5 @@
 export const Images = {
+  //관심사 이미지는 대문자로 표시
   OUTDOOR: "https://cdn-icons-png.flaticon.com/512/870/870143.png",
   EXERCISE: "https://cdn-icons-png.flaticon.com/512/2271/2271062.png",
   HUMANITIES: "https://cdn-icons-png.flaticon.com/512/3771/3771417.png",
@@ -17,6 +18,8 @@ export const Images = {
   PET: "https://cdn-icons-png.flaticon.com/512/1864/1864514.png",
   FAMILY: "https://cdn-icons-png.flaticon.com/512/3097/3097951.png",
   FREE: "https://cdn-icons-png.flaticon.com/512/891/891438.png",
+
+  //그 외 사용하는 이미지들
   down: "https://cdn-icons-png.flaticon.com/512/152/152415.png",
   up: "https://cdn-icons-png.flaticon.com/512/3106/3106683.png",
   check: "https://cdn-icons-png.flaticon.com/512/2732/2732655.png",

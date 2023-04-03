@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useForm, UseFormSetValue } from "react-hook-form";
+import { useRef, useState } from "react";
+
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import PageHeader from "./PageHeader";

@@ -7,7 +7,6 @@ import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import { API_ENDPOINT } from "@/App";
 import Club from "@/components/Club";
 
@@ -86,7 +85,8 @@ const ClubSearchPage = () => {
     }
   }, []);
 
-  const handleClick = (e: string) => {
+  //최근 검색 기록 삭제 기능
+  const searchDelete = (e: string) => {
     const updateRecentList = recentSearchList.filter((item) => item !== e);
     setRecentSearchList(updateRecentList);
     localStorage.setItem("recentSearch", JSON.stringify(updateRecentList));
@@ -170,7 +170,7 @@ const ClubSearchPage = () => {
                   <button
                     className="absolute top-0.5 right-0"
                     value={idx}
-                    onClick={() => handleClick(`${item}`)}
+                    onClick={() => searchDelete(`${item}`)}
                   >
                     <img
                       src={Images.delete}

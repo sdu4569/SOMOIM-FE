@@ -1,12 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
 import { useEffect, useRef } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import PostSkeleton from "./PostSkeleton";
-import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import { PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";

@@ -1,12 +1,11 @@
 import { API_ENDPOINT } from "@/App";
 import FloatButton from "@/components/FloatButton";
 import Overlay from "@/components/Overlay";
-import Spinner from "@/components/Spinner";
 import useAccessToken from "@/hooks/useAccessToken";
-import { faCamera, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { motion } from "framer-motion";

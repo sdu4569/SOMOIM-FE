@@ -8,7 +8,7 @@ import { Tabs } from "@/libs/types";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function ClubGalleryUpload() {
   const [fileList, setFileList] = useState<File[]>([]);
@@ -19,7 +19,6 @@ export default function ClubGalleryUpload() {
     useMutation(`clubs/${clubId}/albums`, { authorized: true });
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

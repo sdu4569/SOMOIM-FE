@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import { Images } from "@/libs/Images";
 import { User } from "@/libs/types";
 

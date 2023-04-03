@@ -8,12 +8,12 @@ import {
   faHeart as solidHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
 import { Link, useParams } from "react-router-dom";
-import { Member, User } from "@/libs/types";
+import { Member } from "@/libs/types";
 import Avatar from "@/components/Avatar";
 import { imageMap } from "@/libs/Images";
 

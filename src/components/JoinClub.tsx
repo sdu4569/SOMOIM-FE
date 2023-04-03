@@ -25,7 +25,6 @@ export default function JoinClub({
   const [secondModal, setSecondModal] = useState<Boolean>(false);
 
   const {
-    watch,
     register,
     formState: { errors },
     handleSubmit,

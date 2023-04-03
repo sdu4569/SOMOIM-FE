@@ -11,8 +11,6 @@ import useSWR from "swr";
 import { Club } from "@/libs/types";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import { useEffect, useState } from "react";
-import { API_ENDPOINT } from "@/App";
 import ClubsListWithFavorite from "@/components/ClubsListWithFavorite";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 

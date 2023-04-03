@@ -22,6 +22,11 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "server/config/sens", "unused/UpdateDetailPage.tsx"],
+  "include": [
+    "src",
+    "server/config/sens",
+    "unused/UpdateDetailPage.tsx",
+    "unused/GalleryPost.tsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
