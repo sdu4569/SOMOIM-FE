@@ -31,10 +31,10 @@ export default function ClubBoard({
           <option value={PostCategory.JOIN}>가입인사</option>
         </select>
         <section>
-          <ClubBoardNoticeList />
+          <ClubBoardNoticeList isMember={isMember} />
         </section>
         <section className="h-full">
-          <ClubBoardPostList category={category} />
+          <ClubBoardPostList category={category} isMember={isMember} />
         </section>
       </div>
       <div className="absolute bottom-8 right-8">

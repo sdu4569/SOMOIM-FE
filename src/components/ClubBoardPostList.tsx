@@ -11,9 +11,11 @@ import { Post, PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
 import formatDate from "@/util/formatDate";
 import Avatar from "./Avatar";
+import PostPreview from "./PostPreview";
 
 interface ClubBoardPostListProps {
   category: PostCategory;
+  isMember: boolean;
 }
 
 interface PostResponse {
@@ -25,6 +27,7 @@ interface PostResponse {
 
 export default function ClubBoardPostList({
   category,
+  isMember,
 }: ClubBoardPostListProps) {
   const params = useParams();
   const token = useAccessToken();
@@ -105,62 +108,26 @@ export default function ClubBoardPostList({
           data
             .map((e) => e.data.content)
             .flat()
-            .map((post: Post) => (
-              <Link
-                to={`/clubs/${params.clubId}/post/${post?.id}`}
-                key={post?.id}
-                className="py-2 cursor-pointer"
-                state={{ post }}
-              >
-                <header className="flex justify-between items-center">
-                  <div className="flex space-x-2 items-center ">
-                    <div className="w-8 h-8 rounded-full bg-gray-500">
-                      <Avatar src={post.userImg} size="md" />
-                    </div>
-                    <span>{post.userName}</span>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-400">
-                      {formatDate(post.createdAt)}
-                    </p>
-                  </div>
-                </header>
-                <div className="py-4 flex justify-between items-start">
-                  <div className="flex flex-col flex-1 space-y-2">
-                    <p className="text-blue-500 pr-4 w-60 overflow-hidden whitespace-nowrap overflow-ellipsis">
-                      {post?.title}
-                    </p>
-                    <p className="flex-1 w-60 line-clamp-3 pr-4 leading-5">
-                      {post?.content}
-                    </p>
-                  </div>
-                  {post?.imageUrl && (
-                    <img
-                      src={post.imageUrl + "/public"}
-                      alt=""
-                      className="rounded-md max-w-[110px] max-h-[150px]"
-                    />
-                  )}
-                </div>
-                <div className="flex py-2 justify-between items-center border-y-2 border-gray-200">
-                  <div className="flex space-x-4">
-                    <div className="flex space-x-1 items-center">
-                      <FontAwesomeIcon icon={faThumbsUp} />
-                      <p className="text-sm ">좋아요 {post.likeCnt}</p>
-                    </div>
-                    <div className="flex space-x-1 items-center">
-                      <FontAwesomeIcon icon={faMessage} />
-                      <p className="text-sm ">댓글 {post.commentCnt}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm ">
-                      {getPostCategoryWithKey(post.category)}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+            .map((post: Post) =>
+              isMember ? (
+                <Link
+                  to={`/clubs/${params.clubId}/post/${post?.id}`}
+                  key={post.id}
+                  className="py-2 cursor-pointer"
+                  state={{ post }}
+                >
+                  <PostPreview post={post} />
+                </Link>
+              ) : (
+                <li
+                  onClick={() => alert("클럽에 가입해주세요.")}
+                  className="py-2"
+                  key={post.id}
+                >
+                  <PostPreview post={post} />
+                </li>
+              )
+            )}
       </ul>
       <div
         ref={targetRef}

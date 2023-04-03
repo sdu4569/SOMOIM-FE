@@ -5,7 +5,11 @@ import { Link, useParams } from "react-router-dom";
 import useSWR from "swr";
 import SkeletonBar from "./SkeletonBar";
 
-export default function ClubBoardNoticeList() {
+export default function ClubBoardNoticeList({
+  isMember,
+}: {
+  isMember: boolean;
+}) {
   const params = useParams();
   const token = useAccessToken();
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
@@ -51,7 +55,7 @@ export default function ClubBoardNoticeList() {
   return (
     <ul className="flex flex-col divide-y-[1px] divide-gray-300 mt-2">
       {notices?.data?.map((notice: Post) => {
-        return (
+        return isMember ? (
           <li key={notice.id}>
             <Link
               to={`post/${notice.id}`}
@@ -61,6 +65,11 @@ export default function ClubBoardNoticeList() {
               <strong className="font-semibold text-blue-500">[필독]</strong>
               <p>{notice.title}</p>
             </Link>
+          </li>
+        ) : (
+          <li key={notice.id} className="flex space-x-2 py-2">
+            <strong className="font-semibold text-blue-500">[필독]</strong>
+            <p>{notice.title}</p>
           </li>
         );
       })}

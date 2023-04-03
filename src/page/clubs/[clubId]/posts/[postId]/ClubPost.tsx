@@ -46,13 +46,8 @@ export default function ClubPost() {
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
   const [selectedComment, setSelectedComment] = useState<any>(null);
-  const {
-    state: { post },
-  }: {
-    state: {
-      post: Post;
-    };
-  } = useLocation();
+  const [post, setPost] = useState<Post>();
+  const location = useLocation();
   useEffect(() => {});
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const resize = useAutoResizeTextArea();
@@ -79,15 +74,20 @@ export default function ClubPost() {
   } = useSWR<CommentResponse>([`boards/${params.postId}/comments`, token]);
 
   useEffect(() => {
-    if (!post) {
+    if (!location.state) {
       alert("잘못된 접근입니다.");
       return navigate(-1);
     }
-  }, [post]);
+    if (location.state.post) {
+      setPost(location.state.post);
+    }
+  }, [location]);
 
   useEffect(() => {
-    resize(textareaRef);
-  }, [post.content]);
+    if (post) {
+      resize(textareaRef);
+    }
+  }, [post]);
 
   //모달 닫기 기능
   const closeModal = () => {
@@ -136,7 +136,7 @@ export default function ClubPost() {
 
   //글 삭제
   const postDelete = async () => {
-    const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
+    const response = await fetch(`${API_ENDPOINT}/boards/${post?.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -207,7 +207,7 @@ export default function ClubPost() {
         <button
           // 작성자 Id와 로그인한 유저 id 비교
           className={`flex items-center 
-          ${post.userId !== userData?.id ? "hidden" : ""}
+          ${post?.userId !== userData?.id ? "hidden" : ""}
           `}
           onClick={() => {
             setInModal(true);
@@ -228,19 +228,21 @@ export default function ClubPost() {
                 <p>{post?.userName}</p>
                 {/* <p className="font-semibold text-blue-500"></p> */}
               </div>
-              <p className="text-gray-500">{formatDate(post?.createdAt)}</p>
+              <p className="text-gray-500">
+                {post ? formatDate(post.createdAt) : ""}
+              </p>
             </div>
           </div>
           <div>
             <p className="text-blue-500">
-              {getPostCategoryWithKey(post?.category)}
+              {post ? getPostCategoryWithKey(post.category) : ""}
             </p>
           </div>
         </header>
         <div className="pt-4 pb-12 flex flex-col space-y-4">
           {post?.imageUrl && (
             <img
-              src={post.imageUrl + "/post"}
+              src={post?.imageUrl + "/post"}
               alt="게시글 사진"
               className="w-min rounded-md"
             />
@@ -249,7 +251,7 @@ export default function ClubPost() {
             ref={textareaRef}
             cols={30}
             className="h-max focus:outline-none resize-none"
-            value={post.content}
+            value={post?.content}
             readOnly
           />
         </div>

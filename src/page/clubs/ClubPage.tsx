@@ -29,10 +29,6 @@ export default function ClubPage() {
   );
 
   const { user, loading } = useUser();
-  const onTabClick = (tab: string) => {
-    setSelectedTab(tab);
-    localStorage.setItem("clubListTab", tab);
-  };
 
   const getKey: SWRInfiniteKeyLoader = useCallback(
     (pageIndex, previousPageData) => {
@@ -49,15 +45,25 @@ export default function ClubPage() {
   );
 
   const [clubs, setClubs] = useState<Club[] | undefined>(undefined);
-  const { data, isValidating, size, setSize } =
+  const [shouldScroll, setShouldScroll] = useState<boolean>(true);
+  const { data, isLoading, isValidating, size, setSize } =
     useSWRInfinite<ClubResponse>(getKey);
   const targetRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
+  const onTabClick = (tab: string) => {
+    setSelectedTab(tab);
+    setShouldScroll(true);
+    localStorage.setItem("clubListTab", tab);
+  };
   const isIntersecting = useIntersectionObserver(targetRef, {});
 
   useEffect(() => {
     if (isIntersecting) {
-      setSize(size + 1);
+      setSize((size) => {
+        setShouldScroll(false);
+        return size + 1;
+      });
     }
   }, [isIntersecting]);
 
@@ -67,8 +73,46 @@ export default function ClubPage() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!isLoading && clubs && shouldScroll) {
+      if (!wrapperRef.current) {
+        return;
+      }
+      const scroll = sessionStorage.getItem(`${selectedTab}-scroll`);
+      const wrapper = wrapperRef.current;
+      wrapper.scrollTo({
+        top: 0,
+      });
+      wrapper.scrollTo({
+        top: parseInt(scroll || "0"),
+        behavior: "smooth",
+      });
+    }
+  }, [isLoading, clubs, selectedTab, shouldScroll]);
+
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+
+    const wrapper = wrapperRef.current;
+
+    // debounce
+    let timer: NodeJS.Timeout;
+    const onScroll = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        sessionStorage.setItem(`${selectedTab}-scroll`, `${wrapper.scrollTop}`);
+      }, 100);
+    };
+
+    wrapper.addEventListener("scroll", onScroll);
+
+    return () => {
+      wrapper.removeEventListener("scroll", onScroll);
+    };
+  }, [selectedTab]);
+
   return (
-    <div className="h-full overflow-scroll pt-16 pb-20">
+    <div ref={wrapperRef} className="h-full overflow-scroll pt-16 pb-20">
       <PageHeader>
         <h2 className="text-lg">
           {loading ? <Spinner size="sm" /> : user?.area}

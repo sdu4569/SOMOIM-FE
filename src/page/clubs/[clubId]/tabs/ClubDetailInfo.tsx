@@ -31,7 +31,7 @@ export default function ClubDetailInfo({
   like,
   handleClick,
   members,
-  isMember = true,
+  isMember = false,
   isManager = false,
   club,
   membersBoundMutate,

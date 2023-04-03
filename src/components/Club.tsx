@@ -25,7 +25,7 @@ export default function ClubComponent({ data }: ClubComponentProps) {
       </div>
       <div className="flex-1 flex flex-col justify-evenly">
         <span className="">{data.name}</span>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-gray-500 w-full line-clamp-1">
           {data.description.substring(0, 30)}
         </span>
         <div className="flex space-x-2 text-xs">

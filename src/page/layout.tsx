@@ -1,4 +1,5 @@
 import { AnimatePresence } from "framer-motion";
+import { ScrollRestoration } from "react-router-dom";
 
 interface LayoutProps {
   children?: React.ReactNode;

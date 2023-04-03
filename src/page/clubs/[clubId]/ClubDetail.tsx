@@ -9,17 +9,19 @@ import ClubDetailInfo from "@/page/clubs/[clubId]/tabs/ClubDetailInfo";
 import ClubBoard from "./tabs/ClubBoard";
 import ClubChat from "./tabs/ClubChat";
 import ClubGallery from "@/page/clubs/[clubId]/tabs/ClubGallery";
-import { useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
 import { Member, Tabs } from "@/libs/types";
 import Spinner from "@/components/Spinner";
 import { pageSlideIn } from "@/libs/variants";
+import FetchFail from "@/components/FetchFail";
 
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 
 export default function ClubDetail() {
+  const navigate = useNavigate();
   const [like, setLike] = useState<boolean>(false);
   const token = useAccessToken();
   const params = useParams();
@@ -39,7 +41,7 @@ export default function ClubDetail() {
 
   //최근 본 클럽 기능 시작
   useEffect(() => {
-    if (club) {
+    if (club && club.ok && club.data) {
       let array = [];
       const getData = localStorage.getItem("recentClub");
       if (getData !== null) {
@@ -77,7 +79,7 @@ export default function ClubDetail() {
   const [isManager, setIsManager] = useState<boolean>(false);
 
   useEffect(() => {
-    if (members && user) {
+    if (members && members.data && user) {
       setIsMember(
         members.data.some((member: any) => member.userId === user.id)
       );
@@ -85,10 +87,14 @@ export default function ClubDetail() {
   }, [members, user]);
 
   useEffect(() => {
-    if (club && user) {
+    if (club && club.data && user) {
       setIsManager(club.data.managerId === user.id);
     }
   }, [club, user]);
+
+  useEffect(() => {
+    console.log(club, members);
+  }, [club, members]);
 
   if (clubLoading || membersLoading)
     return (
@@ -97,62 +103,68 @@ export default function ClubDetail() {
       </div>
     );
 
-  return (
-    <div className="h-full overflow-scroll">
-      <PageHeader>
-        <div className="flex items-center space-x-4 h-full overflow-hidden">
-          <HeaderBackButton />
-          <h1 className="text-xl whitespace-nowrap truncate ">
-            {club.data.name}
-          </h1>
-        </div>
-        <div className="flex space-x-6 items-center ml-2">
-          <FontAwesomeIcon
-            icon={like ? solidHeart : regularHeart}
-            size="xl"
-            // onClick={handleClick}
-          />
-        </div>
-      </PageHeader>
-      <nav className="w-full flex items-center absolute h-8 top-14 left-0 right-0 px-4 bg-white z-[100]">
-        <ul className="flex space-x-4 w-full">
-          {tabs.map((tab, i) => (
-            <li
-              key={tab}
-              onClick={() => setSelectedTab(i)}
-              className="flex-1 p-2 h-full relative cursor-pointer text-center"
-            >
-              {tab}
-              {tabs[selectedTab] === tab && (
-                <motion.div
-                  className=" h-[2px] absolute left-0 right-0 bottom-0 bg-black"
-                  layoutId="club_detail_underline"
-                />
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <section className="pt-[72px] h-full box-border">
-        {
+  if (!club?.ok || !members?.ok) {
+    return <FetchFail />;
+  }
+
+  if (club?.data && members?.data) {
+    return (
+      <div className="h-full overflow-scroll">
+        <PageHeader>
+          <div className="flex items-center space-x-4 h-full overflow-hidden">
+            <HeaderBackButton />
+            <h1 className="text-xl whitespace-nowrap truncate ">
+              {club.data.name}
+            </h1>
+          </div>
+          <div className="flex space-x-6 items-center ml-2">
+            <FontAwesomeIcon
+              icon={like ? solidHeart : regularHeart}
+              size="xl"
+              // onClick={handleClick}
+            />
+          </div>
+        </PageHeader>
+        <nav className="w-full flex items-center absolute h-8 top-14 left-0 right-0 px-4 bg-white z-[100]">
+          <ul className="flex space-x-4 w-full">
+            {tabs.map((tab, i) => (
+              <li
+                key={tab}
+                onClick={() => setSelectedTab(i)}
+                className="flex-1 p-2 h-full relative cursor-pointer text-center"
+              >
+                {tab}
+                {tabs[selectedTab] === tab && (
+                  <motion.div
+                    className=" h-[2px] absolute left-0 right-0 bottom-0 bg-black"
+                    layoutId="club_detail_underline"
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <section className="pt-[72px] h-full box-border">
           {
-            0: (
-              <ClubDetailInfo
-                like={like}
-                members={members?.data as Member[]}
-                isMember={isMember}
-                isManager={isManager}
-                membersBoundMutate={membersBoundMutate}
-                club={club?.data}
-                // handleClick={handleClick}
-              />
-            ),
-            1: <ClubBoard isMember={isMember} isManager={isManager} />,
-            2: <ClubGallery isMember={isMember} isManager={isManager} />,
-            3: <ClubChat />,
-          }[selectedTab]
-        }
-      </section>
-    </div>
-  );
+            {
+              0: (
+                <ClubDetailInfo
+                  like={like}
+                  members={members?.data as Member[]}
+                  isMember={isMember}
+                  isManager={isManager}
+                  membersBoundMutate={membersBoundMutate}
+                  club={club?.data}
+                  // handleClick={handleClick}
+                />
+              ),
+              1: <ClubBoard isMember={isMember} isManager={isManager} />,
+              2: <ClubGallery isMember={isMember} isManager={isManager} />,
+              3: <ClubChat />,
+            }[selectedTab]
+          }
+        </section>
+      </div>
+    );
+  }
 }
