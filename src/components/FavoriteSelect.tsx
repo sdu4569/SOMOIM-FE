@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
@@ -28,6 +28,10 @@ export default function FavoriteSelect({
       authorized: true,
     }
   );
+
+  useEffect(() => {
+    user && setSelectedFavorites(user.favorites);
+  }, [user]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -64,7 +68,7 @@ export default function FavoriteSelect({
       });
 
       if (result.ok && user) {
-        mutateUser({
+        await mutateUser({
           ok: true,
           data: { ...user, favorites: selectedFavorites },
         });

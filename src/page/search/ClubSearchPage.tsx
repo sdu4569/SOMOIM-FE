@@ -97,7 +97,7 @@ const ClubSearchPage = () => {
     localStorage.setItem("recentSearch", JSON.stringify(updateRecentList));
   };
 
-  const clickHandler = (e: any) => {
+  const clickHandler = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
         new Event("submit", { bubbles: true, cancelable: true })
@@ -165,9 +165,9 @@ const ClubSearchPage = () => {
                 <div className="relative mt-4 h-5" key={idx}>
                   <button
                     className="pl-2 w-full text-left h-4"
-                    onClick={(e) => {
+                    onClick={() => {
                       setValue("search", item);
-                      clickHandler(e);
+                      clickHandler();
                     }}
                   >
                     {item}
