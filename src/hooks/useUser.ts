@@ -52,6 +52,14 @@ export default function useUser() {
     }
   }, [data, isLoading, error]);
 
+  useEffect(() => {
+    if (!token) {
+      navigate("/landing", {
+        replace: true,
+      });
+    }
+  }, [token]);
+
   return {
     user: data?.data,
     loading: isLoading,
