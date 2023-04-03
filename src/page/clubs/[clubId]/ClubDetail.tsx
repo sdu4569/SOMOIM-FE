@@ -15,6 +15,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
 import { Member, Tabs } from "@/libs/types";
 import Spinner from "@/components/Spinner";
+import { pageSlideIn } from "@/libs/variants";
 
 const tabs = ["정보", "게시판", "사진첩", "채팅"];
 

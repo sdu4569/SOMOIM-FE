@@ -127,10 +127,10 @@ export default function ClubBoardPostList({
                 </header>
                 <div className="py-4 flex justify-between items-start">
                   <div className="flex flex-col flex-1 space-y-2">
-                    <p className="text-blue-500 pr-4 w-60 overflow-hidden overflow-ellipsis">
+                    <p className="text-blue-500 pr-4 w-60 overflow-hidden whitespace-nowrap overflow-ellipsis">
                       {post?.title}
                     </p>
-                    <p className="flex-1 line-clamp-3 pr-4 leading-5">
+                    <p className="flex-1 w-60 line-clamp-3 pr-4 leading-5">
                       {post?.content}
                     </p>
                   </div>

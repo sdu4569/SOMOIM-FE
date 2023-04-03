@@ -64,7 +64,7 @@ export default function FavoriteSelect({
       });
 
       if (result.ok && user) {
-        mutateUser({
+        await mutateUser({
           ok: true,
           data: { ...user, favorites: selectedFavorites },
         });

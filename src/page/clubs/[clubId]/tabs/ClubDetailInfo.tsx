@@ -12,8 +12,8 @@ import { useState } from "react";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
-import { Link, useParams } from "react-router-dom";
-import { Member } from "@/libs/types";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Member, Tabs } from "@/libs/types";
 import Avatar from "@/components/Avatar";
 import { imageMap } from "@/libs/Images";
 
@@ -38,6 +38,17 @@ export default function ClubDetailInfo({
 }: ClubDetailInfoProps) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const params = useParams();
+  const navigate = useNavigate();
+
+  const onBannerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.preventDefault();
+
+    if (isManager) {
+      navigate(`/clubs/${params.clubId}/edit`, {
+        state: { club },
+      });
+    }
+  };
 
   return (
     <>
@@ -51,7 +62,12 @@ export default function ClubDetailInfo({
         </Overlay>
       )}
       <div className={`flex flex-col space-y-4 ${!isMember && "pb-16"} p-4`}>
-        <div className="aspect-twenty-nine w-full bg-gray-300 flex justify-center items-center">
+        <div
+          onClick={onBannerClick}
+          className={`aspect-twenty-nine w-full bg-gray-300 flex justify-center items-center ${
+            isManager && "cursor-pointer"
+          }`}
+        >
           {club?.imageUrl ? (
             <img
               src={club.imageUrl}
