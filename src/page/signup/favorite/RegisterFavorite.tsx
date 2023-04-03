@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/PageHeader";
 import { FavoriteList } from "@/libs/FavoriteList";
 import { motion } from "framer-motion";

@@ -1,10 +1,8 @@
 import { ErrorMessage } from "@hookform/error-message";
-import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
 import useMutation from "@/hooks/useMutation";

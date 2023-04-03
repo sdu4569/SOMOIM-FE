@@ -3,11 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "@/components/Spinner";
 import { LoginResponse, User } from "@/libs/types";
 import { useSetRecoilState } from "recoil";
-import {
-  accessTokenAtom,
-  accessTokenExpirationAtom,
-  loginState,
-} from "@/libs/atoms";
+import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
 import { API_ENDPOINT } from "@/App";
 import isUserRequiredFieldsFilled from "@/util/isRequiredFieldsFilled";
 

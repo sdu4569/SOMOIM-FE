@@ -1,13 +1,12 @@
 import { faComment, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import PageHeader from "@/components/PageHeader";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import Button from "@/components/Button";
-import Overlay from "@/components/Overlay";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import UpdateComment from "@/components/UpdateComment";
 import useUser from "@/hooks/useUser";
@@ -18,7 +17,6 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
-
 import { Comment, ModalType, Post } from "@/libs/types";
 import Delete from "@/components/Delete";
 import PostMenuButton from "@/components/PostMenuButton";
@@ -55,7 +53,7 @@ export default function ClubPost() {
       post: Post;
     };
   } = useLocation();
-
+  useEffect(() => {});
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const _ = useAutoResizeTextArea(textareaRef);
 
@@ -92,7 +90,6 @@ export default function ClubPost() {
   }, [commentData]);
 
   //모달 닫기 기능
-
   const closeModal = () => {
     setInModal(false);
   };
@@ -137,7 +134,7 @@ export default function ClubPost() {
     setValue("comment", "");
   };
 
-  //글 삭제, 댓글 삭제
+  //글 삭제
   const postDelete = async () => {
     const response = await fetch(`${API_ENDPOINT}/boards/${post.id}`, {
       method: "DELETE",
@@ -149,6 +146,7 @@ export default function ClubPost() {
     navigate(-1);
   };
 
+  //댓글 삭제
   const commentDelete = async () => {
     if (!selectedComment) return;
 
@@ -180,36 +178,24 @@ export default function ClubPost() {
       {inModal &&
         modalType &&
         {
-          post: (
-            <PostMenuButton post={post} setType={setModalType}></PostMenuButton>
-          ),
+          post: <PostMenuButton post={post} setType={setModalType} />,
           delPost: (
-            <Delete
-              onClose={closeModal}
-              onDelete={postDelete}
-              name="게시글"
-            ></Delete>
+            <Delete onClose={closeModal} onDelete={postDelete} name="게시글" />
           ),
 
           comment: (
-            <CommentMenuButton
-              onClose={closeModal}
-              setType={setModalType}
-            ></CommentMenuButton>
+            <CommentMenuButton onClose={closeModal} setType={setModalType} />
           ),
 
           updateComment: selectedComment && (
             <UpdateComment
               selectComment={selectedComment}
+              refreshComment={refreshCommentData}
               closeModal={closeModal}
             />
           ),
           delComment: (
-            <Delete
-              onClose={closeModal}
-              onDelete={commentDelete}
-              name="댓글"
-            ></Delete>
+            <Delete onClose={closeModal} onDelete={commentDelete} name="댓글" />
           ),
         }[modalType]}
 

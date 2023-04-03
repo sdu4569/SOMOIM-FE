@@ -1,11 +1,10 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import FloatButton from "@/components/FloatButton";
 import ClubBoardNoticeList from "@/components/ClubBoardNoticeList";
 import ClubBoardPostList from "@/components/ClubBoardPostList";
 import { PostCategory } from "@/libs/types";
-import postcss from "postcss";
 
 export default function ClubBoard({
   isMember,

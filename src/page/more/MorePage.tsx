@@ -6,6 +6,7 @@ import RecentClubButton from "@/components/RecentClubButton";
 import FavoriteClubButton from "@/components/FavoriteClubButton";
 import useUser from "@/hooks/useUser";
 import { useEffect } from "react";
+import LogoutButton from "@/components/LogoutButton";
 
 const MorePage = () => {
   const { user } = useUser();
@@ -24,6 +25,7 @@ const MorePage = () => {
         <UpdateFavoriteButton />
         <FavoriteClubButton />
         <RecentClubButton />
+        <LogoutButton />
       </main>
       <BottomTabNavigator />
     </div>

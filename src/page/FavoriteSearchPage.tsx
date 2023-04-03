@@ -1,12 +1,14 @@
 import PageHeader from "@/components/PageHeader";
-
 import { Link, useParams } from "react-router-dom";
 import { FavoriteList } from "@/libs/FavoriteList";
 import HeaderBackButton from "@/components/HeaderBackButton";
-
 import { useEffect, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
+import useUser from "@/hooks/useUser";
+import { API_ENDPOINT } from "@/App";
+import useAccessToken from "@/hooks/useAccessToken";
+import Club from "@/components/Club";
 
 interface searchFormData {
   search: string;
@@ -14,12 +16,12 @@ interface searchFormData {
 
 export const FavoriteSearchPage = () => {
   const params = useParams();
-
+  const { user } = useUser();
+  const token = useAccessToken();
   const favorite = FavoriteList.filter(
     (item) => item.favorite == params.favorite
   );
 
-  const [detailList, setDetailList] = useState<string[]>([]);
   const [filterList, setFilterList] = useState<any[]>([]);
 
   const {
@@ -30,31 +32,45 @@ export const FavoriteSearchPage = () => {
     watch,
   } = useForm<searchFormData>();
 
-  const [select, setSelect] = useState("전체");
-
-  const onSubmit = () => {
+  useEffect(() => {
     if (watch("search") == "") {
-      return;
+      setFilterList([]);
     }
-
-    const searchContents = filterList.filter((content) =>
-      content.clubTitle.includes(watch("search"))
-    );
-    console.log(searchContents);
-    setFilterList(searchContents);
-  };
+  }, [watch("search")]);
 
   const onDelete = () => {
     setValue("search", "");
-    setSelect("전체");
     setFilterList([]);
   };
 
+  const onSubmit = async (searchForm: searchFormData) => {
+    if (searchForm.search == "") {
+      return;
+    }
+
+    const response = await fetch(
+      `${API_ENDPOINT}/clubs/search?name=${searchForm.search}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    const filterData = data.data.filter(
+      (item: any) => item.favorite === params.favorite
+    );
+
+    console.log(filterData);
+    setFilterList(filterData);
+  };
   return (
     <>
-      {favorite.map((item, idx) => {
+      {favorite.map((item) => {
         return (
-          <div key={idx} className="h-full py-16 px-4 overflow-auto">
+          <div key={item.id} className="h-full py-16 px-4 overflow-auto">
             <PageHeader className="mb-2 ml-1 ">
               <div className="flex items-center space-x-4 h-full overflow-hidden">
                 <HeaderBackButton />
@@ -70,7 +86,7 @@ export const FavoriteSearchPage = () => {
                   placeholder="클럽이나 커뮤니티를 검색하세요"
                   className="bg-gray-100 rounded-md mb-5 w-full h-8 text-[12px] pl-3 outline-none"
                   inputMode="text"
-                  {...register("search")}
+                  {...register("search", { required: "" })}
                 />
               </form>
               <button
@@ -88,69 +104,26 @@ export const FavoriteSearchPage = () => {
                 />
               </button>
             </div>
-
             <main className="relative">
-              {/* <div className="flex flex-wrap mt-3">
-                {detailList.map((detail, idx) => {
-                  return (
-                    <div key={idx} className="pb-3 pr-3 mb-4 ">
-                      <input
-                        type="radio"
-                        id={detail}
-                        name="category"
-                        className="hidden peer"
-                        value={detail}
-                        onClick={handleClickRadioButton}
-                        checked={select === `${detail}`}
-                        readOnly
-                      />
-                      <label
-                        htmlFor={detail}
-                        className="border-solid border-gray-300 border p-2 rounded-lg mr-2 text-[12px] peer-checked:border-blue-500 "
-                      >
-                        {detail}
-                      </label>
-                    </div>
-                  );
-                })}
-              </div> */}
-              <div
-                className="mt-4 border-t pt-4 border-solid border-gray-400"
-                key={idx}
-              >
-                <p className="text-[12px] inline-block float-left font-semibold">
-                  <span className="text-blue-500"></span>의 클럽 리스트
+              <div className=" border-t pt-4 border-solid border-gray-400 relative">
+                <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
+                  <span className="text-blue-500">{user?.area}</span>의 클럽
+                  리스트
                 </p>
-                {filterList.map((item, idx) => {
-                  return (
-                    <Link to={`/clubs/${item.id}`} key={idx} state={item}>
-                      <div className="relative mt-6 h-12">
-                        <img
-                          src={item.clubImage}
-                          alt="클럽 이미지"
-                          className="w-12 rounded-2xl inline-block border-dashed border-2 border-gray-500"
-                        />
-                        <div className="text-[12px] absolute top-0 left-16">
-                          {item.clubTitle}
-                        </div>
-                        <div className="text-[10px] absolute top-5 left-16 text-gray-400">
-                          {item.clubDescription}
-                        </div>
-                        <div className="text-[10px] absolute bottom-0 left-16">
-                          <span className="border-r-2 border-solid border-gray-200 pr-1 mr-1">
-                            {item.region}
-                          </span>
-                          <span className="text-gray-400 mr-2">
-                            멤버 {item.member}
-                          </span>
-                          <span className="text-gray-400 bg-gray-100 pl-1 pr-1 pt-0.5 pb-0.5 rounded-md">
-                            {item.interestTitle}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
+                {filterList?.length !== 0 && (
+                  //검색을 진행한 경우
+                  <ul className="mt-7">
+                    {filterList?.map((item) => {
+                      return (
+                        <li key={item.id} className="mt-3">
+                          <Link to={`/clubs/${item.id}`}>
+                            <Club data={item} />
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
             </main>
           </div>

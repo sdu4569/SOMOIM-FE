@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import { Images } from "@/libs/Images";
 import PageHeader from "@/components/PageHeader";
-import useSWR from "swr";
-import useAccessToken from "@/hooks/useAccessToken";
-import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import Club from "@/components/Club";
 
 const RecentClubPage = () => {

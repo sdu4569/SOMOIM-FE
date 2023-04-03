@@ -1,4 +1,3 @@
-import { API_ENDPOINT } from "@/App";
 import useMutation from "@/hooks/useMutation";
 import { useForm } from "react-hook-form";
 import Button from "./Button";

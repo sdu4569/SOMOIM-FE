@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-
 import Overlay from "./Overlay";
 import { API_ENDPOINT } from "@/App";
 import useAccessToken from "@/hooks/useAccessToken";
 import useMutation from "@/hooks/useMutation";
+import { KeyedMutator } from "swr";
 
 interface commentFormData {
   comment: string;
@@ -13,11 +13,13 @@ interface commentFormData {
 interface CommentProps {
   selectComment: any;
   closeModal: () => void;
+  refreshComment: KeyedMutator<any>;
 }
 
 export default function UpdateComment({
   selectComment,
   closeModal,
+  refreshComment,
 }: CommentProps) {
   console.log(selectComment.id);
 
@@ -60,11 +62,10 @@ export default function UpdateComment({
   };
 
   const onUpdate = async (commentForm: commentFormData) => {
-    console.log(commentForm);
     // const response = await updateComment({
     //   comment: commentForm.comment,
     // });
-    const response2 = await fetch(
+    const response = await fetch(
       `${API_ENDPOINT}/boards/comments/${selectComment.id}`,
       {
         method: "PATCH",
@@ -77,8 +78,10 @@ export default function UpdateComment({
         }),
       }
     );
-    // console.log(response);
-    console.log(response2);
+
+    if (response.ok) {
+      refreshComment();
+    }
   };
 
   return (

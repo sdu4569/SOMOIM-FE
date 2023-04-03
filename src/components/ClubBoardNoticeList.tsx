@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import SkeletonBar from "./SkeletonBar";
-import Spinner from "./Spinner";
 
 export default function ClubBoardNoticeList() {
   const params = useParams();

@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import HeaderBackButton from "../components/HeaderBackButton";
 import PageHeader from "../components/PageHeader";
 import { API_ENDPOINT } from "@/App";
@@ -17,7 +17,7 @@ export default function UpdateClubPostPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const token = useAccessToken();
-
+  const params = useParams();
   const formRef = useRef<HTMLFormElement>(null);
   const {
     watch,
@@ -39,7 +39,7 @@ export default function UpdateClubPostPage() {
     setValue("category", state.post.category);
     setValue("title", state.post.title);
     setValue("contents", state.post.content);
-  }, [location]);
+  }, [state]);
 
   const onSubmit = async (postForm: postFormData) => {
     console.log(postForm);
@@ -56,8 +56,11 @@ export default function UpdateClubPostPage() {
         imageUrl: state.post.imageUrl,
       }),
     });
-    console.log(response);
-    navigate(-1);
+    const data = await response.json();
+
+    navigate(`/clubs/${params.clubId}/post/${params.postId}`, {
+      state: { post: data.data },
+    });
   };
 
   const { ref } = register("contents");
@@ -90,9 +93,9 @@ export default function UpdateClubPostPage() {
             >
               <option value="FREE">자유 글</option>
               <option value="FAVORITE">관심사 공유</option>
-              <option value="MEETING">정모후기</option>
-              <option value="GREETING">가입인사</option>
-              <option value="NOTICE">공지사항</option>
+              <option value="MEET">정모후기</option>
+              <option value="JOIN">가입인사</option>
+              <option value="ANNOUNCEMENT">공지사항</option>
             </select>
           </div>
 

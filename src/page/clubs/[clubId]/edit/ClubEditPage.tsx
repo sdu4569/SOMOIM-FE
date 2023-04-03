@@ -9,9 +9,7 @@ import PageHeader from "@/components/PageHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import Spinner from "@/components/Spinner";
-import EditRegion from "@/components/EditRegion";
 import ClubFavoriteSelect from "@/components/ClubFavoriteSelect";
-import Club from "@/components/Club";
 import RegionSearch from "@/components/RegionSearch";
 
 interface ClubEditForm {

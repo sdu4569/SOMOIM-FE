@@ -8,7 +8,7 @@ import ClubPost from "./page/clubs/[clubId]/posts/[postId]/ClubPost";
 import ClubEditPage from "./page/clubs/[clubId]/edit/ClubEditPage";
 import CreateActivity from "./page/clubs/[clubId]/createActivity/CreateActivityPage";
 import CreateClub from "./page/clubs/create/CreateClubPage";
-import GalleryPost from "./page/clubs/[clubId]/gallery/[galleryId]/GalleryPost";
+
 import ClubSearchPage from "./page/search/ClubSearchPage";
 import MorePage from "./page/more/MorePage";
 import UpdateUserPage from "./page/more/editProfile/UpdateUserPage";
@@ -59,7 +59,6 @@ const PageNavigator = () => {
         element={<UpdateClubPostPage />}
       />
 
-      <Route path="/clubs/:clubId/gallery/:id" element={<GalleryPost />} />
       <Route path="/clubs/:clubId/write" element={<ClubBoardWrite />} />
       <Route path="/clubs/:clubId/upload" element={<ClubGalleryUpload />} />
 

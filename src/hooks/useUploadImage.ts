@@ -1,4 +1,3 @@
-import { User } from "./../libs/types";
 import { getUploadURL, uploadImageToURL } from "@/libs/api";
 import { useState } from "react";
 

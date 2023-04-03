@@ -11,8 +11,6 @@ import useSWR from "swr";
 import { Club } from "@/libs/types";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import { useEffect, useState } from "react";
-import { API_ENDPOINT } from "@/App";
 import ClubsListWithFavorite from "@/components/ClubsListWithFavorite";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 
@@ -105,10 +103,12 @@ const MyActivityPage = () => {
           </ul>
         </section>
         <section className="flex flex-col">
+
           <h2 className="text-[14px] font-semibold mb-4">클럽찾기</h2>
           <ClubSearch />
           <UpdateFavoriteButton />
         </section>
+
         <section className="flex flex-col space-y-8">
           {user?.favorites.map((favorite) => (
             <div key={favorite} className="flex flex-col space-y-4">

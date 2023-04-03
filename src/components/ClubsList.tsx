@@ -4,9 +4,9 @@ import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { useEffect, useRef, useState } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import Spinner from "./Spinner";
+
 import ClubSkeleton from "./ClubSkeleton";
-import useAccessToken from "@/hooks/useAccessToken";
-import useSWR from "swr";
+
 import { Club } from "@/libs/types";
 
 export default function ClubsList({ clubs }: { clubs?: Club[] }) {
