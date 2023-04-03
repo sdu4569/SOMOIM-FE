@@ -1,28 +1,30 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faHeart, faLocation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../../../components/Button";
-import HeaderBackButton from "../../../components/HeaderBackButton";
-import InterestSelect from "../../../components/InterestSelect";
-import InterestDetailSelect from "../../../components/InterestDetailSelect";
-import PageHeader from "../../../components/PageHeader";
-import RegionSelect from "../../../components/RegionSelect";
-import { InterestWithDetails } from "../../../libs/types";
+import Button from "@/components/Button";
+import HeaderBackButton from "@/components/HeaderBackButton";
+import FavoriteSelect from "@/components/FavoriteSelect";
+import PageHeader from "@/components/PageHeader";
+import RegionSelect from "@/components/RegionSearch";
+import useMutation from "@/hooks/useMutation";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { pageSlideIn } from "@/libs/variants";
+import { FavoriteList } from "@/libs/FavoriteList";
 
-interface CreateClubForm {
-  location: string;
-  clubName: string;
+export interface CreateClubForm {
+  area: string;
+  name: string;
   description: string;
-  maxMember: number;
-  interest: string;
+  memberLimit: number;
+  favorite: string;
 }
 
 enum ModalType {
-  INTEREST = "interest",
-  INTEREST_DETAIL = "interestDetail",
-  LOCATION = "location",
+  FAVORITE = "favorite",
+  AREA = "area",
 }
 
 export default function CreateClub() {
@@ -30,64 +32,63 @@ export default function CreateClub() {
 
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
-  const [clubInterest, setClubInterest] = useState<InterestWithDetails>();
+
+  const { mutate, isLoading } = useMutation("clubs", {
+    authorized: true,
+  });
+
+  const navigate = useNavigate();
 
   const closeModal = () => {
     setInModal(false);
   };
 
-  const onSubmit = (data: CreateClubForm) => {
+  const onSubmit = async (data: CreateClubForm) => {
     console.log(data);
-    console.log(clubInterest);
-  };
 
-  useEffect(() => {
-    console.log(clubInterest);
-  }, [clubInterest]);
+    const result = await mutate({
+      ...data,
+      favorite: FavoriteList.find(
+        (favorite) => favorite.title === data.favorite
+      )?.favorite,
+    });
+
+    if (!result.ok) {
+      alert(result.message);
+    } else {
+      navigate(`/clubs/${result.data.id}`, { replace: true });
+    }
+  };
 
   return (
     <>
       {inModal &&
         modalType &&
         {
-          location: (
+          area: (
             <RegionSelect
               setValue={setValue}
               closeModal={closeModal}
               title="클럽"
-              inputId="location"
+              inputId="area"
             />
           ),
-          interest: (
+          favorite: (
             <div className="w-full h-full z-[200] absolute bg-white">
-              <InterestSelect
+              <FavoriteSelect
                 closeModal={closeModal}
                 maxSelect={1}
-                onComplete={(data) => {
-                  setClubInterest({
-                    name: data.selectedInterests[0],
-                    detail: [],
-                  });
-                  setModalType(ModalType.INTEREST_DETAIL);
-                }}
-              />
-            </div>
-          ),
-          interestDetail: clubInterest && (
-            <div className="w-full h-full z-[200] absolute bg-white">
-              <InterestDetailSelect
-                closeModal={closeModal}
-                interests={[clubInterest.name]}
-                onComplete={(data) => {
-                  setClubInterest(data[0]);
-                  setValue("interest", clubInterest.name);
-                  closeModal();
-                }}
+                setValue={setValue}
               />
             </div>
           ),
         }[modalType]}
-      <div className="overflow-scroll h-full p-4">
+      <motion.div
+        variants={pageSlideIn}
+        initial="initial"
+        animate="animate"
+        className="overflow-scroll h-full p-4"
+      >
         <PageHeader>
           <div className="flex space-x-4 items-center">
             <HeaderBackButton />
@@ -99,7 +100,7 @@ export default function CreateClub() {
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col space-y-4"
           >
-            <label htmlFor="location" className="flex items-center">
+            <label htmlFor="area" className="flex items-center">
               <div className="flex space-x-2 w-24 items-center">
                 <FontAwesomeIcon icon={faLocation} />
                 <p>지역</p>
@@ -107,17 +108,17 @@ export default function CreateClub() {
               <input
                 onFocus={() => {
                   setInModal(true);
-                  setModalType(ModalType.LOCATION);
+                  setModalType(ModalType.AREA);
                 }}
                 disabled={inModal}
                 type="text"
-                id="location"
+                id="area"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="동&middot;읍&middot;면 찾기"
-                {...register("location")}
+                {...register("area", { required: true })}
               />
             </label>
-            <label htmlFor="interest" className="flex items-center">
+            <label htmlFor="favorite" className="flex items-center">
               <div className="flex space-x-2 w-24 items-center">
                 <FontAwesomeIcon icon={faHeart} className="text-red-500" />
                 <p>관심사</p>
@@ -125,14 +126,14 @@ export default function CreateClub() {
               <input
                 onFocus={() => {
                   setInModal(true);
-                  setModalType(ModalType.INTEREST);
+                  setModalType(ModalType.FAVORITE);
                 }}
                 disabled={inModal}
                 type="text"
-                id="interest"
+                id="favorite"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 관심사 선택"
-                {...register("interest")}
+                {...register("favorite", { required: true })}
               />
             </label>
             <label htmlFor="clubName" className="flex items-center">
@@ -141,7 +142,7 @@ export default function CreateClub() {
                 id="clubName"
                 className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
                 placeholder="클럽 이름"
-                {...register("clubName", {
+                {...register("name", {
                   required: "클럽 이름을 입력해주세요.",
                   maxLength: {
                     value: 30,
@@ -151,7 +152,7 @@ export default function CreateClub() {
               />
             </label>
             <textarea
-              {...register("description")}
+              {...register("description", { required: true })}
               placeholder="클럽 목표를 설명해주세요."
               cols={30}
               rows={8}
@@ -163,7 +164,8 @@ export default function CreateClub() {
                 <p>정원(25 ~ 300명)</p>
               </div>
               <input
-                {...register("maxMember", {
+                {...register("memberLimit", {
+                  required: true,
                   min: 25,
                   max: 300,
                 })}
@@ -172,12 +174,12 @@ export default function CreateClub() {
                 className="p-2 none rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
               />
             </label>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className={`w-full`}>
               클럽 만들기
             </Button>
           </form>
         </section>
-      </div>
+      </motion.div>
     </>
   );
 }

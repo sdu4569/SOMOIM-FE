@@ -12,7 +12,7 @@ const routes = [
     name: "회원가입",
   },
   {
-    path: "/interest",
+    path: "/favorite",
     name: "관심사",
   },
   {
@@ -20,7 +20,7 @@ const routes = [
     name: "활동",
   },
   {
-    path: "/clubs/recommend",
+    path: "/clubs",
     name: "클럽 리스트",
   },
   {

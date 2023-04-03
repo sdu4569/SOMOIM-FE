@@ -1,59 +1,130 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { InterestList } from "../libs/InterestList";
-import { Images } from "../libs/Images";
+import { FavoriteList } from "@/libs/FavoriteList";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import useUser from "@/hooks/useUser";
+
+const ClubSearchVariants = {
+  initial: {
+    height: "120px",
+  },
+  base: {
+    height: "120px",
+  },
+  expanded: {
+    height: "248px",
+  },
+};
+
+interface FavoriteListProps {
+  id: number;
+  title: string;
+  favorite: string;
+  image: string;
+}
 
 const ClubSearch = () => {
+  const { user } = useUser();
+  const [expanded, setExpanded] = useState(false);
+  const [selectFavorite, setSelectFavorite] = useState<FavoriteListProps[]>([]);
+  const [notSelectFavorite, setNotSelectFavorite] = useState<
+    FavoriteListProps[]
+  >([]);
+
   useEffect(() => {
-    let classList = document.querySelector(".detailinfo")?.classList;
+    if (user) {
+      const SelectList = FavoriteList.filter((item) =>
+        user.favorites.includes(item.favorite)
+      );
+      setSelectFavorite(SelectList);
+      const notSelectList = FavoriteList.filter(
+        (item) => !user.favorites.includes(item.favorite)
+      );
+      setNotSelectFavorite(notSelectList);
+    }
+  }, [user]);
 
-    document
-      .querySelector(".btn_open")
-      ?.addEventListener("click", function (e: any) {
-        classList?.remove("max-h-120");
-        e.target.classList.add("hidden");
-        document.querySelector(".btn_close")?.classList.remove("hidden");
-        document.querySelector(".btn_close")?.classList.add("block");
-      });
-
-    document
-      .querySelector(".btn_close")
-      ?.addEventListener("click", function (e: any) {
-        classList?.add("max-h-120");
-        e.target.classList.add("hidden");
-        document.querySelector(".btn_open")?.classList.remove("hidden");
-        document.querySelector(".btn_open")?.classList.add("block");
-      });
-  }, []);
+  const onExpandClick = () => setExpanded((prev) => !prev);
 
   return (
     <>
-      <div className="detailinfo mb-2.5 max-h-120 overflow-hidden">
-        <div className="flex justify-evenly flex-wrap">
-          {InterestList.map((item, idx) => {
+      <div className="flex flex-col items-center">
+        <motion.div
+          variants={ClubSearchVariants}
+          initial="initial"
+          animate={expanded ? "expanded" : "base"}
+          transition={{ ease: "easeInOut", duration: 0.5, originY: 0 }}
+          className={`grid grid-cols-5 gap-y-4 overflow-hidden`}
+        >
+          {selectFavorite.map((item) => {
             return (
-              <div key={idx} className="w-70 mb-2.5 ">
-                <Link to={`/${item.interest}`} className="m-0">
+              <div key={item.id}>
+                <Link to={`/search/${item.favorite}`} className="">
                   <img
                     src={item.image}
                     alt="관심사 이미지"
-                    className="border-2 border-solid rounded w-8 m-auto mb-2 bg-gray-200  "
+                    className="rounded-md w-8 mx-auto mb-2 bg-gray-300"
                   />
-                  <div className="text-10 text-center">{item.title}</div>
+                  <div className="text-[10px] text-center">{item.title}</div>
                 </Link>
               </div>
             );
           })}
-        </div>
+          {notSelectFavorite.map((item) => {
+            return (
+              <div key={item.id}>
+                <Link to={`/search/${item.favorite}`} className="">
+                  <img
+                    src={item.image}
+                    alt="관심사 이미지"
+                    className="rounded-md w-8 mx-auto mb-2 bg-gray-300"
+                  />
+                  <div className="text-[10px] text-center">{item.title}</div>
+                </Link>
+              </div>
+            );
+          })}
+          {/* {expanded
+            ? FavoriteList.map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <Link to={`/search/${item.favorite}`} className="">
+                      <img
+                        src={item.image}
+                        alt="관심사 이미지"
+                        className="rounded-md w-8 mx-auto mb-2 bg-gray-300"
+                      />
+                      <div className="text-[10px] text-center">
+                        {item.title}
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })
+            : FavoriteList.slice(0, 10).map((item, idx) => {
+                return (
+                  <div key={idx}>
+                    <Link to={`/search/${item.favorite}`} className="">
+                      <img
+                        src={item.image}
+                        alt="관심사 이미지"
+                        className="rounded-md w-8 mx-auto mb-2 bg-gray-300"
+                      />
+                      <div className="text-[10px] text-center">
+                        {item.title}
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })} */}
+        </motion.div>
+        <button
+          onClick={onExpandClick}
+          className="text-gray-400 underline text-2xs w-max px-2 pt-4"
+        >
+          {expanded ? "접기" : "더 보기"}
+        </button>
       </div>
-      <a href="#" className="btn_open text-10 block w-11 m-auto">
-        더보기
-        <img src={Images.down} alt="아래 화살표" className="w-2 float-right" />
-      </a>
-      <a href="#" className="btn_close text-10 w-11 m-auto hidden">
-        감추기
-        <img src={Images.up} alt="아래 화살표" className="w-2 float-right" />
-      </a>
     </>
   );
 };

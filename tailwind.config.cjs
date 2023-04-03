@@ -6,7 +6,8 @@ module.exports = {
     extend: {
       animation: {
         "fade-in": "fade-in 0.5s ease-in-out",
-        "slide-up": "slide-up 0.5s ease-in-out",
+        "slide-up": "slide-up 0.3s ease-in-out",
+        "slide-down": "slide-down 0.3s ease-in-out",
       },
       keyframes: {
         "fade-in": {
@@ -17,28 +18,10 @@ module.exports = {
           "0%": { transform: "translateY(100%)" },
           "100%": { transform: "translateY(0)" },
         },
-      },
-      minWidth: {
-        60: "60px",
-        80: "80px",
-        100: "100px",
-      },
-      width: {
-        70: "70px",
-        150: "150px",
-        200: "200px",
-      },
-      minHeight: {
-        45: "45px",
-      },
-      maxHeight: {
-        120: "120px",
-        240: "240px",
-      },
-      fontSize: {
-        10: "10px",
-        12: "12px",
-        14: "14px",
+        "slide-down": {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(100%)" },
+        },
       },
       aspectRatio: {
         "twenty-nine": "20 / 9",
@@ -49,7 +32,10 @@ module.exports = {
       borderColor: {
         kakao: "#FEE500",
       },
+      fontSize: {
+        "2xs": "0.625rem",
+      },
     },
-    plugins: [],
   },
+  plugins: [require("@tailwindcss/line-clamp")],
 };

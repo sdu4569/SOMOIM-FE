@@ -13,14 +13,14 @@ export default function BottomTabNavigator({
   const location = useLocation();
   return (
     <nav
-      className={`flex items-center bg-white h-16 border-t-2 border-gray-300 absolute left-0 right-0 bottom-0 z-20 ${className}`}
+      className={`flex items-center bg-white h-[64px] border-t-2 border-gray-300 absolute left-0 right-0 bottom-0 z-20 ${className}`}
     >
       {children ? (
         children
       ) : (
         <ul className="flex w-full h-full justify-around items-center">
           <Link
-            to={"/clubs/recommend"}
+            to={"/clubs"}
             className={`flex flex-col items-center space-y-1 w-12 ${
               location.pathname.includes("club")
                 ? "text-black"

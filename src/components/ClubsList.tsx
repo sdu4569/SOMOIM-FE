@@ -1,59 +1,31 @@
 import { Link } from "react-router-dom";
-import ClubComponent from "./ClubComponent";
-import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
+import ClubComponent from "./Club";
 import { useEffect, useRef } from "react";
-import useIntersectionObserver from "../hooks/useIntersectionObserver";
-import Spinner from "./Spinner";
 
-const API_ENTRYPOINT = "https://jsonplaceholder.typicode.com";
+import ClubSkeleton from "./ClubSkeleton";
 
-const getKey: SWRInfiniteKeyLoader = (pageIndex, previousePageData) => {
-  if (previousePageData && !previousePageData.length) return null;
-  return `${API_ENTRYPOINT}/posts?_page=${pageIndex + 1}`;
-};
+import { Club } from "@/libs/types";
 
-export default function ClubsList() {
-  const { data, isLoading, isValidating, size, setSize } = useSWRInfinite(
-    getKey,
-    {
-      revalidateOnFocus: false,
-    }
-  );
-  const targetRef = useRef<HTMLDivElement>(null);
-
-  const isIntersecting = useIntersectionObserver(targetRef, {});
-
-  useEffect(() => {
-    if (isIntersecting) {
-      setSize(size + 1);
-    }
-  }, [isIntersecting]);
-
-  useEffect(() => {
-    if (data && data.length) {
-      console.log(data);
-    }
-  }, [data]);
-
-  if (isLoading) {
+export default function ClubsList({ clubs }: { clubs?: Club[] }) {
+  if (!clubs) {
     return (
-      <div className="flex h-full justify-center py-20">불러 오는 중...</div>
+      <ul className="flex flex-col space-y-5 mt-4 px-4">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <ClubSkeleton key={i} />
+        ))}
+      </ul>
     );
   }
 
   return (
     <>
-      <ul className="flex flex-col space-y-5 mt-4">
-        {data &&
-          data.flat().map((post) => (
-            <Link to={`/clubs/${post.id}`} key={post.id}>
-              <ClubComponent data={post} />
-            </Link>
-          ))}
+      <ul className="flex flex-col space-y-5 mt-4 px-4">
+        {clubs.map((post) => (
+          <Link to={`/clubs/${post.id}`} key={post.id}>
+            <ClubComponent data={post} />
+          </Link>
+        ))}
       </ul>
-      <div ref={targetRef} className="w-full flex justify-center items-center">
-        {isValidating && <Spinner size="md" className="my-5" />}
-      </div>
     </>
   );
 }

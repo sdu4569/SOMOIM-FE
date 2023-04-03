@@ -1,28 +1,8 @@
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../components/Button";
-import { fadeIn } from "../libs/variants";
-
-interface LogInFormData {
-  id: string;
-  password: string;
-}
+import { Link } from "react-router-dom";
+import LoginForm from "@/components/LoginForm";
 
 export default function Landing() {
-  const [isMasked, setIsMasked] = useState<boolean>(true);
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<LogInFormData>();
-  const navigate = useNavigate();
-  const onSubmit = () => {
-    navigate("/");
-  };
   return (
     <motion.div
       initial={{ opacity: 0, translateY: 100 }}
@@ -36,62 +16,7 @@ export default function Landing() {
           <li>
             <ul className="flex flex-col items-center space-y-4 pb-4 mb-4 border-b">
               <li className="w-full">
-                <form
-                  className="flex justify-center items-center h-full w-full"
-                  onSubmit={handleSubmit((data) => onSubmit())}
-                >
-                  <div className="rounded-md w-full flex flex-col space-y-4">
-                    <ul className="flex flex-col space-y-4">
-                      <li>
-                        <div className="flex items-center"></div>
-                        <input
-                          placeholder="이메일"
-                          {...register("id", {
-                            required: "이메일을 입력해주세요.",
-                            pattern: {
-                              value: /^\S+@\S+$/i,
-                              message: "이메일 형식이 아닙니다.",
-                            },
-                          })}
-                          type="email"
-                          id="id"
-                          className="w-full rounded-md bg-gray-100 p-4 outline-none"
-                        />
-                      </li>
-                      <li>
-                        <div className="relative">
-                          <div className="flex items-center"></div>
-                          <input
-                            placeholder="비밀번호"
-                            {...register("password", {
-                              required: "비밀번호를 입력해주세요.",
-                              minLength: {
-                                value: 8,
-                                message: "비밀번호는 8자 이상이어야 합니다.",
-                              },
-                              maxLength: {
-                                value: 20,
-                                message: "비밀번호는 20자 이하여야 합니다.",
-                              },
-                            })}
-                            type={isMasked ? "password" : "text"}
-                            id="password"
-                            className="w-full rounded-md bg-gray-100 p-4 pr-14 outline-none"
-                          />
-                          <FontAwesomeIcon
-                            onClick={() => setIsMasked((prev) => !prev)}
-                            icon={isMasked ? faEye : faEyeSlash}
-                            size="lg"
-                            className="absolute right-0 p-4 cursor-pointer"
-                          />
-                        </div>
-                      </li>
-                    </ul>
-                    <Button className="w-full">
-                      <p>로그인</p>
-                    </Button>
-                  </div>
-                </form>
+                <LoginForm />
               </li>
               <Link
                 to={"/signup/register"}
@@ -118,7 +43,7 @@ export default function Landing() {
                   import.meta.env.VITE_GOOGLE_CLIENT_ID
                 }&redirect_uri=${
                   import.meta.env.VITE_GOOGLE_REDIRECT_URI
-                }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`}
+                }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`}
                 className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center"
               >
                 <svg

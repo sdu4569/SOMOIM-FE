@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 interface HeaderBackButtonProps {
   onClick?: () => void;
+  state?: {
+    tab: string;
+  };
 }
 
-export default function HeaderBackButton({ onClick }: HeaderBackButtonProps) {
+export default function HeaderBackButton({
+  onClick,
+  state,
+}: HeaderBackButtonProps) {
   const navigate = useNavigate();
   return (
     <FontAwesomeIcon

@@ -1,20 +1,25 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import Button from "../../../components/Button";
-import PageHeader from "../../../components/PageHeader";
-import { pageSlideIn } from "../../../libs/variants";
-import RegionPage from "../../RegionPage";
+import { useNavigate } from "react-router-dom";
+import Button from "@/components/Button";
+import PageHeader from "@/components/PageHeader";
+import { pageSlideIn } from "@/libs/variants";
+
+import useMutation from "@/hooks/useMutation";
+import useUser from "@/hooks/useUser";
+import Spinner from "@/components/Spinner";
+import RegionSearch from "@/components/RegionSearch";
 
 interface RegisterProfileFormData {
   name: string;
-  gender: any;
-  birthday: string;
-  location: string;
+  gender: string;
+  birth: string;
+  area: string;
 }
 
 export default function RegisterProfile() {
+  const { user, loading, mutate: userMutate } = useUser();
   const {
     handleSubmit,
     register,
@@ -23,22 +28,41 @@ export default function RegisterProfile() {
     setValue,
   } = useForm<RegisterProfileFormData>({ shouldFocusError: false });
   const [selectedGender, setSelectedGender] = useState<string>("");
+  const { mutate: updateUser } = useMutation("users", { authorized: true });
   const navigate = useNavigate();
-  const onSubmit = (data: RegisterProfileFormData) => {
-    console.log(data);
-    // to do : edit profile api call
-    navigate("/signup/interest");
+  const onSubmit = async (data: RegisterProfileFormData) => {
+    const updateResponse = await updateUser(data);
+
+    if (updateResponse.ok) {
+      await userMutate();
+      navigate("/signup/favorite", {
+        replace: true,
+      });
+    } else {
+      alert(updateResponse.data.detail);
+    }
   };
   const [inRegionModal, setInRegionModal] = useState<boolean>(false);
   const closeModal = () => setInRegionModal(false);
 
-  // to do : prevent direct access
+  if (loading) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <Spinner size="md" />
+      </div>
+    );
+  }
 
   return (
     <>
       <AnimatePresence>
         {inRegionModal && (
-          <RegionPage setInputValue={setValue} closeModal={closeModal} />
+          <RegionSearch
+            closeModal={closeModal}
+            inputId="area"
+            setValue={setValue}
+            title=""
+          />
         )}
       </AnimatePresence>
       <motion.div
@@ -60,7 +84,14 @@ export default function RegisterProfile() {
           <div className="p-4 rounded-md border border-black w-full flex flex-col space-y-4">
             <div className="flex justify-between space-x-2">
               <label htmlFor="name" className="flex flex-1 flex-col space-y-2">
-                <p>이름</p>
+                <div className="flex space-x-2">
+                  <p>이름</p>
+                  {errors.name && (
+                    <p className="text-red-500 text-xs">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
                 <input
                   {...register("name", {
                     required: "이름을 입력해주세요.",
@@ -85,25 +116,25 @@ export default function RegisterProfile() {
                   className="flex items-center justify-between rounded-md border h-full"
                 >
                   <label
-                    htmlFor="male"
+                    htmlFor="MALE"
                     className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                      selectedGender === "male" ? "bg-blue-500 text-white" : ""
+                      selectedGender === "MALE" ? "bg-blue-500 text-white" : ""
                     }`}
                   >
                     <p>남</p>
                     <input
                       {...register("gender", { required: true })}
                       type="radio"
-                      id="male"
+                      id="MALE"
                       name="gender"
-                      value={"male"}
+                      value={"MALE"}
                       className="hidden"
                     />
                   </label>
                   <label
-                    htmlFor="female"
+                    htmlFor="FEMALE"
                     className={`flex justify-center items-center flex-1 h-full rounded-md ${
-                      selectedGender === "female"
+                      selectedGender === "FEMALE"
                         ? "bg-blue-500 text-white"
                         : ""
                     }`}
@@ -112,9 +143,9 @@ export default function RegisterProfile() {
                     <input
                       {...register("gender", { required: true })}
                       type="radio"
-                      id="female"
+                      id="FEMALE"
                       name="gender"
-                      value="female"
+                      value="FEMALE"
                       className="hidden"
                     />
                   </label>
@@ -122,38 +153,42 @@ export default function RegisterProfile() {
               </label>
             </div>
             <div className="flex justify-between space-x-2">
-              <label
-                htmlFor="birthday"
-                className="flex w-1/2 flex-col space-y-2"
-              >
+              <label htmlFor="birth" className="flex w-1/2 flex-col space-y-2">
                 <p>생일</p>
                 <input
-                  {...register("birthday", {
+                  {...register("birth", {
                     required: true,
                   })}
                   type="date"
-                  id="birthday"
+                  id="birth"
                   className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
-              <label
-                htmlFor="location"
-                className="flex w-1/2 flex-col space-y-2"
-              >
+              <label htmlFor="area" className="flex w-1/2 flex-col space-y-2">
                 <p>지역</p>
                 <input
                   onFocus={() => setInRegionModal(true)}
-                  {...register("location", {
+                  {...register("area", {
                     required: true,
                   })}
                   type="text"
                   disabled={inRegionModal}
-                  id="location"
+                  id="area"
                   className="p-4 w-full h-full bg-gray-100 rounded-md outline-none"
                 />
               </label>
             </div>
-            <Button className="w-full">다음</Button>
+            <Button
+              className={`w-full ${
+                (!watch("name") ||
+                  !watch("area") ||
+                  !watch("birth") ||
+                  !watch("gender")) &&
+                "!bg-gray-300"
+              }`}
+            >
+              다음
+            </Button>
           </div>
         </form>
       </motion.div>
