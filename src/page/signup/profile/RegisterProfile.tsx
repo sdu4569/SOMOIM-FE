@@ -34,7 +34,7 @@ export default function RegisterProfile() {
     const updateResponse = await updateUser(data);
 
     if (updateResponse.ok) {
-      userMutate();
+      await userMutate();
       navigate("/signup/favorite", {
         replace: true,
       });

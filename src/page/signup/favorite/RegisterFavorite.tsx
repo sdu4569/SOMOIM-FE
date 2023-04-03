@@ -9,6 +9,7 @@ import HeaderBackButton from "@/components/HeaderBackButton";
 import useMutation from "@/hooks/useMutation";
 import Overlay from "@/components/Overlay";
 import Spinner from "@/components/Spinner";
+import useUser from "@/hooks/useUser";
 
 interface RegisterFavoriteProps {
   onComplete?: (data: FavoriteFormData) => void;
@@ -23,6 +24,7 @@ export default function RegisterFavorite({
 }: RegisterFavoriteProps) {
   const { register, handleSubmit, setValue, watch } =
     useForm<FavoriteFormData>();
+  const { mutate } = useUser();
 
   const { mutate: updateFavorite, isLoading: updateLoading } = useMutation(
     "users/favorites",
@@ -41,7 +43,7 @@ export default function RegisterFavorite({
     const result = await updateFavorite({
       favorites: favoriteForm.favorites,
     });
-    console.log(result);
+    await mutate();
     navigate("/clubs");
   };
 

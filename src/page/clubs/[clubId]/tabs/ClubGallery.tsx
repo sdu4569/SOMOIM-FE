@@ -5,7 +5,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 import { motion } from "framer-motion";
