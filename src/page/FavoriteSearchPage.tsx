@@ -2,7 +2,7 @@ import PageHeader from "@/components/PageHeader";
 import { Link, useParams } from "react-router-dom";
 import { FavoriteList } from "@/libs/FavoriteList";
 import HeaderBackButton from "@/components/HeaderBackButton";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Images } from "@/libs/Images";
 import { useForm } from "react-hook-form";
 import useUser from "@/hooks/useUser";
@@ -21,8 +21,9 @@ export const FavoriteSearchPage = () => {
   const favorite = FavoriteList.filter(
     (item) => item.favorite == params.favorite
   );
-
   const [filterList, setFilterList] = useState<any[]>([]);
+  const [recentSearchList, setRecentSearchList] = useState<string[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const {
     register,
@@ -37,11 +38,6 @@ export const FavoriteSearchPage = () => {
       setFilterList([]);
     }
   }, [watch("search")]);
-
-  const onDelete = () => {
-    setValue("search", "");
-    setFilterList([]);
-  };
 
   const onSubmit = async (searchForm: searchFormData) => {
     if (searchForm.search == "") {
@@ -58,14 +54,65 @@ export const FavoriteSearchPage = () => {
       }
     );
     const data = await response.json();
-    console.log(data);
+
     const filterData = data.data.filter(
       (item: any) => item.favorite === params.favorite
     );
 
     console.log(filterData);
-    setFilterList(filterData);
+    if (filterData.length === 0) {
+      alert("검색 결과가 없습니다.");
+    } else {
+      setFilterList(filterData);
+    }
+
+    let array = [];
+    const getStorage = localStorage.getItem("recentSearch");
+
+    // 제출시 localStorage 갱신
+    if (getStorage !== null) {
+      array = JSON.parse(getStorage);
+      setRecentSearchList(array);
+      //중복 검색 여부
+      if (array.filter((item: any) => item == watch("search")).length == 0) {
+        array.unshift(watch("search"));
+        localStorage.setItem("recentSearch", JSON.stringify(array));
+      }
+    } else {
+      array.unshift(watch("search"));
+      localStorage.setItem("recentSearch", JSON.stringify(array));
+    }
   };
+
+  const onDelete = () => {
+    setValue("search", "");
+    setFilterList([]);
+  };
+
+  useEffect(() => {
+    let array = [];
+    const getStorage = localStorage.getItem("recentSearch");
+    if (getStorage !== null) {
+      array = JSON.parse(getStorage);
+      setRecentSearchList(array);
+    }
+  }, []);
+
+  //최근 검색 기록 삭제 기능
+  const searchDelete = (e: string) => {
+    const updateRecentList = recentSearchList.filter((item) => item !== e);
+    setRecentSearchList(updateRecentList);
+    localStorage.setItem("recentSearch", JSON.stringify(updateRecentList));
+  };
+
+  const clickHandler = () => {
+    if (formRef.current) {
+      formRef.current.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true })
+      );
+    }
+  };
+
   return (
     <>
       {favorite.map((item) => {
@@ -80,7 +127,11 @@ export const FavoriteSearchPage = () => {
               </div>
             </PageHeader>
             <div className="sticky -top-14 z-20 w-full">
-              <form method="post" onSubmit={handleSubmit(onSubmit)}>
+              <form
+                method="post"
+                ref={formRef}
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <input
                   type="text"
                   placeholder="클럽이나 커뮤니티를 검색하세요"
@@ -106,13 +157,14 @@ export const FavoriteSearchPage = () => {
             </div>
             <main className="relative">
               <div className=" border-t pt-4 border-solid border-gray-400 relative">
-                <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
-                  <span className="text-blue-500">{user?.area}</span>의 클럽
-                  리스트
-                </p>
                 {filterList?.length !== 0 && (
                   //검색을 진행한 경우
+
                   <ul className="mt-7">
+                    <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
+                      <span className="text-blue-500">{user?.area}</span>의 클럽
+                      리스트
+                    </p>
                     {filterList?.map((item) => {
                       return (
                         <li key={item.id} className="mt-3">
@@ -124,6 +176,38 @@ export const FavoriteSearchPage = () => {
                     })}
                   </ul>
                 )}
+                {filterList?.length == 0 && watch("search") !== "" && (
+                  //검색 진행 전 검색창에 입력하는 경우
+                  <div className="mb-2.5 text-[12px]">
+                    <div className="text-gray-400">최근 검색</div>
+                    {recentSearchList.map((item, idx) => {
+                      return (
+                        <div className="relative mt-4 h-5" key={idx}>
+                          <button
+                            className="pl-2 w-full text-left h-4"
+                            onClick={() => {
+                              setValue("search", item);
+                              clickHandler();
+                            }}
+                          >
+                            {item}
+                          </button>
+                          <button
+                            className="absolute top-0.5 right-0"
+                            value={idx}
+                            onClick={() => searchDelete(`${item}`)}
+                          >
+                            <img
+                              src={Images.delete}
+                              alt="삭제버튼"
+                              className="w-3 inline-block "
+                            />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </main>
           </div>
@@ -132,3 +216,6 @@ export const FavoriteSearchPage = () => {
     </>
   );
 };
+function setRecentSearchList(array: any) {
+  throw new Error("Function not implemented.");
+}

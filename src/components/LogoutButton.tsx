@@ -1,10 +1,9 @@
 import useLogout from "@/hooks/useLogout";
-import Button from "./Button";
 import useAccessToken from "@/hooks/useAccessToken";
 import { useNavigate } from "react-router-dom";
 
 export default function LogoutButton() {
-  const { logout, isLoading } = useLogout();
+  const { logout } = useLogout();
   const navigate = useNavigate();
   const token = useAccessToken();
 
@@ -16,8 +15,11 @@ export default function LogoutButton() {
     }
   };
   return (
-    <Button onClick={onClick} className="mt-[20px] flex float-right">
+    <button
+      onClick={onClick}
+      className="text-[14px] mt-[20px] inline-block float-right underline text-gray-400 "
+    >
       로그아웃
-    </Button>
+    </button>
   );
 }
