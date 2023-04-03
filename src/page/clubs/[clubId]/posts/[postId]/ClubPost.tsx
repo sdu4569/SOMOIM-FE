@@ -55,7 +55,7 @@ export default function ClubPost() {
   } = useLocation();
   useEffect(() => {});
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const _ = useAutoResizeTextArea(textareaRef);
+  const resize = useAutoResizeTextArea();
 
   const {
     register,
@@ -86,8 +86,8 @@ export default function ClubPost() {
   }, [post]);
 
   useEffect(() => {
-    console.log(commentData);
-  }, [commentData]);
+    resize(textareaRef);
+  }, [post.content]);
 
   //모달 닫기 기능
   const closeModal = () => {
