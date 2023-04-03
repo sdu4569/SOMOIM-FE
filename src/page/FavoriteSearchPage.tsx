@@ -58,13 +58,17 @@ export const FavoriteSearchPage = () => {
       }
     );
     const data = await response.json();
-    console.log(data);
+
     const filterData = data.data.filter(
       (item: any) => item.favorite === params.favorite
     );
 
     console.log(filterData);
-    setFilterList(filterData);
+    if (filterData.length === 0) {
+      alert("검색 결과가 없습니다.");
+    } else {
+      setFilterList(filterData);
+    }
   };
   return (
     <>

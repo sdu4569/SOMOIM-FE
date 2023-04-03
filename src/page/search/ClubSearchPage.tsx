@@ -51,7 +51,11 @@ const ClubSearchPage = () => {
     );
     const data = await response.json();
 
-    setFilterList(data.data);
+    if (data.data.length === 0) {
+      alert("검색 결과가 없습니다.");
+    } else {
+      setFilterList(data.data);
+    }
 
     let array = [];
     const getStorage = localStorage.getItem("recentSearch");
@@ -71,6 +75,7 @@ const ClubSearchPage = () => {
     }
   };
 
+  //검색창 삭제 버튼
   const onDelete = () => {
     setValue("search", "");
     setFilterList([]);
