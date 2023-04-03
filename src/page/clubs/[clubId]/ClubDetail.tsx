@@ -150,8 +150,8 @@ export default function ClubDetail() {
                 // handleClick={handleClick}
               />
             ),
-            1: <ClubBoard isMember={isMember} />,
-            2: <ClubGallery isMember={isMember} />,
+            1: <ClubBoard isMember={isMember} isManager={isManager} />,
+            2: <ClubGallery isMember={isMember} isManager={isManager} />,
             3: <ClubChat />,
           }[selectedTab]
         }

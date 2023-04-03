@@ -1,10 +1,12 @@
+import { Club } from "@/libs/types";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
+import { useEffect } from "react";
 
 interface ClubComponentProps {
-  data: any;
+  data: Club;
 }
 
-export default function Club({ data }: ClubComponentProps) {
+export default function ClubComponent({ data }: ClubComponentProps) {
   return (
     <div className="flex space-x-4">
       <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative">

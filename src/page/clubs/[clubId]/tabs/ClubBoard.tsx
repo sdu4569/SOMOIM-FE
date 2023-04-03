@@ -7,7 +7,13 @@ import ClubBoardPostList from "@/components/ClubBoardPostList";
 import { PostCategory } from "@/libs/types";
 import postcss from "postcss";
 
-export default function ClubBoard({ isMember }: { isMember: boolean }) {
+export default function ClubBoard({
+  isMember,
+  isManager,
+}: {
+  isMember: boolean;
+  isManager: boolean;
+}) {
   const [category, setCategory] = useState<PostCategory>(PostCategory.ALL);
 
   return (

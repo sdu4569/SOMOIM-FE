@@ -3,16 +3,25 @@ import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { useNavigate, Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 import PostSkeleton from "./PostSkeleton";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
-import { PostCategory } from "@/libs/types";
+import { Post, PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
+import formatDate from "@/util/formatDate";
+import Avatar from "./Avatar";
 
 interface ClubBoardPostListProps {
   category: PostCategory;
+}
+
+interface PostResponse {
+  ok: boolean;
+  data: {
+    content: Post[];
+  };
 }
 
 export default function ClubBoardPostList({
@@ -20,22 +29,27 @@ export default function ClubBoardPostList({
 }: ClubBoardPostListProps) {
   const params = useParams();
   const token = useAccessToken();
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
-  const getPostKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
-    if (!token) return null;
-    if (previousPageData && !previousPageData.data?.length) return null;
+  const getPostKey: SWRInfiniteKeyLoader = useCallback(
+    (pageIndex, previousPageData) => {
+      if (!token) return null;
+      if (previousPageData && previousPageData.data?.content?.length === 0)
+        return null;
 
-    if (category === PostCategory.ALL) {
-      return [`clubs/${params.clubId}/boards?page=${pageIndex}`, token];
-    }
+      if (category === PostCategory.ALL) {
+        return [`clubs/${params.clubId}/boards/_page=${pageIndex}`, token];
+      }
 
-    return [
-      `clubs/${params.clubId}/boards/category?category=${category}&page=${pageIndex}`,
-      token,
-    ];
-  };
-  const { data, isLoading, isValidating, setSize, size } =
-    useSWRInfinite(getPostKey);
+      return [
+        `clubs/${params.clubId}/boards/category/_page=${pageIndex}?category=${category}`,
+        token,
+      ];
+    },
+    [category, params.clubId, token]
+  );
+  const { data, isLoading, isValidating, setSize } =
+    useSWRInfinite<PostResponse>(getPostKey);
 
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +65,17 @@ export default function ClubBoardPostList({
     setSize(0);
   }, []);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (isLoading) {
+      setShowSkeleton(true);
+    } else {
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 1000);
+    }
+  }, [isLoading]);
+
+  if (showSkeleton) {
     return (
       <ul className="flex flex-col space-y-8 mt-4">
         {[1, 2, 3, 4, 5, 6].map((e) => {
@@ -61,7 +85,7 @@ export default function ClubBoardPostList({
     );
   }
 
-  if (data && data[0]?.data?.length === 0) {
+  if (data && data[0]?.data?.content.length === 0) {
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-gray-400 text-lg">
@@ -80,9 +104,9 @@ export default function ClubBoardPostList({
       <ul className="flex flex-col divide-gray-200 space-y-8 mt-4">
         {data &&
           data
-            .map((e) => e.data)
+            .map((e) => e.data.content)
             .flat()
-            .map((post: any) => (
+            .map((post: Post) => (
               <Link
                 to={`/clubs/${params.clubId}/post/${post?.id}`}
                 key={post?.id}
@@ -91,11 +115,15 @@ export default function ClubBoardPostList({
               >
                 <header className="flex justify-between items-center">
                   <div className="flex space-x-2 items-center ">
-                    <div className="w-8 h-8 rounded-full bg-gray-500"></div>
-                    <span>이름</span>
+                    <div className="w-8 h-8 rounded-full bg-gray-500">
+                      <Avatar src={post.userImg} size="md" />
+                    </div>
+                    <span>{post.userName}</span>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-400"> 2일 전</p>
+                    <p className="text-sm text-gray-400">
+                      {formatDate(post.createdAt)}
+                    </p>
                   </div>
                 </header>
                 <div className="py-4 flex justify-between items-start">
@@ -119,11 +147,11 @@ export default function ClubBoardPostList({
                   <div className="flex space-x-4">
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faThumbsUp} />
-                      <p className="text-sm ">좋아요 {post?.id}</p>
+                      <p className="text-sm ">좋아요 {post.likeCnt}</p>
                     </div>
                     <div className="flex space-x-1 items-center">
                       <FontAwesomeIcon icon={faMessage} />
-                      <p className="text-sm ">댓글 1</p>
+                      <p className="text-sm ">댓글 {post.commentCnt}</p>
                     </div>
                   </div>
                   <div>
@@ -139,7 +167,7 @@ export default function ClubBoardPostList({
         ref={targetRef}
         className={`w-full flex justify-center ${isIntersecting && "pt-2"}`}
       >
-        {isValidating ? <Spinner size="md" /> : null}
+        {isValidating && <Spinner size="md" />}
       </div>
     </>
   );

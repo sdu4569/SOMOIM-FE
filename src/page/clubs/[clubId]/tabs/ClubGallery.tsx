@@ -18,11 +18,18 @@ import formatDate from "@/util/formatDate";
 import useUser from "@/hooks/useUser";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
-export default function ClubGallery({ isMember }: { isMember: boolean }) {
+export default function ClubGallery({
+  isMember,
+  isManager,
+}: {
+  isMember: boolean;
+  isManager: boolean;
+}) {
   const [detail, setDetail] = useState<any>(null);
   const [layoutId, setLayoutId] = useState<string | null>(null);
   const [showNav, setShowNav] = useState<boolean>(false);
   const { clubId } = useParams();
+  const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
   const token = useAccessToken();
   const {
     data: albums,
@@ -60,10 +67,19 @@ export default function ClubGallery({ isMember }: { isMember: boolean }) {
     });
   };
 
-  if (albumsLoading) {
+  useEffect(() => {
+    if (albumsLoading) setShowSkeleton(true);
+    else {
+      setTimeout(() => {
+        setShowSkeleton(false);
+      }, 1000);
+    }
+  }, [albumsLoading]);
+
+  if (showSkeleton) {
     return (
       <ul className="grid grid-cols-2 gap-2 w-full p-4">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
           <li key={i} className="bg-gray-300 aspect-video animate-pulse"></li>
         ))}
       </ul>

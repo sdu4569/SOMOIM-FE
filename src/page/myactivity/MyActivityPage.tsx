@@ -14,7 +14,7 @@ import useUser from "@/hooks/useUser";
 import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "@/App";
 import ClubsListWithFavorite from "@/components/ClubsListWithFavorite";
-import getInterestWithKey from "@/util/getInterestWithKey";
+import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 
 interface UserResponse {
   ok: boolean;
@@ -52,57 +52,63 @@ const MyActivityPage = () => {
       </PageHeader>
 
       <main className="flex flex-col space-y-8">
-        <h2
-          className={`text-[14px] font-semibold ${
-            userClub?.length !== 0 ? "" : "text-blue-500"
-          }`}
-          id="userClub"
-        >
-          {userClub?.length !== 0 ? "가입한 클럽" : "클럽에 가입해 보세요!"}
-        </h2>
-
-        {userClub?.map((item) => {
-          const favoriteImg = imageMap.get(item.favorite);
-          return (
-            <Link to={`/clubs/${item.id}`} key={item.id} state={item}>
-              <div className="flex space-x-4 mb-4">
-                <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500">
-                  {item.imageUrl && (
-                    <div className="w-full h-full overflow-hidden rounded-2xl">
-                      <img
-                        src={item.imageUrl}
-                        alt="클럽 대표 사진"
-                        className="w-full h-full object-cover"
-                      />
+        <section className="flex flex-col space-y-4">
+          <h2
+            className={`text-[14px] font-semibold ${
+              userClub?.length !== 0 ? "" : "text-blue-500"
+            }`}
+            id="userClub"
+          >
+            {userClub?.length !== 0 ? "가입한 클럽" : "클럽에 가입해 보세요!"}
+          </h2>
+          <ul>
+            {userClub?.map((item) => {
+              const favoriteImg = imageMap.get(item.favorite);
+              return (
+                <li key={item.id}>
+                  <Link to={`/clubs/${item.id}`} state={item}>
+                    <div className="flex space-x-4 mb-4">
+                      <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500">
+                        {item.imageUrl && (
+                          <div className="w-full h-full overflow-hidden rounded-2xl">
+                            <img
+                              src={item.imageUrl}
+                              alt="클럽 대표 사진"
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 flex flex-col justify-evenly">
+                        <div>
+                          <img
+                            src={favoriteImg}
+                            className="w-[16px] h-[16px] inline-block mr-1"
+                            alt="관심사 이미지"
+                          />
+                          <span className="">{item.name}</span>
+                        </div>
+                        <div className="flex space-x-2 text-xs">
+                          <div className="flex divide-x-2 divide-gray-300 items-center">
+                            <span className="pr-1">{item.area}</span>
+                            <span className="pl-1 text-gray-500">
+                              멤버 {item.memberCnt}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-                <div className="flex-1 flex flex-col justify-evenly">
-                  <div>
-                    <img
-                      src={favoriteImg}
-                      className="w-[16px] h-[16px] inline-block mr-1"
-                      alt="관심사 이미지"
-                    />
-                    <span className="">{item.name}</span>
-                  </div>
-                  <div className="flex space-x-2 text-xs">
-                    <div className="flex divide-x-2 divide-gray-300 items-center">
-                      <span className="pr-1">{item.area}</span>
-                      <span className="pl-1 text-gray-500">
-                        멤버 {item.memberCnt}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-        <h2 className="text-[14px] font-semibold">클럽찾기</h2>
-        <ClubSearch />
-
-        <UpdateFavoriteButton />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+        <section className="flex flex-col">
+          <h2 className="text-[14px] font-semibold mb-4">클럽찾기</h2>
+          <ClubSearch />
+          <UpdateFavoriteButton />
+        </section>
         <section className="flex flex-col space-y-8">
           {user?.favorites.map((favorite) => (
             <div key={favorite} className="flex flex-col space-y-4">
