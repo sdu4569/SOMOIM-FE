@@ -33,11 +33,15 @@ export interface Club {
   memberLimit: number;
   memberCnt: number;
   favorite: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ClubResponse {
   ok: boolean;
-  data: Club[];
+  data: {
+    content: Club[];
+  };
 }
 
 export interface Comment {
