@@ -1,5 +1,6 @@
 import { Club } from "@/libs/types";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
+import isNewClub from "@/util/isNewClub";
 import { useEffect } from "react";
 
 interface ClubComponentProps {
@@ -19,9 +20,11 @@ export default function ClubComponent({ data }: ClubComponentProps) {
             />
           </div>
         )}
-        <div className="text-white absolute bg-red-600 rounded-2xl p-1 text-xs flex justify-center items-center -top-1 -right-1 text-[8px]">
-          NEW
-        </div>
+        {isNewClub(data.createdAt) && (
+          <div className="text-white absolute bg-red-600 rounded-2xl p-1 text-xs flex justify-center items-center -top-1 -right-1 text-[8px]">
+            NEW
+          </div>
+        )}
       </div>
       <div className="flex-1 flex flex-col justify-evenly">
         <span className="">{data.name}</span>

@@ -13,14 +13,16 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
+import useMutation from "@/hooks/useMutation";
+import { useParams } from "react-router-dom";
 
 interface CreateActivityForm {
-  name: string;
+  title: string;
   date: Date;
   time: string;
   location: string;
-  money: string;
-  maxMember: number;
+  fee: string;
+  numPeople: number;
 }
 
 const formatDate = (date: Date) => {
@@ -61,10 +63,21 @@ export default function CreateActivity() {
   } = useForm<CreateActivityForm>({
     defaultValues: {
       time: "19:00",
-      maxMember: 20,
+      numPeople: 20,
     },
   });
+  const { clubId } = useParams();
 
+  const { mutate: createActivity } = useMutation(`clubs/${clubId}/activities`, {
+    authorized: true,
+  });
+
+  const onSubmit = (data: CreateActivityForm) => {
+    createActivity({
+      ...data,
+      idClub: clubId,
+    });
+  };
   return (
     <div className="overflow-scroll h-full p-4">
       <PageHeader className="!bg-gray-100">
@@ -75,16 +88,16 @@ export default function CreateActivity() {
       </PageHeader>
       <section className="mt-12">
         <form
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-4"
         >
-          <label htmlFor="name" className="flex items-center">
+          <label htmlFor="title" className="flex items-center">
             <input
               type="text"
-              id="name"
+              id="title"
               className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               placeholder="C.A 제목을 입력하세요."
-              {...register("name", { required: true })}
+              {...register("title", { required: true })}
             />
           </label>
           <div className="justify-between flex">
@@ -144,14 +157,14 @@ export default function CreateActivity() {
               {...register("location", { required: true })}
             />
           </label>
-          <label htmlFor="money" className="flex items-center space-x-4">
+          <label htmlFor="fee" className="flex items-center space-x-4">
             <FontAwesomeIcon icon={faWonSign} size="xl" className="w-6" />
             <input
               placeholder="식사비 15000원"
               type="text"
-              id="money"
+              id="fee"
               className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
-              {...register("money", { required: true })}
+              {...register("fee", { required: true })}
             />
           </label>
           <label className="flex items-center justify-between">
@@ -161,7 +174,7 @@ export default function CreateActivity() {
             </div>
             <input
               type="number"
-              {...register("maxMember", { required: true, min: 5, max: 300 })}
+              {...register("numPeople", { required: true, min: 5, max: 300 })}
               className="p-2 rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
             />
           </label>

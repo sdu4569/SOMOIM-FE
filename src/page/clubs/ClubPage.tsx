@@ -33,11 +33,12 @@ export default function ClubPage() {
   const getKey: SWRInfiniteKeyLoader = useCallback(
     (pageIndex, previousPageData) => {
       if (!token) return;
-      if (previousPageData && !previousPageData.data.length) return null;
+      if (previousPageData && !previousPageData.data.content.length)
+        return null;
       return [
         `clubs/${
           selectedTab === "추천클럽" ? "random" : "newclub"
-        }?page=${pageIndex}`,
+        }/_page=${pageIndex}`,
         token,
       ];
     },
@@ -69,7 +70,7 @@ export default function ClubPage() {
 
   useEffect(() => {
     if (data) {
-      setClubs(data.map((page) => page.data).flat());
+      setClubs(data.map((page) => page.data.content).flat());
     }
   }, [data]);
 

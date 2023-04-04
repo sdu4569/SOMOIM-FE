@@ -96,11 +96,9 @@ export default function ClubDetailInfo({
           </div>
           {isManager && (
             <Link to={"edit"} state={{ club }}>
-              <div
-                className={`text-[14px] inline-block underline text-gray-400`}
-              >
+              <p className={`text-[14px] inline-block underline text-gray-400`}>
                 수정
-              </div>
+              </p>
             </Link>
           )}
         </div>
@@ -117,8 +115,15 @@ export default function ClubDetailInfo({
           </article>
         </section>
         <section>
-          <header>
+          <header className="flex justify-between items-center">
             <h4 className="text-lg">클럽액티비티(C.A)</h4>
+            {isManager && (
+              <Link to={"createActivity"}>
+                <p className="text-[14px] underline text-gray-400">
+                  새 액티비티
+                </p>
+              </Link>
+            )}
           </header>
           <ul className="divide-y-2">
             <li className="flex flex-col space-y-2 py-4">
