@@ -1,5 +1,4 @@
 import { RefObject, useState } from "react";
-import { useEffect } from "react";
 
 export default function useAutoResizeTextArea() {
   const [height, setHeight] = useState<number>(0);
