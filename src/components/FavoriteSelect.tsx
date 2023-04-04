@@ -30,7 +30,7 @@ export default function FavoriteSelect({
   );
 
   useEffect(() => {
-    user && setSelectedFavorites(user.favorites);
+    user && !setValue && setSelectedFavorites(user.favorites);
   }, [user]);
 
   const formRef = useRef<HTMLFormElement>(null);
