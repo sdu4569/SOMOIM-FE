@@ -45,7 +45,6 @@ export default function ClubDetail() {
     error,
     mutate: likeClubMutate,
   } = useSWR(["users/like-clubs", token]);
-  console.log(likeClub);
 
   const { mutate: addLike } = useMutation(`clubs/${params.clubId}/likes`, {
     authorized: true,
@@ -106,18 +105,18 @@ export default function ClubDetail() {
   // }, [club, members]);
 
   useEffect(() => {
-    const check = likeClub?.data;
+    const check = likeClub?.data.some((item: any) => item.id == params.clubId);
     console.log(check);
-    // likeClub && setLike(check);
+    likeClub && setLike(check);
   }, [likeClub]);
 
   //클럽 찜하기 기능
   const handleClick = async () => {
-    // if (!like) {
-    //   await addLike({ clubId: params.clubId });
-    // } else {
-    //   await delLike({ clubId: params.clubId });
-    // }
+    if (!like) {
+      await addLike({ clubId: params.clubId });
+    } else {
+      await delLike({ clubId: params.clubId });
+    }
     await likeClubMutate();
   };
 
