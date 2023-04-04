@@ -112,6 +112,7 @@ export default function ClubPost() {
     if (userData && likeData) {
       setIsLiked(likeData.data.some((like) => like.userId === userData.id));
     }
+    console.log(likeData);
   }, [userData, likeData]);
 
   //모달 닫기 기능
