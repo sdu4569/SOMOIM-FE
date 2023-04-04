@@ -66,15 +66,17 @@ const MyActivityPage = () => {
                 <li key={item.id}>
                   <Link to={`/clubs/${item.id}`} state={item}>
                     <div className="flex space-x-4 mb-4">
-                      <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500">
+                      <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500 overflow-hidden">
                         {item.imageUrl && (
-                          <div className="w-full h-full overflow-hidden rounded-2xl">
-                            <img
-                              src={item.imageUrl}
-                              alt="클럽 대표 사진"
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
+                          <img
+                            src={
+                              item.imageUrl.includes("imagedelivery")
+                                ? item.imageUrl + "/public"
+                                : item.imageUrl
+                            }
+                            alt="클럽 대표 사진"
+                            className="w-full h-full object-cover"
+                          />
                         )}
                       </div>
                       <div className="flex-1 flex flex-col justify-evenly">
@@ -103,7 +105,6 @@ const MyActivityPage = () => {
           </ul>
         </section>
         <section className="flex flex-col">
-
           <h2 className="text-[14px] font-semibold mb-4">클럽찾기</h2>
           <ClubSearch />
           <UpdateFavoriteButton />

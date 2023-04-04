@@ -8,7 +8,7 @@ import {
   faHeart as solidHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
@@ -16,6 +16,8 @@ import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { Member, Tabs } from "@/libs/types";
 import Avatar from "@/components/Avatar";
 import { imageMap } from "@/libs/Images";
+import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
+import formatImageUrl from "@/util/formatImageUrl";
 
 interface ClubDetailInfoProps {
   like: boolean;
@@ -39,6 +41,8 @@ export default function ClubDetailInfo({
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const params = useParams();
   const navigate = useNavigate();
+  const autoResize = useAutoResizeTextArea();
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
 
   const onBannerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
@@ -49,6 +53,10 @@ export default function ClubDetailInfo({
       });
     }
   };
+
+  useEffect(() => {
+    autoResize(descriptionRef);
+  }, [descriptionRef, club]);
 
   return (
     <>
@@ -70,7 +78,7 @@ export default function ClubDetailInfo({
         >
           {club?.imageUrl ? (
             <img
-              src={club.imageUrl}
+              src={formatImageUrl(club.imageUrl, "public")}
               alt="클럽 배너"
               className="w-full aspect-twenty-nine object-fit"
             />
@@ -106,8 +114,9 @@ export default function ClubDetailInfo({
           <header>
             <h4 className="text-lg">클럽 소개</h4>
           </header>
-          <article className="h-[500px] overflow-scroll">
+          <article className="max-h-[500px] overflow-scroll">
             <textarea
+              ref={descriptionRef}
               className="leading-5 h-full w-full resize-none bg-white"
               disabled
               value={club.description}
@@ -224,12 +233,18 @@ export default function ClubDetailInfo({
                 className="text-red-500"
               />
             </div>
-            <div
-              onClick={() => setInJoinModal(true)}
-              className="flex-1 flex justify-center items-center h-full border rounded-lg bg-blue-500 text-white"
-            >
-              <p>가입하기</p>
-            </div>
+            {club.memberLimit > club.memberCnt ? (
+              <div
+                onClick={() => setInJoinModal(true)}
+                className="flex-1 flex justify-center items-center h-full border rounded-lg bg-blue-500 text-white"
+              >
+                <p>가입하기</p>
+              </div>
+            ) : (
+              <div className="flex-1 flex justify-center items-center h-full border rounded-lg bg-gray-400 text-white">
+                <p>클럽 정원이 가득 찼습니다.</p>
+              </div>
+            )}
           </BottomTabNavigator>
         )}
       </div>

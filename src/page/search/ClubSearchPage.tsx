@@ -28,6 +28,7 @@ const ClubSearchPage = () => {
     handleSubmit,
     setValue,
   } = useForm<searchFormData>();
+  const searchWord = watch("search");
 
   useEffect(() => {
     if (watch("search") == "") {
@@ -51,28 +52,25 @@ const ClubSearchPage = () => {
     );
     const data = await response.json();
 
-    if (data.data.length === 0) {
+    if (data.data.length == 0) {
       alert("검색 결과가 없습니다.");
-    } else {
-      setFilterList(data.data);
     }
+    setFilterList(data.data);
 
-    let array = [];
-    const getStorage = localStorage.getItem("recentSearch");
+    const recentSearch = JSON.parse(
+      localStorage.getItem("recentSearch") || "[]"
+    );
 
     // 제출시 localStorage 갱신
-    if (getStorage !== null) {
-      array = JSON.parse(getStorage);
-      setRecentSearchList(array);
-      //중복 검색 여부
-      if (array.filter((item: any) => item == watch("search")).length == 0) {
-        array.unshift(watch("search"));
-        localStorage.setItem("recentSearch", JSON.stringify(array));
-      }
-    } else {
-      array.unshift(watch("search"));
-      localStorage.setItem("recentSearch", JSON.stringify(array));
-    }
+    const newRecentSearch = [
+      searchForm.search,
+      ...recentSearch.filter(
+        (keyword: string) => keyword !== searchForm.search
+      ),
+    ];
+    setRecentSearchList(newRecentSearch);
+
+    localStorage.setItem("recentSearch", JSON.stringify(newRecentSearch));
   };
 
   //검색창 삭제 버튼
@@ -82,12 +80,10 @@ const ClubSearchPage = () => {
   };
 
   useEffect(() => {
-    let array = [];
-    const getStorage = localStorage.getItem("recentSearch");
-    if (getStorage !== null) {
-      array = JSON.parse(getStorage);
-      setRecentSearchList(array);
-    }
+    const recentSearch = JSON.parse(
+      localStorage.getItem("recentSearch") || "[]"
+    );
+    setRecentSearchList(recentSearch);
   }, []);
 
   //최근 검색 기록 삭제 기능
@@ -119,7 +115,7 @@ const ClubSearchPage = () => {
               placeholder="클럽이나 커뮤니티를 검색하세요"
               className="bg-gray-100 rounded-md w-80 h-8 text-[12px] pl-3 outline-none"
               inputMode="text"
-              {...register("search", { required: "" })}
+              {...register("search", { required: true })}
             />
           </form>
           <button

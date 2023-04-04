@@ -6,11 +6,17 @@ import { useForm } from "react-hook-form";
 import Button from "@/components/Button";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import PageHeader from "@/components/PageHeader";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import Spinner from "@/components/Spinner";
 import ClubFavoriteSelect from "@/components/ClubFavoriteSelect";
 import RegionSearch from "@/components/RegionSearch";
+import useMutation from "@/hooks/useMutation";
+import useUploadImage from "@/hooks/useUploadImage";
+import Overlay from "@/components/Overlay";
+import { FavoriteList } from "@/libs/FavoriteList";
+import { mutate } from "swr";
+import formatImageUrl from "@/util/formatImageUrl";
 
 interface ClubEditForm {
   favorite: string;
@@ -37,10 +43,44 @@ export default function ClubEditPage() {
   const [bannerPreview, setBannerPreview] = useState("");
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>("Region");
+  const { mutate: editClub, isLoading: editClubLoading } = useMutation(
+    `clubs/${location.state.club.id}`,
+    {
+      authorized: true,
+      method: "PATCH",
+    }
+  );
+  const { uploadImage, isLoading: uploadImageLoading } = useUploadImage();
   const closeModal = () => setInModal(false);
 
-  const onSubmit = (data: ClubEditForm) => {
+  const onSubmit = async (data: ClubEditForm) => {
     console.log(data);
+    if (editClubLoading) {
+      return;
+    }
+
+    let imageUrl = null;
+
+    if (banner && banner.length > 0) {
+      const file = banner[0];
+      imageUrl = await uploadImage(file);
+    }
+
+    const response = await editClub({
+      name: data.clubName,
+      description: data.description,
+      imageUrl: imageUrl ? imageUrl : location.state.club.imageUrl,
+      area: data.area,
+      memberLimit: data.memberLimit,
+      favorite: FavoriteList.find((f) => f.title === data.favorite)!.favorite,
+    });
+
+    if (response.ok) {
+      await mutate(`clubs/${location.state.club.id}`, response);
+      navigate(-1);
+    } else {
+      alert("수정에 실패했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -77,6 +117,11 @@ export default function ClubEditPage() {
 
   return (
     <>
+      {(editClubLoading || uploadImageLoading) && (
+        <Overlay>
+          <Spinner size="lg" />
+        </Overlay>
+      )}
       {inModal &&
         {
           Region: (
@@ -148,7 +193,10 @@ export default function ClubEditPage() {
               >
                 {bannerPreview || location.state?.club?.imageUrl ? (
                   <img
-                    src={bannerPreview || location.state?.club?.imageUrl}
+                    src={
+                      bannerPreview ||
+                      formatImageUrl(location.state.club.imageUrl, "public")
+                    }
                     alt="클럽 배너 이미지"
                     className="flex-1 object-cover"
                   />
@@ -206,7 +254,9 @@ export default function ClubEditPage() {
               />
             </label>
             <div className="flex flex-col space-y-2">
-              <p className="text-sm text-gray-400">클럽개설일 : 2023/2/27</p>
+              <p className="text-sm text-gray-400">
+                클럽개설일 : {location.state?.club?.createdAt.substring(0, 10)}
+              </p>
               <Button className="w-full">수정하기</Button>
             </div>
           </form>

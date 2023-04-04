@@ -45,7 +45,6 @@ export default function ClubDetail() {
     error,
     mutate: likeClubMutate,
   } = useSWR(["users/like-clubs", token]);
-  console.log(likeClub);
 
   const { mutate: addLike } = useMutation(`clubs/${params.clubId}/likes`, {
     authorized: true,

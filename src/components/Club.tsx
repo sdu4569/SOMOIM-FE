@@ -10,15 +10,17 @@ interface ClubComponentProps {
 export default function ClubComponent({ data }: ClubComponentProps) {
   return (
     <div className="flex space-x-4">
-      <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative">
+      <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative overflow-hidden">
         {data.imageUrl && (
-          <div className="w-full h-full overflow-hidden rounded-3xl">
-            <img
-              src={data.imageUrl}
-              alt="클럽 대표 사진"
-              className="w-full h-full object-cover"
-            />
-          </div>
+          <img
+            src={
+              data.imageUrl.includes("imagedelivery")
+                ? data.imageUrl + "/public"
+                : data.imageUrl
+            }
+            alt="클럽 대표 사진"
+            className="w-full h-full object-cover"
+          />
         )}
         {isNewClub(data.createdAt) && (
           <div className="text-white absolute bg-red-600 rounded-2xl p-1 text-xs flex justify-center items-center -top-1 -right-1 text-[8px]">

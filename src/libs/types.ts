@@ -100,3 +100,20 @@ export interface Post {
   userImg?: string;
   userName: string;
 }
+
+export interface Like {
+  id: number;
+  userId: number;
+  boardId: number;
+}
+
+export interface Album {
+  id: number;
+  userId: number;
+  userName: string;
+  userImg: string;
+  clubId: number;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}

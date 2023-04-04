@@ -16,6 +16,12 @@ import Avatar from "@/components/Avatar";
 import formatDate from "@/util/formatDate";
 import useUser from "@/hooks/useUser";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { Album } from "@/libs/types";
+
+interface AlbumResponse {
+  ok: boolean;
+  data: Album[];
+}
 
 export default function ClubGallery({
   isMember,
@@ -24,7 +30,7 @@ export default function ClubGallery({
   isMember: boolean;
   isManager: boolean;
 }) {
-  const [detail, setDetail] = useState<any>(null);
+  const [detail, setDetail] = useState<Album | null>();
   const [layoutId, setLayoutId] = useState<string | null>(null);
   const [showNav, setShowNav] = useState<boolean>(false);
   const { clubId } = useParams();
@@ -34,12 +40,12 @@ export default function ClubGallery({
     data: albums,
     isLoading: albumsLoading,
     mutate,
-  } = useSWR([`clubs/${clubId}/albums`, token]);
+  } = useSWR<AlbumResponse>([`clubs/${clubId}/albums`, token]);
   const { user } = useUser();
 
   const onCloseUp = (album: any) => {
     setDetail(album);
-    setLayoutId(album.id);
+    setLayoutId(album.id + "");
   };
 
   const onDismiss = () => {
@@ -55,7 +61,7 @@ export default function ClubGallery({
 
     // to do : validate token
 
-    fetch(`${API_ENDPOINT}/clubs/albums/${detail.id}`, {
+    fetch(`${API_ENDPOINT}/clubs/albums/${detail?.id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -111,14 +117,14 @@ export default function ClubGallery({
       <AnimatePresence>
         {layoutId && (
           <Overlay onClick={onDismiss}>
-            <div className="relative h-full flex items-center">
+            <div className="relative w-full h-full flex items-center">
               {showNav && (
                 <PageHeader>
                   <div className="flex space-x-4 items-center">
                     <HeaderBackButton onClick={() => setShowNav(false)} />
                     <h2 className="text-xl">사진</h2>
                   </div>
-                  {user && user.id === detail.userId && (
+                  {user && user.id === detail?.userId && (
                     <div onClick={onDelete} className="cursor-pointer">
                       <FontAwesomeIcon icon={faTrashCan} size="xl" />
                     </div>
@@ -127,10 +133,11 @@ export default function ClubGallery({
               )}
               <motion.div
                 layoutId={layoutId}
-                className="w-full h-min flex justify-center items-center rounded-lg overflow-hidden"
+                className="w-full flex justify-center items-center rounded-lg overflow-hidden"
               >
                 <img
-                  src={detail.imageUrl + "/gallery"}
+                  className="w-full"
+                  src={detail?.imageUrl + "/gallery"}
                   onClick={(e) => {
                     e.stopPropagation();
                     setShowNav((prev) => !prev);
@@ -142,12 +149,12 @@ export default function ClubGallery({
                   <div className="flex w-full justify-between px-4">
                     <div className="flex space-x-2 items-center">
                       <div className="w-12 aspect-square rounded-full flex justify-center items-center">
-                        <Avatar size="lg" src={detail.userImg} />
+                        <Avatar size="lg" src={detail?.userImg} />
                       </div>
                       <div className="flex flex-col space-y-2">
-                        <p>{detail.userName}</p>
+                        <p>{detail?.userName}</p>
                         <p className="text-gray-400 text-sm">
-                          {formatDate(detail.createdAt)}
+                          {detail && formatDate(detail.createdAt)}
                         </p>
                       </div>
                     </div>
@@ -161,16 +168,16 @@ export default function ClubGallery({
       <ul className="grid grid-cols-2 gap-2 w-full p-4">
         {albums &&
           albums.ok &&
-          albums.data.map((album: any) => (
+          albums.data.map((album: Album) => (
             <motion.li
               key={album.id}
-              layoutId={album.id}
+              layoutId={album.id + ""}
               onClick={() => onCloseUp(album)}
               className="aspect-video border hover:border-blue-500"
             >
               <img
                 src={album.imageUrl + "/gallery"}
-                className="object-cover h-full w-full"
+                className={`h-full w-full object-cover`}
               />
             </motion.li>
           ))}
