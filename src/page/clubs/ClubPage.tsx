@@ -81,9 +81,9 @@ export default function ClubPage() {
       }
       const scroll = sessionStorage.getItem(`${selectedTab}-scroll`);
       const wrapper = wrapperRef.current;
-      wrapper.scrollTo({
-        top: 0,
-      });
+      // wrapper.scrollTo({
+      //   top: 0,
+      // });
       wrapper.scrollTo({
         top: parseInt(scroll || "0"),
         behavior: "smooth",

@@ -19,6 +19,7 @@ import Spinner from "@/components/Spinner";
 
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
+import RegionSearch from "@/components/RegionSearch";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -162,7 +163,12 @@ const UpdateUserPage = () => {
         ))}
       <AnimatePresence>
         {inRegionModal && (
-          <EditRegion setInputValue={setValue} closeModal={closeModal} />
+          <RegionSearch
+            inputId="area"
+            title=""
+            setValue={setValue}
+            closeModal={closeModal}
+          />
         )}
       </AnimatePresence>
       <motion.div
@@ -173,7 +179,7 @@ const UpdateUserPage = () => {
       >
         <PageHeader>
           <div className="flex items-center space-x-4 h-full overflow-hidden">
-            <HeaderBackButton />
+            <HeaderBackButton onClick={() => navigate("/more")} />
             <h1 className="text-xl whitespace-nowrap truncate">내 프로필</h1>
           </div>
 

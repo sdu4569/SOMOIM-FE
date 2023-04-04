@@ -1,6 +1,7 @@
 import {
   faCalendar,
   faHeart as regularHeart,
+  faTrashCan,
 } from "@fortawesome/free-regular-svg-icons";
 import {
   faLocationDot,
@@ -13,20 +14,25 @@ import BottomTabNavigator from "@/components/BottomTabNavigator";
 import JoinClub from "@/components/JoinClub";
 import Overlay from "@/components/Overlay";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
-import { Member, Tabs } from "@/libs/types";
+import { Activity, Club, Member, Tabs, User } from "@/libs/types";
 import Avatar from "@/components/Avatar";
 import { imageMap } from "@/libs/Images";
 import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
 import formatImageUrl from "@/util/formatImageUrl";
+import useSWR from "swr";
+import useAccessToken from "@/hooks/useAccessToken";
+import ClubActivity from "@/components/ClubActivity";
+import useUser from "@/hooks/useUser";
 
 interface ClubDetailInfoProps {
   like: boolean;
   handleClick?: any;
   members: Member[];
-  club: any;
+  club: Club;
   isMember: boolean;
   isManager: boolean;
   membersBoundMutate: any;
+  user?: User;
 }
 
 export default function ClubDetailInfo({
@@ -37,12 +43,19 @@ export default function ClubDetailInfo({
   isManager = false,
   club,
   membersBoundMutate,
+  user,
 }: ClubDetailInfoProps) {
   const [inJoinModal, setInJoinModal] = useState<boolean>(false);
   const params = useParams();
   const navigate = useNavigate();
   const autoResize = useAutoResizeTextArea();
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const token = useAccessToken();
+
+  const { data: clubActivities, isLoading } = useSWR([
+    `clubs/${club.id}/activities`,
+    token,
+  ]);
 
   const onBannerClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault();
@@ -135,76 +148,14 @@ export default function ClubDetailInfo({
             )}
           </header>
           <ul className="divide-y-2">
-            <li className="flex flex-col space-y-2 py-4">
-              <h4 className="text-blue-500 font-bold">클럽액티비티 이름</h4>
-              <div className="flex space-x-4">
-                <div className="text-sm rounded-lg border border-gray-300 flex flex-col items-center">
-                  <span className="px-2 pt-2">수요일</span>
-                  <span className="text-2xl">8</span>
-                </div>
-                <div className="flex-1 flex flex-col justify-between text-sm">
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faCalendar} className="w-4" />
-                    <p className="h-full ">3월 6일 (월) 오후 8:00</p>
-                  </span>
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faLocationDot} className="w-4" />
-                    <p className="h-full ">온라인(줌링크 문의주세요!)</p>
-                  </span>
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faWonSign} className="w-4" />
-                    <p className="h-full ">0원</p>
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <span className="text-sm text-gray-500">참여 멤버 (5/20)</span>
-                <div className="w-full flex justify-center items-center">
-                  <ul className="w-full grid gap-y-2 grid-cols-7 px-auto">
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-            <li className="flex flex-col space-y-2 py-4">
-              <h4 className="text-blue-500 font-bold">클럽액티비티 이름</h4>
-              <div className="flex space-x-4">
-                <div className="text-sm rounded-lg border border-gray-300 flex flex-col items-center">
-                  <span className="px-2 pt-2">수요일</span>
-                  <span className="text-2xl">8</span>
-                </div>
-                <div className="flex-1 flex flex-col justify-between text-sm">
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faCalendar} className="w-4" />
-                    <p className="h-full ">3월 6일 (월) 오후 8:00</p>
-                  </span>
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faLocationDot} className="w-4" />
-                    <p className="h-full ">온라인(줌링크 문의주세요!)</p>
-                  </span>
-                  <span className="flex space-x-2 items-center">
-                    <FontAwesomeIcon icon={faWonSign} className="w-4" />
-                    <p className="h-full ">0원</p>
-                  </span>
-                </div>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <span className="text-sm text-gray-500">참여 멤버 (5/20)</span>
-                <div className="w-full flex justify-center items-center">
-                  <ul className="w-full grid gap-y-2 grid-cols-7 px-auto">
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                    <li className="w-10 h-10 bg-red-500 rounded-full"></li>
-                  </ul>
-                </div>
-              </div>
-            </li>
+            {clubActivities?.data?.map((activity: Activity) => (
+              <ClubActivity
+                user={user}
+                key={activity.id}
+                data={activity}
+                isManager={isManager}
+              />
+            ))}
           </ul>
         </section>
         <section>

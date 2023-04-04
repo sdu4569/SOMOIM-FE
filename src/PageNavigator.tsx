@@ -26,6 +26,7 @@ import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
 import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
 import UpdateClubPostPage from "./page/UpdateClubPostPage";
 import ClubGalleryUpload from "./page/clubs/[clubId]/upload/ClubGalleryUpload";
+import EditActivity from "./page/clubs/[clubId]/activity/edit/editActivityPage";
 
 const PageNavigator = () => {
   return (
@@ -49,6 +50,10 @@ const PageNavigator = () => {
       <Route path="/clubs/create" element={<CreateClub />}></Route>
       <Route path="/clubs/:clubId" element={<ClubDetail />}></Route>
       <Route path="/clubs/:clubId/edit" element={<ClubEditPage />} />
+      <Route
+        path="/clubs/:clubId/activities/:activityId/edit"
+        element={<EditActivity />}
+      />
       <Route
         path="/clubs/:clubId/createActivity"
         element={<CreateActivity />}
