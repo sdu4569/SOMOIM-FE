@@ -1,17 +1,27 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import LoginForm from "@/components/LoginForm";
+import pattern1 from "/bg-1.jpg";
 
 export default function Landing() {
   return (
     <motion.div
-      initial={{ opacity: 0, translateY: 100 }}
+      initial={{ opacity: 0, translateY: -100 }}
       animate={{ opacity: 1, translateY: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="flex justify-center items-center h-full"
+      className={`flex justify-center items-center h-full`}
     >
-      <div className="flex flex-col space-y-10 w-full p-4">
-        <h1 className="w-full text-center text-xl">소모임</h1>
+      <div className="flex flex-col space-y-10 w-full p-4 bg-transparent">
+        <header className="w-full text-xl text-center relative flex justify-center items-center">
+          <h1>소모임</h1>
+          <div className="absolute w-52 aspect-square flex justify-center items-center -left-12 bottom-6">
+            <img
+              src="/icon-512x512.png"
+              alt="소모임 로고"
+              className="object-contain"
+            />
+          </div>
+        </header>
         <ul className="flex flex-col">
           <li>
             <ul className="flex flex-col items-center space-y-4 pb-4 mb-4 border-b">
@@ -44,7 +54,7 @@ export default function Landing() {
                 }&redirect_uri=${
                   import.meta.env.VITE_GOOGLE_REDIRECT_URI
                 }&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile`}
-                className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center"
+                className="rounded-md relative px-10 h-10 text-center space-x-2 border border-black flex justify-center items-center bg-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

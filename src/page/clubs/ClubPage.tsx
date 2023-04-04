@@ -124,7 +124,7 @@ export default function ClubPage() {
           </Link>
         </div>
       </PageHeader>
-      <div className="bg-pink-200 h-32 relative p-4 flex flex-col space-y-2 rounded-md">
+      <div className="h-32 relative p-4 flex flex-col space-y-2 bg-gradient-to-r from-purple-200 to-pink-200">
         <h2 className="text-xl">
           {selectedTab === "추천클럽" ? "추천 클럽!" : "신규 클럽!"}
         </h2>
