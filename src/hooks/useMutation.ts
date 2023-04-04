@@ -28,7 +28,7 @@ export default function useMutation(
   const navigate = useNavigate();
 
   if (authorized && !token) {
-    navigate("/landing", {
+    navigate("/", {
       replace: true,
     });
   }

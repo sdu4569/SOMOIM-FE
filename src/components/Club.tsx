@@ -1,4 +1,5 @@
 import { Club } from "@/libs/types";
+import formatImageUrl from "@/util/formatImageUrl";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
 import isNewClub from "@/util/isNewClub";
 import { useEffect } from "react";
@@ -13,11 +14,7 @@ export default function ClubComponent({ data }: ClubComponentProps) {
       <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative overflow-hidden">
         {data.imageUrl && (
           <img
-            src={
-              data.imageUrl.includes("imagedelivery")
-                ? data.imageUrl + "/public"
-                : data.imageUrl
-            }
+            src={formatImageUrl(data.imageUrl, "public")}
             alt="클럽 대표 사진"
             className="w-full h-full object-cover"
           />

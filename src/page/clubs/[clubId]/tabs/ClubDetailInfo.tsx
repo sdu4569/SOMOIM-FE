@@ -71,6 +71,10 @@ export default function ClubDetailInfo({
     autoResize(descriptionRef);
   }, [descriptionRef, club]);
 
+  useEffect(() => {
+    console.log(clubActivities);
+  }, [clubActivities]);
+
   return (
     <>
       {inJoinModal && params.clubId && (

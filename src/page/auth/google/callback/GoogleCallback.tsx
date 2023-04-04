@@ -33,7 +33,7 @@ export default function GoogleCallback() {
       .then(async (data: LoginResponse) => {
         if (!data.data.accessToken) {
           alert("로그인에 실패했습니다.");
-          navigate("/landing");
+          navigate("/");
           return;
         }
         const accessToken = data.data.accessToken;
@@ -71,7 +71,7 @@ export default function GoogleCallback() {
       .catch((e) => {
         alert("로그인에 실패했습니다.");
         console.log(e);
-        navigate("/landing");
+        navigate("/");
       });
   });
   return (

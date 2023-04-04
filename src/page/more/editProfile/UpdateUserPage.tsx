@@ -20,6 +20,7 @@ import Spinner from "@/components/Spinner";
 import { motion } from "framer-motion";
 import { pageSlideIn } from "@/libs/variants";
 import RegionSearch from "@/components/RegionSearch";
+import Avatar from "@/components/Avatar";
 
 export const fetcher = async (url: string) => {
   const response = await axios.get(url);
@@ -71,7 +72,7 @@ const UpdateUserPage = () => {
       setValue("introduction", user.introduction);
       setValue("birth", user.birth);
 
-      user.profileUrl && setAvatarPreview(user.profileUrl + "/avatarLarge");
+      user.profileUrl && setAvatarPreview(user.profileUrl);
       // to do : avatar
     }
   }, [user]);
@@ -198,14 +199,7 @@ const UpdateUserPage = () => {
               htmlFor="file"
               className="inline-block w-20 aspect-square relative cursor-pointer"
             >
-              <img
-                src={avatarPreview ? avatarPreview : Images.user}
-                alt="유저 이미지"
-                className={`w-full aspect-square rounded-full bg-gray-200 ${
-                  loading && "animate-pulse"
-                }`}
-                id="previewImage"
-              />
+              <Avatar size="lg" src={avatarPreview || Images.user} />
 
               <img
                 src={Images.camera}

@@ -26,7 +26,7 @@ export default function useUser() {
     if (!isLoading && data) {
       if (!data.ok) {
         alert(data.message);
-        navigate("/landing", {
+        navigate("/", {
           replace: true,
         });
         return;
@@ -54,7 +54,7 @@ export default function useUser() {
       }
       if (error) {
         console.log(error);
-        // navigate("/landing", {
+        // navigate("/", {
         //   replace: true,
         // });
         return;
@@ -64,7 +64,7 @@ export default function useUser() {
 
   useEffect(() => {
     if (!token) {
-      navigate("/landing", {
+      navigate("/", {
         replace: true,
       });
     }

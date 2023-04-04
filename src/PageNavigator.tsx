@@ -3,7 +3,6 @@ import MyActivityPage from "./page/myactivity/MyActivityPage";
 import { FavoriteSearchPage } from "./page/FavoriteSearchPage";
 import ClubPage from "./page/clubs/ClubPage";
 import FavoritePage from "./page/FavoritePage";
-import MainPage from "./page/MainPage";
 import ClubPost from "./page/clubs/[clubId]/posts/[postId]/ClubPost";
 import ClubEditPage from "./page/clubs/[clubId]/edit/ClubEditPage";
 import CreateActivity from "./page/clubs/[clubId]/createActivity/CreateActivityPage";
@@ -13,7 +12,6 @@ import ClubSearchPage from "./page/search/ClubSearchPage";
 import MorePage from "./page/more/MorePage";
 import UpdateUserPage from "./page/more/editProfile/UpdateUserPage";
 import RecentClubPage from "./page/more/recent/RecentClubPage";
-import Landing from "./page/Landing";
 import SignupLayout from "./page/signup/SignupLayout";
 import Register from "./page/signup/register/Register";
 import RegisterProfile from "./page/signup/profile/RegisterProfile";
@@ -24,15 +22,15 @@ import GoogleCallback from "./page/auth/google/callback/GoogleCallback";
 import FavoriteClubPage from "./page/more/favorite/FavoriteClubPage";
 import ClubDetail from "./page/clubs/[clubId]/ClubDetail";
 import ClubBoardWrite from "./page/clubs/[clubId]/write/ClubBoardWrite";
-import UpdateClubPostPage from "./page/UpdateClubPostPage";
+import UpdateClubPostPage from "./page/clubs/[clubId]/posts/[postId]/edit/UpdateClubPostPage";
 import ClubGalleryUpload from "./page/clubs/[clubId]/upload/ClubGalleryUpload";
-import EditActivity from "./page/clubs/[clubId]/activity/edit/editActivityPage";
+import EditActivity from "./page/clubs/[clubId]/activity/edit/EditActivityPage";
+import Landing from "./page/Landing";
 
 const PageNavigator = () => {
   return (
     <Routes>
-      <Route path="/" element={<MainPage />} />
-      <Route path="/landing" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/signup" element={<SignupLayout />}>
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<RegisterProfile />} />
@@ -58,9 +56,9 @@ const PageNavigator = () => {
         path="/clubs/:clubId/createActivity"
         element={<CreateActivity />}
       />
-      <Route path="/clubs/:clubId/post/:postId" element={<ClubPost />} />
+      <Route path="/clubs/:clubId/posts/:postId" element={<ClubPost />} />
       <Route
-        path="/clubs/:clubId/update_post/:postId/"
+        path="/clubs/:clubId/posts/:postId/edit"
         element={<UpdateClubPostPage />}
       />
 
