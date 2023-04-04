@@ -31,7 +31,7 @@ export default function ClubComponent({ data }: ClubComponentProps) {
         <div className="flex space-x-2 text-xs">
           <div className="flex divide-x-2 divide-gray-300 items-center">
             <span className="pr-1">{data.area}</span>
-            <span className="pl-1 text-gray-500">멤버 {data.member}</span>
+            <span className="pl-1 text-gray-500">멤버 {data.memberCnt}</span>
           </div>
           <div className="rounded-full bg-gray-200 text-gray-500 px-1 text-[8px]">
             {getFavoriteWithKey(data.favorite)}
