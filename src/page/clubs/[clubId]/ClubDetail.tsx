@@ -144,7 +144,7 @@ export default function ClubDetail() {
           <FontAwesomeIcon
             icon={like ? solidHeart : regularHeart}
             size="xl"
-            // onClick={handleClick}
+            onClick={handleClick}
           />
         </div>
       </PageHeader>
@@ -178,7 +178,7 @@ export default function ClubDetail() {
                 isManager={isManager}
                 membersBoundMutate={membersBoundMutate}
                 club={club?.data}
-                // handleClick={handleClick}
+                handleClick={handleClick}
               />
             ),
             1: <ClubBoard isMember={isMember} isManager={isManager} />,
