@@ -15,11 +15,13 @@ interface searchFormData {
 }
 
 const ClubSearchPage = () => {
+  const { user } = useUser();
+  const token = useAccessToken();
+  const [focusOn, setFocusOn] = useState<boolean>(false);
+  const [notSearch, setNotSearch] = useState<boolean>(false);
   const [filterList, setFilterList] = useState<any[]>([]);
   const [recentSearchList, setRecentSearchList] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
-  const { user } = useUser();
-  const token = useAccessToken();
 
   const {
     watch,
@@ -31,7 +33,10 @@ const ClubSearchPage = () => {
 
   useEffect(() => {
     if (watch("search") == "") {
-      setFilterList([]);
+      setNotSearch(false);
+      setFocusOn(false);
+    } else {
+      setFocusOn(true);
     }
   }, [watch("search")]);
 
@@ -49,12 +54,14 @@ const ClubSearchPage = () => {
         },
       }
     );
-    const data = await response.json();
+    const result = await response.json();
 
-    if (data.data.length === 0) {
-      alert("검색 결과가 없습니다.");
+    if (result.data.length !== 0) {
+      setFilterList(result.data);
+      setNotSearch(false);
     } else {
-      setFilterList(data.data);
+      setFilterList([]);
+      setNotSearch(true);
     }
 
     let array = [];
@@ -75,12 +82,6 @@ const ClubSearchPage = () => {
     }
   };
 
-  //검색창 삭제 버튼
-  const onDelete = () => {
-    setValue("search", "");
-    setFilterList([]);
-  };
-
   useEffect(() => {
     let array = [];
     const getStorage = localStorage.getItem("recentSearch");
@@ -95,6 +96,12 @@ const ClubSearchPage = () => {
     const updateRecentList = recentSearchList.filter((item) => item !== e);
     setRecentSearchList(updateRecentList);
     localStorage.setItem("recentSearch", JSON.stringify(updateRecentList));
+  };
+
+  //검색 페이지 초기화
+  const onDelete = () => {
+    setValue("search", "");
+    setFilterList([]);
   };
 
   const clickHandler = () => {
@@ -115,6 +122,7 @@ const ClubSearchPage = () => {
         <div className="relative">
           <form method="post" ref={formRef} onSubmit={handleSubmit(onSubmit)}>
             <input
+              onFocus={() => setFocusOn(true)}
               type="text"
               placeholder="클럽이나 커뮤니티를 검색하세요"
               className="bg-gray-100 rounded-md w-80 h-8 text-[12px] pl-3 outline-none"
@@ -136,9 +144,15 @@ const ClubSearchPage = () => {
           </button>
         </div>
       </PageHeader>
+      {notSearch && (
+        //검색 결과가 없는 경우
+        <div className="flex h-full items-center justify-center">
+          <p className="text-gray-400 text-lg">검색 결과가 없습니다.</p>
+        </div>
+      )}
       <main>
         {filterList?.length !== 0 && (
-          //검색을 진행한 경우
+          //검색 결과가 존재하는 경우
           <div className=" border-t pt-4 border-solid border-gray-400 relative">
             <p className="text-[12px] inline-block float-left font-semibold absolute top-4">
               <span className="text-blue-500">{user?.area}</span>의 클럽 리스트
@@ -156,8 +170,8 @@ const ClubSearchPage = () => {
             </ul>
           </div>
         )}
-        {filterList?.length == 0 && watch("search") !== "" && (
-          //검색 진행 전 검색창에 입력하는 경우
+        {filterList?.length == 0 && focusOn && !notSearch && (
+          //검색전 검색창에 포커스 되는 경우
           <div className="mb-2.5 text-[12px]">
             <div className="text-gray-400">최근 검색</div>
             {recentSearchList.map((item, idx) => {
@@ -188,7 +202,8 @@ const ClubSearchPage = () => {
             })}
           </div>
         )}
-        {watch("search") == "" && (
+
+        {!focusOn && filterList.length == 0 && (
           //검색창이 비어 있는 경우
           <div className="mb-2.5">
             <div className="flex justify-evenly flex-wrap">
