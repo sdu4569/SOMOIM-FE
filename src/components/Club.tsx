@@ -11,14 +11,18 @@ interface ClubComponentProps {
 export default function ClubComponent({ data }: ClubComponentProps) {
   return (
     <div className="flex space-x-4">
-      <div className="rounded-3xl w-16 aspect-square bg-blue-500 relative overflow-hidden">
-        {data.imageUrl && (
+      <div className="rounded-3xl w-16 aspect-square relative">
+        <div
+          className={`rounded-3xl w-full h-full relative ${
+            data.imageUrl ? "overflow-hidden" : ""
+          } `}
+        >
           <img
             src={formatImageUrl(data.imageUrl, "public")}
             alt="클럽 대표 사진"
             className="w-full h-full object-cover"
           />
-        )}
+        </div>
         {isNewClub(data.createdAt) && (
           <div className="text-white absolute bg-red-600 rounded-2xl p-1 text-xs flex justify-center items-center -top-1 -right-1 text-[8px]">
             NEW
