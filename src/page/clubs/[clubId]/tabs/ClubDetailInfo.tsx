@@ -50,7 +50,7 @@ export default function ClubDetailInfo({
   const navigate = useNavigate();
   const autoResize = useAutoResizeTextArea();
   const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
 
   const { data: clubActivities, isLoading } = useSWR([
     `clubs/${club.id}/activities`,

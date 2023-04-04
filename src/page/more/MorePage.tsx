@@ -10,9 +10,6 @@ import LogoutButton from "@/components/LogoutButton";
 
 const MorePage = () => {
   const { user } = useUser();
-  useEffect(() => {
-    console.log(user);
-  }, []);
 
   return (
     <div className="h-full py-16 overflow-scroll px-4">
@@ -22,7 +19,7 @@ const MorePage = () => {
 
       <main>
         <UpdateUserButton user={user} />
-        <UpdateFavoriteButton />
+        <UpdateFavoriteButton user={user} />
         <FavoriteClubButton />
         <RecentClubButton />
         <LogoutButton />

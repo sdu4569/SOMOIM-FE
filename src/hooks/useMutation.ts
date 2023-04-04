@@ -24,7 +24,7 @@ export default function useMutation(
   }
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const navigate = useNavigate();
 
   if (authorized && !token) {

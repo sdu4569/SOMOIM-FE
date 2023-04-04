@@ -23,7 +23,7 @@ import { Club, ClubResponse } from "@/libs/types";
 const tabs = ["추천클럽", "신규클럽"];
 
 export default function ClubPage() {
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const [selectedTab, setSelectedTab] = useState<string>(
     localStorage.getItem("clubListTab") || "추천클럽"
   );

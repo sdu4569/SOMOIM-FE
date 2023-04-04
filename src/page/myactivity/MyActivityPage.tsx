@@ -27,7 +27,7 @@ interface FavoriteClubsList {
 }
 
 const MyActivityPage = () => {
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
 
   const { data, isLoading, error, mutate } = useSWR<UserResponse>([
     "users/join-clubs",

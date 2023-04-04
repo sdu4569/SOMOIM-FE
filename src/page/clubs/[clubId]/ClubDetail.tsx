@@ -23,7 +23,7 @@ const tabs = ["정보", "게시판", "사진첩", "채팅"];
 export default function ClubDetail() {
   const navigate = useNavigate();
   const [like, setLike] = useState<boolean>(false);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const params = useParams();
   const { user } = useUser();
   const {

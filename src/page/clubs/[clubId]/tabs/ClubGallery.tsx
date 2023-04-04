@@ -36,7 +36,7 @@ export default function ClubGallery({
   const [showNav, setShowNav] = useState<boolean>(false);
   const { clubId } = useParams();
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const {
     data: albums,
     isLoading: albumsLoading,

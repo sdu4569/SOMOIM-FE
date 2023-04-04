@@ -16,7 +16,7 @@ export interface postFormData {
 export default function UpdateClubPostPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const params = useParams();
   const formRef = useRef<HTMLFormElement>(null);
   const {

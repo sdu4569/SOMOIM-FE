@@ -42,7 +42,7 @@ interface LikeResponse {
 export default function ClubPost() {
   const params = useParams();
   const navigate = useNavigate();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const { user: userData } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
   const [isLiked, setIsLiked] = useState<boolean>(false);

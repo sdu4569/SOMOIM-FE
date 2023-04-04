@@ -14,7 +14,7 @@ interface UserResponse {
 
 export default function useUser() {
   const navigate = useNavigate();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const location = useLocation();
 
   const { data, isLoading, error, mutate } = useSWR<UserResponse>([

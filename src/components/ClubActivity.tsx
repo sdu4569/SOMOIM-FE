@@ -36,7 +36,7 @@ export default function ClubActivity({
   user,
   isManager,
 }: ClubActivityProps) {
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const navigate = useNavigate();
   const [formattedDate, setFormattedDate] = useState<any>();
   const [isJoined, setIsJoined] = useState<boolean>(false);

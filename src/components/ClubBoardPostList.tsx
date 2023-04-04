@@ -26,7 +26,7 @@ export default function ClubBoardPostList({
   isMember,
 }: ClubBoardPostListProps) {
   const params = useParams();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
   const getPostKey: SWRInfiniteKeyLoader = useCallback(
