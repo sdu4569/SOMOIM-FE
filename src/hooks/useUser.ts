@@ -41,6 +41,16 @@ export default function useUser() {
             replace: true,
           });
         }
+      } else if (
+        data.data &&
+        (!data.data.favorites || data.data.favorites.length === 0)
+      ) {
+        if (location.pathname !== "/signup/favorite") {
+          alert("관심사를 설정해주세요.");
+          navigate("/signup/favorite", {
+            replace: true,
+          });
+        }
       }
       if (error) {
         console.log(error);
@@ -50,7 +60,7 @@ export default function useUser() {
         return;
       }
     }
-  }, [data, isLoading, error]);
+  }, []);
 
   useEffect(() => {
     if (!token) {

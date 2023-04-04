@@ -19,7 +19,7 @@ const UpdateFavoriteButton = () => {
       )}
       <div className="w-full mt-6 h-[32px] relative">
         {user &&
-          user.favorites.map((item, idx) => {
+          user.favorites?.map((item, idx) => {
             const srcImg = imageMap.get(item);
             return (
               <img

@@ -70,7 +70,7 @@ export default function ClubPage() {
 
   useEffect(() => {
     if (data) {
-      setClubs(data.map((page) => page.data.content).flat());
+      setClubs(data.map((page) => page.data?.content).flat());
     }
   }, [data]);
 
