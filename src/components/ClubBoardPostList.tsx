@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
@@ -9,8 +7,6 @@ import PostSkeleton from "./PostSkeleton";
 import useAccessToken from "@/hooks/useAccessToken";
 import { Post, PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
-import formatDate from "@/util/formatDate";
-import Avatar from "./Avatar";
 import PostPreview from "./PostPreview";
 
 interface ClubBoardPostListProps {

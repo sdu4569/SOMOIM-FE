@@ -13,7 +13,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import { Club, Member, Tabs } from "@/libs/types";
+import { Member, Tabs } from "@/libs/types";
 import Spinner from "@/components/Spinner";
 import FetchFail from "@/components/FetchFail";
 import useMutation from "@/hooks/useMutation";
@@ -105,18 +105,17 @@ export default function ClubDetail() {
   // }, [club, members]);
 
   useEffect(() => {
-    const check = likeClub?.data;
-    console.log(check);
-    // likeClub && setLike(check);
+    const check = likeClub?.data.some((item: any) => item.id == params.clubId);
+    likeClub && setLike(check);
   }, [likeClub]);
 
   //클럽 찜하기 기능
   const handleClick = async () => {
-    // if (!like) {
-    //   await addLike({ clubId: params.clubId });
-    // } else {
-    //   await delLike({ clubId: params.clubId });
-    // }
+    if (!like) {
+      await addLike({ clubId: params.clubId });
+    } else {
+      await delLike({ clubId: params.clubId });
+    }
     await likeClubMutate();
   };
 
@@ -144,7 +143,7 @@ export default function ClubDetail() {
           <FontAwesomeIcon
             icon={like ? solidHeart : regularHeart}
             size="xl"
-            // onClick={handleClick}
+            onClick={handleClick}
           />
         </div>
       </PageHeader>
@@ -178,7 +177,7 @@ export default function ClubDetail() {
                 isManager={isManager}
                 membersBoundMutate={membersBoundMutate}
                 club={club?.data}
-                // handleClick={handleClick}
+                handleClick={handleClick}
               />
             ),
             1: <ClubBoard isMember={isMember} isManager={isManager} />,
