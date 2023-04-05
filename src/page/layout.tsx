@@ -19,14 +19,18 @@ export default function Layout({ children, className }: LayoutProps) {
             // refresh token
             fetch(`${API_ENDPOINT}/users/auth/reissue`, {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-              },
               credentials: "include",
             })
               .then((res) => res.json())
-              .then((data) => console.log(data));
+              .then((data) => {
+                if (data.ok) {
+                  token = data.data.accessToken;
+                  setToken(data.data.accessToken);
+                  setTokenExp(
+                    new Date(data.data.accessTokenExpirationDateTime).getTime()
+                  );
+                }
+              });
           }
 
           return fetch(`${API_ENDPOINT}/${url}`, {

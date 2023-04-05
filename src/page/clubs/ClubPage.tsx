@@ -112,10 +112,6 @@ export default function ClubPage() {
     };
   }, [selectedTab]);
 
-  useEffect(() => {
-    console.log("cookie: ", document.cookie);
-  }, []);
-
   return (
     <div ref={wrapperRef} className="h-full overflow-scroll pt-16 pb-20">
       <PageHeader>

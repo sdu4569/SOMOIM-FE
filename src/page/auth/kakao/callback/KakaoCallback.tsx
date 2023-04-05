@@ -48,11 +48,11 @@ export default function KakaoCallback() {
 
         const response = await (
           await fetch(`${API_ENDPOINT}/users`, {
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
-            credentials: "include",
           })
         ).json();
 

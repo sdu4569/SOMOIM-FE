@@ -1,3 +1,5 @@
+import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
+import { useSetRecoilState } from "recoil";
 import { useNavigate } from "react-router-dom";
 import { API_ENDPOINT } from "@/App";
 
@@ -24,7 +26,9 @@ export default function useMutation(
   }
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { token, tokenExpiration } = useAccessToken();
+  let { token, tokenExpiration } = useAccessToken();
+  const setToken = useSetRecoilState(accessTokenAtom);
+  const setTokenExp = useSetRecoilState(accessTokenExpirationAtom);
   const navigate = useNavigate();
 
   if (authorized && !token) {
@@ -42,7 +46,13 @@ export default function useMutation(
         credentials: "include",
       })
         .then((res) => res.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          if (data.ok) {
+            token = data.data.accessToken;
+            setToken(data.data.accessToken);
+            setTokenExp(data.data.accessTokenExpiration);
+          }
+        });
     }
 
     setIsLoading(true);
