@@ -90,7 +90,6 @@ export default function ClubGallery({
           const check = data.data.some((item: any) => {
             return item.userId == user?.id;
           });
-          console.log(check);
           setIsLiked(check);
         });
     }
@@ -105,9 +104,14 @@ export default function ClubGallery({
     }
   }, [albumsLoading]);
 
-  const onLike = async (albumId: any) => {
-    console.log(albumId);
+  useEffect(() => {
+    if (albums && detail) {
+      const file = albums.data.filter((album) => album.id === detail.id)[0];
+      setDetail(file);
+    }
+  }, [albums, detail]);
 
+  const onLike = async (albumId: any) => {
     if (isLiked) {
       await fetch(`${API_ENDPOINT}/albums/${albumId}/likes`, {
         method: "DELETE",
@@ -125,6 +129,22 @@ export default function ClubGallery({
         },
       });
     }
+
+    fetch(`${API_ENDPOINT}/albums/${detail?.id}/likes`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const check = data.data.some((item: any) => {
+          return item.userId == user?.id;
+        });
+        setIsLiked(check);
+      });
+
+    await mutate();
   };
 
   if (showSkeleton) {
@@ -217,6 +237,7 @@ export default function ClubGallery({
                       >
                         <FontAwesomeIcon icon={faThumbsUp} className="-" />
                       </button>
+                      좋아요 {detail?.likeCnt} 개
                     </div>
                   </div>
                 </BottomTabNavigator>

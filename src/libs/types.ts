@@ -116,4 +116,5 @@ export interface Album {
   imageUrl: string;
   createdAt: string;
   updatedAt: string;
+  likeCnt: number;
 }
