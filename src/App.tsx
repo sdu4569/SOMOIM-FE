@@ -5,7 +5,7 @@ import Layout from "./page/layout";
 import { SWRConfig } from "swr";
 import { RecoilRoot } from "recoil";
 
-export const API_ENDPOINT = "http://43.200.191.33:8080";
+export const API_ENDPOINT = "https://somoim.shop:8443";
 
 function App() {
   return (
