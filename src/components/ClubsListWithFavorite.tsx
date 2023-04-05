@@ -10,7 +10,7 @@ export default function ClubsListWithFavorite({
   favorite: string;
 }) {
   const { token, tokenExpiration } = useAccessToken();
-  const { data: clubs, error } = useSWR<ClubResponse>([
+  const { data: clubs, error } = useSWR([
     `clubs/favorite?favorite=${favorite}`,
     token,
   ]);
@@ -19,5 +19,5 @@ export default function ClubsListWithFavorite({
     console.log(error);
   }, [error]);
 
-  return <ClubsList clubs={clubs?.data?.content?.slice(0, 8)} />;
+  return <ClubsList clubs={clubs?.data?.slice(0, 8)} />;
 }
