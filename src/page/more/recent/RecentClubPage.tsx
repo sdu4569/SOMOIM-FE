@@ -8,14 +8,14 @@ import Club from "@/components/Club";
 const RecentClubPage = () => {
   const [recentClubList, setRecentClubList] = useState<any[]>([]);
 
-  const getData = localStorage.getItem("recentClub");
   useEffect(() => {
+    const getData = localStorage.getItem("recentClub");
     if (getData !== null) {
       const parseData = JSON.parse(getData);
       setRecentClubList(parseData);
     }
   }, []);
-  console.log(recentClubList);
+
   const handleDelete = (e: string) => {
     const updateRecentList = recentClubList.filter(
       (item) => item.id !== Number(e)
@@ -32,26 +32,27 @@ const RecentClubPage = () => {
         </div>
       </PageHeader>
       <div>
-        {recentClubList.map((item) => {
-          return (
-            <div className="relative mb-4" key={item.id}>
-              <Link to={`/clubs/${item.id}`}>
-                <Club data={item} />
-              </Link>
-              <button
-                className="absolute top-0 right-0"
-                value={item.id}
-                onClick={() => handleDelete(`${item.id}`)}
-              >
-                <img
-                  src={Images.delete}
-                  alt="삭제버튼"
-                  className="w-3 inline-block "
-                />
-              </button>
-            </div>
-          );
-        })}
+        {recentClubList.length &&
+          recentClubList.map((item) => {
+            return (
+              <div className="relative mb-4" key={item.id}>
+                <Link to={`/clubs/${item.id}`}>
+                  <Club data={item} />
+                </Link>
+                <button
+                  className="absolute top-0 right-0"
+                  value={item.id}
+                  onClick={() => handleDelete(`${item.id}`)}
+                >
+                  <img
+                    src={Images.delete}
+                    alt="삭제버튼"
+                    className="w-3 inline-block "
+                  />
+                </button>
+              </div>
+            );
+          })}
       </div>
     </div>
   );
