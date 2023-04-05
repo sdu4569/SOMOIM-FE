@@ -132,12 +132,20 @@ export default function ClubDetailInfo({
             <h4 className="text-lg">클럽 소개</h4>
           </header>
           <article className="max-h-[500px] overflow-scroll">
-            <textarea
-              ref={descriptionRef}
-              className="leading-5 h-full w-full resize-none bg-white"
-              disabled
-              value={club.description}
-            ></textarea>
+            {club.description ? (
+              <textarea
+                ref={descriptionRef}
+                className="leading-5 h-full w-full resize-none bg-white"
+                disabled
+                value={club.description}
+              ></textarea>
+            ) : (
+              <div className="w-full my-4 text-center">
+                <p className="text-gray-300 font-semibold">
+                  클럽 소개가 없습니다.
+                </p>
+              </div>
+            )}
           </article>
         </section>
         <section>
@@ -152,14 +160,22 @@ export default function ClubDetailInfo({
             )}
           </header>
           <ul className="divide-y-2">
-            {clubActivities?.data?.map((activity: Activity) => (
-              <ClubActivity
-                user={user}
-                key={activity.id}
-                data={activity}
-                isManager={isManager}
-              />
-            ))}
+            {clubActivities?.data?.length ? (
+              clubActivities?.data?.map((activity: Activity) => (
+                <ClubActivity
+                  user={user}
+                  key={activity.id}
+                  data={activity}
+                  isManager={isManager}
+                />
+              ))
+            ) : (
+              <div className="w-full my-4 text-center">
+                <p className="text-gray-300 font-semibold">
+                  예정된 액티비티가 없습니다.
+                </p>
+              </div>
+            )}
           </ul>
         </section>
         <section>
