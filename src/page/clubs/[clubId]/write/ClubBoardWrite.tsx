@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import HeaderBackButton from "@/components/HeaderBackButton";
 import PageHeader from "@/components/PageHeader";
 import Overlay from "@/components/Overlay";
@@ -12,6 +12,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { PostCategory, Tabs } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
+import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
+import useUser from "@/hooks/useUser";
 
 interface writeFormData {
   title: string;
@@ -21,6 +23,8 @@ interface writeFormData {
 }
 
 export default function ClubBoardWrite() {
+  const { user } = useUser();
+  const { state } = useLocation();
   const formRef = useRef<HTMLFormElement>(null);
   const [categoryModal, setCategoryModal] = useState<boolean>(false);
   const [category, setCategory] = useState<PostCategory>(PostCategory.FREE);
@@ -33,7 +37,6 @@ export default function ClubBoardWrite() {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
   } = useForm<writeFormData>();
 
   const postPicture = watch("image");
@@ -51,13 +54,6 @@ export default function ClubBoardWrite() {
 
   const { ref } = register("content");
   const contentRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const handleResizeHeight = useCallback(() => {
-    if (!contentRef.current) return;
-
-    contentRef.current.style.height = "auto";
-    contentRef.current.style.height = contentRef.current?.scrollHeight + "px";
-  }, [contentRef]);
 
   const clickHandler = (e: any) => {
     if (formRef.current) {
@@ -123,11 +119,15 @@ export default function ClubBoardWrite() {
         <Overlay onClick={() => setCategoryModal(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className=" w-full h-[300px] mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col"
+            className={`w-full ${
+              state.isManager ? "h-[300px]" : "h-[250px]"
+            } mt-auto mb-auto ml-3 mr-3 flex bg-white self-end flex-col`}
           >
             <div className="h-[50px] p-4 text-[20px]">게시글 카테고리</div>
             <div
-              className="h-[50px] p-4 text-[16px]"
+              className={`h-[50px] p-4 text-[16px] ${
+                state.isManager ? "" : "hidden"
+              }`}
               onClick={(e) => handleClick(e)}
               data-category={PostCategory.ANNOUNCEMENT}
             >
@@ -216,17 +216,12 @@ export default function ClubBoardWrite() {
           </p>
         </div>
         <textarea
-          cols={30}
-          rows={10}
+          rows={15}
+          cols={40}
           maxLength={30000}
           placeholder="클럽원들과 공유하고 싶은 내용을 적어보세요."
           className=" w-full p-2 outline-none leading-5 relative resize-none"
           {...register("content", { required: "내용을 입력해주세요." })}
-          // onInput={handleResizeHeight}
-          ref={(e) => {
-            ref(e);
-            contentRef.current = e;
-          }}
         />
         <ErrorMessage
           errors={errors}

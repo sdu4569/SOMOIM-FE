@@ -100,9 +100,9 @@ export default function ClubDetail() {
     }
   }, [club, user]);
 
-  // useEffect(() => {
-  //   console.log(club, members);
-  // }, [club, members]);
+  useEffect(() => {
+    console.log(club, members);
+  }, [club, members]);
 
   useEffect(() => {
     const check = likeClub?.data?.some(
