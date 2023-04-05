@@ -32,27 +32,28 @@ const RecentClubPage = () => {
         </div>
       </PageHeader>
       <div>
-        {recentClubList.length &&
-          recentClubList.map((item) => {
-            return (
-              <div className="relative mb-4" key={item.id}>
-                <Link to={`/clubs/${item.id}`}>
-                  <Club data={item} />
-                </Link>
-                <button
-                  className="absolute top-0 right-0"
-                  value={item.id}
-                  onClick={() => handleDelete(`${item.id}`)}
-                >
-                  <img
-                    src={Images.delete}
-                    alt="삭제버튼"
-                    className="w-3 inline-block "
-                  />
-                </button>
-              </div>
-            );
-          })}
+        {recentClubList.length
+          ? recentClubList.map((item) => {
+              return (
+                <div className="relative mb-4" key={item.id}>
+                  <Link to={`/clubs/${item.id}`}>
+                    <Club data={item} />
+                  </Link>
+                  <button
+                    className="absolute top-0 right-0"
+                    value={item.id}
+                    onClick={() => handleDelete(`${item.id}`)}
+                  >
+                    <img
+                      src={Images.delete}
+                      alt="삭제버튼"
+                      className="w-3 inline-block "
+                    />
+                  </button>
+                </div>
+              );
+            })
+          : null}
       </div>
     </div>
   );

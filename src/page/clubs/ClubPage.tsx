@@ -156,6 +156,7 @@ export default function ClubPage() {
                   <motion.div
                     className=" h-[2px] absolute left-0 right-0 bottom-0 bg-black"
                     layoutId="underline"
+                    layoutScroll
                   />
                 )}
               </button>
