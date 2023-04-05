@@ -58,7 +58,7 @@ export default function ClubBoardNoticeList({
         return isMember ? (
           <li key={notice.id}>
             <Link
-              to={`post/${notice.id}`}
+              to={`posts/${notice.id}`}
               state={{ post: notice }}
               className="flex space-x-2 py-2"
             >
