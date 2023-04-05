@@ -17,6 +17,15 @@ export default function Layout({ children, className }: LayoutProps) {
         fetcher: ([url, token]: [string, string]) => {
           if (tokenExp - Date.now() < 5000) {
             // refresh token
+            fetch(`${API_ENDPOINT}/users/auth/reissue`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
+              .then((res) => res.json())
+              .then((data) => console.log(data));
           }
 
           return fetch(`${API_ENDPOINT}/${url}`, {

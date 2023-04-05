@@ -105,7 +105,7 @@ export default function ClubDetail() {
   // }, [club, members]);
 
   useEffect(() => {
-    const check = likeClub?.data.some((item: any) => item.id == params.clubId);
+    const check = likeClub?.data?.some((item: any) => item.id == params.clubId);
     likeClub && setLike(check);
   }, [likeClub]);
 
