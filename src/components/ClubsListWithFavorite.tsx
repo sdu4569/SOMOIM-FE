@@ -14,5 +14,5 @@ export default function ClubsListWithFavorite({
     token,
   ]);
 
-  return <ClubsList clubs={clubs?.data?.content.slice(0, 8)} />;
+  return <ClubsList clubs={clubs?.data?.content?.slice(0, 8)} />;
 }

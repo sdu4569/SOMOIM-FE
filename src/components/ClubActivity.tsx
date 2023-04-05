@@ -203,7 +203,7 @@ export default function ClubActivity({
         </span>
         <div className="w-full flex justify-center items-center">
           <ul className="w-full grid gap-y-2 grid-cols-7 px-auto">
-            {joinedMembers?.data.slice(0, 7).map((member, idx) => (
+            {joinedMembers?.data?.slice(0, 7).map((member, idx) => (
               <li
                 className="w-10 h-10 rounded-full relative group"
                 key={member.userId}
