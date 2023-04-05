@@ -21,8 +21,6 @@ export default function UpdateComment({
   closeModal,
   refreshComment,
 }: CommentProps) {
-  console.log(selectComment.id);
-
   // const { mutate: updateComment } = useMutation(
   //   `boards/comments/${selectComment.id}`,
   //   {
@@ -30,7 +28,7 @@ export default function UpdateComment({
   //   }
   // );
 
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const {
     register,
     handleSubmit,

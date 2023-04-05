@@ -1,3 +1,5 @@
+import { API_ENDPOINT } from "./../App";
+import useMutation from "@/hooks/useMutation";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { accessTokenExpirationAtom } from "@/libs/atoms";
@@ -10,11 +12,5 @@ export default function useAccessToken() {
     accessTokenExpirationAtom
   );
 
-  useEffect(() => {
-    if (token && tokenExpiration && tokenExpiration - Date.now() < 5000) {
-      // refresh token
-    }
-  }, [token, tokenExpiration]);
-
-  return token;
+  return { token, tokenExpiration };
 }

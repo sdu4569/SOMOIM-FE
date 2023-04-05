@@ -33,11 +33,41 @@ export interface Club {
   memberLimit: number;
   memberCnt: number;
   favorite: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Activity {
+  id: number;
+  title: string;
+  activityTime: string;
+  memberCnt: number;
+  memberLimit: number;
+  location: string;
+  fee: string;
+}
+
+export interface ActivityMember {
+  userId: number;
+  userName: string;
+  userImage?: string;
+  activityId: number;
+}
+
+export interface ActivityForm {
+  title: string;
+  date: Date;
+  time: string;
+  location: string;
+  fee: string;
+  memberLimit: number;
 }
 
 export interface ClubResponse {
   ok: boolean;
-  data: Club[];
+  data: {
+    content: Club[];
+  };
 }
 
 export interface Comment {
@@ -95,4 +125,21 @@ export interface Post {
   userId: number;
   userImg?: string;
   userName: string;
+}
+
+export interface Like {
+  id: number;
+  userId: number;
+  boardId: number;
+}
+
+export interface Album {
+  id: number;
+  userId: number;
+  userName: string;
+  userImg: string;
+  clubId: number;
+  imageUrl: string;
+  createdAt: string;
+  updatedAt: string;
 }

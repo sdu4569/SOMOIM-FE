@@ -11,7 +11,7 @@ export default function ClubBoardNoticeList({
   isMember: boolean;
 }) {
   const params = useParams();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
   const { data: notices, isLoading: noticeLoading } = useSWR([

@@ -17,7 +17,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import { API_ENDPOINT } from "@/App";
 import Textarea from "@/components/Textarea";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
-import { Comment, ModalType, Post } from "@/libs/types";
+import { Comment, Like, ModalType, Post } from "@/libs/types";
 import Delete from "@/components/Delete";
 import PostMenuButton from "@/components/PostMenuButton";
 import CommentMenuButton from "@/components/CommentMenuButton";
@@ -34,15 +34,18 @@ interface CommentResponse {
   data: Comment[];
 }
 
-let postLikeArr: any[] = [];
+interface LikeResponse {
+  ok: boolean;
+  data: Like[];
+}
 
 export default function ClubPost() {
   const params = useParams();
   const navigate = useNavigate();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const { user: userData } = useUser();
   const formRef = useRef<HTMLFormElement>(null);
-  const [like, setLike] = useState<boolean>(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [inModal, setInModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>();
   const [selectedComment, setSelectedComment] = useState<any>(null);
@@ -67,11 +70,27 @@ export default function ClubPost() {
     }
   );
 
+  const { mutate: like, isLoading: likeLoading } = useMutation(
+    `boards/${params.postId}/likes`,
+    { authorized: true }
+  );
+
+  const { mutate: unlike, isLoading: unlikeLoading } = useMutation(
+    `boards/${params.postId}/likes`,
+    { authorized: true, method: "DELETE" }
+  );
+
   const {
     data: commentData,
     isLoading: getCommentLoading,
     mutate: refreshCommentData,
   } = useSWR<CommentResponse>([`boards/${params.postId}/comments`, token]);
+
+  const {
+    data: likeData,
+    isLoading: getLikeLoading,
+    mutate: refreshLikeData,
+  } = useSWR<LikeResponse>([`boards/${params.postId}/likes`, token]);
 
   useEffect(() => {
     if (!location.state) {
@@ -88,6 +107,13 @@ export default function ClubPost() {
       resize(textareaRef);
     }
   }, [post]);
+
+  useEffect(() => {
+    if (userData && likeData) {
+      setIsLiked(likeData.data.some((like) => like.userId === userData.id));
+    }
+    console.log(likeData);
+  }, [userData, likeData]);
 
   //모달 닫기 기능
   const closeModal = () => {
@@ -132,6 +158,20 @@ export default function ClubPost() {
       refreshCommentData();
     }
     setValue("comment", "");
+  };
+
+  const onLike = async () => {
+    if (likeLoading || unlikeLoading) {
+      return;
+    }
+
+    if (isLiked) {
+      await unlike();
+    } else {
+      await like();
+    }
+
+    await refreshLikeData();
   };
 
   //글 삭제
@@ -257,9 +297,9 @@ export default function ClubPost() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <button
-            // onClick={likeClick}
+            onClick={onLike}
             className={`border rounded-md p-2 text-sm border-black flex justify-center space-x-1 items-center ${
-              like ? "text-blue-500" : "text-black"
+              isLiked ? "text-blue-500" : "text-black"
             }`}
           >
             <FontAwesomeIcon icon={faThumbsUp} className="-" />
@@ -277,12 +317,12 @@ export default function ClubPost() {
           <div className="flex space-x-2 items-center">
             <FontAwesomeIcon icon={faThumbsUp} className="text-blue-500" />
             <div className="py-3 text-sm">
-              {postLikeArr.length == 0 ? (
+              {likeData?.data?.length == 0 ? (
                 "제일 먼저 좋아요를 눌러주세요!"
               ) : (
                 <>
                   <div className="text-blue-500 inline-block">
-                    {postLikeArr.length}
+                    {likeData?.data?.length}
                   </div>
                   <div className="inline-block">&nbsp;명이 좋아하셨습니다.</div>
                 </>

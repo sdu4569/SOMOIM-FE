@@ -14,7 +14,7 @@ interface UserResponse {
 
 export default function useUser() {
   const navigate = useNavigate();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const location = useLocation();
 
   const { data, isLoading, error, mutate } = useSWR<UserResponse>([
@@ -26,7 +26,7 @@ export default function useUser() {
     if (!isLoading && data) {
       if (!data.ok) {
         alert(data.message);
-        navigate("/landing", {
+        navigate("/", {
           replace: true,
         });
         return;
@@ -41,20 +41,30 @@ export default function useUser() {
             replace: true,
           });
         }
+      } else if (
+        data.data &&
+        (!data.data.favorites || data.data.favorites.length === 0)
+      ) {
+        if (location.pathname !== "/signup/favorite") {
+          alert("관심사를 설정해주세요.");
+          navigate("/signup/favorite", {
+            replace: true,
+          });
+        }
       }
       if (error) {
         console.log(error);
-        // navigate("/landing", {
+        // navigate("/", {
         //   replace: true,
         // });
         return;
       }
     }
-  }, [data, isLoading, error]);
+  }, []);
 
   useEffect(() => {
     if (!token) {
-      navigate("/landing", {
+      navigate("/", {
         replace: true,
       });
     }

@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMessage, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import useSWRInfinite, { SWRInfiniteKeyLoader } from "swr/infinite";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "./Spinner";
@@ -9,8 +7,6 @@ import PostSkeleton from "./PostSkeleton";
 import useAccessToken from "@/hooks/useAccessToken";
 import { Post, PostCategory } from "@/libs/types";
 import getPostCategoryWithKey from "@/util/getPostCategoryWithKey";
-import formatDate from "@/util/formatDate";
-import Avatar from "./Avatar";
 import PostPreview from "./PostPreview";
 
 interface ClubBoardPostListProps {
@@ -30,7 +26,7 @@ export default function ClubBoardPostList({
   isMember,
 }: ClubBoardPostListProps) {
   const params = useParams();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const [showSkeleton, setShowSkeleton] = useState<boolean>(false);
 
   const getPostKey: SWRInfiniteKeyLoader = useCallback(
@@ -111,7 +107,7 @@ export default function ClubBoardPostList({
             .map((post: Post) =>
               isMember ? (
                 <Link
-                  to={`/clubs/${params.clubId}/post/${post?.id}`}
+                  to={`/clubs/${params.clubId}/posts/${post?.id}`}
                   key={post.id}
                   className="py-2 cursor-pointer"
                   state={{ post }}

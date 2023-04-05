@@ -24,17 +24,29 @@ export default function useMutation(
   }
 ) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const navigate = useNavigate();
 
   if (authorized && !token) {
-    navigate("/landing", {
+    navigate("/", {
       replace: true,
     });
   }
 
   const mutate = async function (data?: any): Promise<APIResponse> {
     if (isLoading) return Promise.reject("Already loading");
+
+    if (tokenExpiration - Date.now() < 5000) {
+      fetch(`${API_ENDPOINT}/users/auth/reissue`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    }
 
     setIsLoading(true);
     let response;

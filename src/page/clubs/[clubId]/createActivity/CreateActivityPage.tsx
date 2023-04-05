@@ -13,60 +13,56 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 
 import "react-datepicker/dist/react-datepicker.css";
-
-interface CreateActivityForm {
-  name: string;
-  date: Date;
-  time: string;
-  location: string;
-  money: string;
-  maxMember: number;
-}
-
-const formatDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const dayOfWeek = date.getDay();
-  const dayOfWeekLabel = ["일", "월", "화", "수", "목", "금", "토"][dayOfWeek];
-  const ret = {
-    year,
-    month,
-    day,
-    dayOfWeek,
-    dayOfWeekLabel: `${dayOfWeekLabel}요일`,
-    YYYYMMDD: `${year}-${month}-${day}`,
-  };
-  return ret;
-};
-
-const formatTime = (time: string) => {
-  const [hour, minute] = time.split(":");
-  const hourNumber = parseInt(hour);
-  const minuteNumber = parseInt(minute);
-  const isAM = hourNumber < 12;
-  const hour12 = hourNumber % 12 || 12;
-  return `${isAM ? "오전" : "오후"} ${hour12}:${
-    minuteNumber < 10 ? "0" : ""
-  }${minuteNumber}`;
-};
+import useMutation from "@/hooks/useMutation";
+import { useNavigate, useParams } from "react-router-dom";
+import { formatDate, formatTime } from "@/util/formatActivityTime";
+import { ActivityForm } from "@/libs/types";
+import { pageSlideIn } from "@/libs/variants";
+import { motion } from "framer-motion";
 
 export default function CreateActivity() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     control,
     watch,
     formState: { isValid },
-  } = useForm<CreateActivityForm>({
+  } = useForm<ActivityForm>({
     defaultValues: {
       time: "19:00",
-      maxMember: 20,
+      memberLimit: 20,
     },
   });
+  const { clubId } = useParams();
 
+  const { mutate: createActivity } = useMutation(`clubs/${clubId}/activities`, {
+    authorized: true,
+  });
+
+  const onSubmit = async (data: ActivityForm) => {
+    const response = await createActivity({
+      title: data.title,
+      activityTime: formatDate(data.date).YYYYMMDD + "T" + data.time + ":00",
+      fee: data.fee,
+      location: data.location,
+      memberLimit: data.memberLimit,
+    });
+
+    if (response.ok) {
+      navigate(-1);
+    } else {
+      alert(response.message || "알 수 없는 오류가 발생했습니다.");
+    }
+  };
   return (
-    <div className="overflow-scroll h-full p-4">
+    <motion.div
+      variants={pageSlideIn}
+      initial="initial"
+      animate="animate"
+      className="overflow-scroll h-full p-4"
+    >
       <PageHeader className="!bg-gray-100">
         <div className="flex space-x-4 items-center">
           <HeaderBackButton />
@@ -75,16 +71,16 @@ export default function CreateActivity() {
       </PageHeader>
       <section className="mt-12">
         <form
-          onSubmit={handleSubmit((data) => console.log(data))}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-4"
         >
-          <label htmlFor="name" className="flex items-center">
+          <label htmlFor="title" className="flex items-center">
             <input
               type="text"
-              id="name"
+              id="title"
               className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
               placeholder="C.A 제목을 입력하세요."
-              {...register("name", { required: true })}
+              {...register("title", { required: true })}
             />
           </label>
           <div className="justify-between flex">
@@ -144,14 +140,14 @@ export default function CreateActivity() {
               {...register("location", { required: true })}
             />
           </label>
-          <label htmlFor="money" className="flex items-center space-x-4">
+          <label htmlFor="fee" className="flex items-center space-x-4">
             <FontAwesomeIcon icon={faWonSign} size="xl" className="w-6" />
             <input
               placeholder="식사비 15000원"
               type="text"
-              id="money"
+              id="fee"
               className="rounded-md p-2 bg-gray-100 flex-1 outline-none"
-              {...register("money", { required: true })}
+              {...register("fee", { required: true })}
             />
           </label>
           <label className="flex items-center justify-between">
@@ -161,7 +157,7 @@ export default function CreateActivity() {
             </div>
             <input
               type="number"
-              {...register("maxMember", { required: true, min: 5, max: 300 })}
+              {...register("memberLimit", { required: true, min: 5, max: 300 })}
               className="p-2 rounded-md bg-gray-100 outline-none w-16 appearance-none text-center"
             />
           </label>
@@ -172,6 +168,6 @@ export default function CreateActivity() {
           </Button>
         </form>
       </section>
-    </div>
+    </motion.div>
   );
 }

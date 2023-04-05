@@ -2,8 +2,8 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useCallback, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import HeaderBackButton from "../components/HeaderBackButton";
-import PageHeader from "../components/PageHeader";
+import HeaderBackButton from "../../../../../../components/HeaderBackButton";
+import PageHeader from "../../../../../../components/PageHeader";
 import { API_ENDPOINT } from "@/App";
 import useAccessToken from "@/hooks/useAccessToken";
 
@@ -16,7 +16,7 @@ export interface postFormData {
 export default function UpdateClubPostPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const params = useParams();
   const formRef = useRef<HTMLFormElement>(null);
   const {

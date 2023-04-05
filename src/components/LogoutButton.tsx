@@ -5,10 +5,8 @@ import { useNavigate } from "react-router-dom";
 export default function LogoutButton() {
   const { logout } = useLogout();
 
-  const token = useAccessToken();
-
   const onClick = async () => {
-    const ok = await logout(token);
+    const ok = await logout();
   };
   return (
     <button

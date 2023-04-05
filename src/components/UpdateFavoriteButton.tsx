@@ -1,10 +1,10 @@
 import useUser from "@/hooks/useUser";
 import { imageMap } from "@/libs/Images";
+import { User } from "@/libs/types";
 import { useState } from "react";
 import FavoriteSelect from "./FavoriteSelect";
 
-const UpdateFavoriteButton = () => {
-  const { user } = useUser();
+const UpdateFavoriteButton = ({ user }: { user?: User }) => {
   const [inModal, setInModal] = useState<boolean>(false);
   const closeModal = () => {
     setInModal(false);
@@ -19,7 +19,7 @@ const UpdateFavoriteButton = () => {
       )}
       <div className="w-full mt-6 h-[32px] relative">
         {user &&
-          user.favorites.map((item, idx) => {
+          user.favorites?.map((item, idx) => {
             const srcImg = imageMap.get(item);
             return (
               <img

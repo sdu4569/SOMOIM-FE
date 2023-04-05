@@ -5,13 +5,13 @@ import Layout from "./page/layout";
 import { SWRConfig } from "swr";
 import { RecoilRoot } from "recoil";
 
-export const API_ENDPOINT = "http://43.200.191.33:8080";
+export const API_ENDPOINT = "https://somoim.shop:8443";
 
 function App() {
   return (
     <BrowserRouter>
       <RecoilRoot>
-        <SWRConfig
+        {/* <SWRConfig
           value={{
             fetcher: ([url, token]: [string, string]) =>
               fetch(`${API_ENDPOINT}/${url}`, {
@@ -20,12 +20,13 @@ function App() {
                   Authorization: `Bearer ${token}`,
                 },
               }).then((res) => res.json()),
+
           }}
-        >
-          <Layout>
-            <PageNavigator />
-          </Layout>
-        </SWRConfig>
+        > */}
+        <Layout>
+          <PageNavigator />
+        </Layout>
+        {/* </SWRConfig> */}
       </RecoilRoot>
     </BrowserRouter>
   );

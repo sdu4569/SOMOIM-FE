@@ -3,15 +3,17 @@ import useMutation from "./useMutation";
 import { useSetRecoilState } from "recoil";
 import { accessTokenAtom, accessTokenExpirationAtom } from "@/libs/atoms";
 import useUser from "./useUser";
+import useAccessToken from "./useAccessToken";
 
 export default function useLogout() {
+  const { token, tokenExpiration } = useAccessToken();
   const setToken = useSetRecoilState(accessTokenAtom);
   const setTokenExp = useSetRecoilState(accessTokenExpirationAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { mutate: mutateUser } = useUser();
   const { mutate } = useMutation("users/auth/signout");
 
-  const logout = async (token: string) => {
+  const logout = async () => {
     setIsLoading(true);
 
     const { ok, data, message } = await mutate({ accessToken: token });

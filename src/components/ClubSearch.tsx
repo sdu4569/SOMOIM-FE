@@ -32,7 +32,7 @@ const ClubSearch = () => {
   >([]);
 
   useEffect(() => {
-    if (user) {
+    if (user && user.favorites) {
       const SelectList = FavoriteList.filter((item) =>
         user.favorites.includes(item.favorite)
       );
