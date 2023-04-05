@@ -13,6 +13,7 @@ import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
 import ClubsListWithFavorite from "@/components/ClubsListWithFavorite";
 import getFavoriteWithKey from "@/util/getFavoriteWithKey";
+import formatImageUrl from "@/util/formatImageUrl";
 
 interface UserResponse {
   ok: boolean;
@@ -27,7 +28,7 @@ interface FavoriteClubsList {
 }
 
 const MyActivityPage = () => {
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
 
   const { data, isLoading, error, mutate } = useSWR<UserResponse>([
     "users/join-clubs",
@@ -66,18 +67,16 @@ const MyActivityPage = () => {
                 <li key={item.id}>
                   <Link to={`/clubs/${item.id}`} state={item}>
                     <div className="flex space-x-4 mb-4">
-                      <div className="rounded-2xl w-[48px] aspect-square relative bg-blue-500 overflow-hidden">
-                        {item.imageUrl && (
-                          <img
-                            src={
-                              item.imageUrl.includes("imagedelivery")
-                                ? item.imageUrl + "/public"
-                                : item.imageUrl
-                            }
-                            alt="클럽 대표 사진"
-                            className="w-full h-full object-cover"
-                          />
-                        )}
+                      <div
+                        className={`rounded-2xl w-[48px] aspect-square relative ${
+                          item.imageUrl ? "overflow-hidden" : ""
+                        }`}
+                      >
+                        <img
+                          src={formatImageUrl(item.imageUrl, "public")}
+                          alt="클럽 대표 사진"
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <div className="flex-1 flex flex-col justify-evenly">
                         <div>

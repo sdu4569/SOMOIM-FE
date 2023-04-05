@@ -96,7 +96,7 @@ export default function ClubBoardWrite() {
     });
 
     if (result.ok) {
-      navigate("/clubs/" + params.clubId + "/post/" + result.data.id, {
+      navigate("/clubs/" + params.clubId + "/posts/" + result.data.id, {
         replace: true,
         state: {
           post: result.data,

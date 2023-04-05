@@ -6,7 +6,7 @@ import useUser from "./useUser";
 import useAccessToken from "./useAccessToken";
 
 export default function useLogout() {
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const setToken = useSetRecoilState(accessTokenAtom);
   const setTokenExp = useSetRecoilState(accessTokenExpirationAtom);
   const [isLoading, setIsLoading] = useState<boolean>(false);

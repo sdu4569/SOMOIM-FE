@@ -17,6 +17,8 @@ import Overlay from "@/components/Overlay";
 import { FavoriteList } from "@/libs/FavoriteList";
 import { mutate } from "swr";
 import formatImageUrl from "@/util/formatImageUrl";
+import { motion } from "framer-motion";
+import { pageSlideIn } from "@/libs/variants";
 
 interface ClubEditForm {
   favorite: string;
@@ -140,7 +142,12 @@ export default function ClubEditPage() {
             />
           ),
         }[modalType]}
-      <div className="overflow-scroll h-full p-4">
+      <motion.div
+        variants={pageSlideIn}
+        initial="initial"
+        animate="animate"
+        className="overflow-scroll h-full p-4"
+      >
         <PageHeader className="!bg-gray-100">
           <div className="flex space-x-4 items-center">
             <HeaderBackButton />
@@ -261,7 +268,7 @@ export default function ClubEditPage() {
             </div>
           </form>
         </section>
-      </div>
+      </motion.div>
     </>
   );
 }

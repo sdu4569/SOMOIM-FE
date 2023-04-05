@@ -37,6 +37,32 @@ export interface Club {
   updatedAt: string;
 }
 
+export interface Activity {
+  id: number;
+  title: string;
+  activityTime: string;
+  memberCnt: number;
+  memberLimit: number;
+  location: string;
+  fee: string;
+}
+
+export interface ActivityMember {
+  userId: number;
+  userName: string;
+  userImage?: string;
+  activityId: number;
+}
+
+export interface ActivityForm {
+  title: string;
+  date: Date;
+  time: string;
+  location: string;
+  fee: string;
+  memberLimit: number;
+}
+
 export interface ClubResponse {
   ok: boolean;
   data: {

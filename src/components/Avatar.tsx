@@ -21,11 +21,11 @@ export default function Avatar({ size, src }: AvatarProps) {
 
   return (
     <img
-      src={formatImageUrl(src, size === "md" ? "avatar" : "avatarLarge")}
+      src={formatImageUrl(src, size === "md" ? "public" : "public")}
       alt="유저 프로필 사진"
       className={`${
         size === "md" ? "w-10" : "w-20"
-      } aspect-square rounded-full`}
+      } aspect-square rounded-full object-cover`}
     />
   );
 }

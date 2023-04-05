@@ -28,7 +28,7 @@ export default function UpdateComment({
   //   }
   // );
 
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const {
     register,
     handleSubmit,

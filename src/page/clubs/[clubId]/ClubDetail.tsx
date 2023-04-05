@@ -13,7 +13,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useSWR from "swr";
 import useAccessToken from "@/hooks/useAccessToken";
 import useUser from "@/hooks/useUser";
-import { Member, Tabs } from "@/libs/types";
+import { Club, Member, Tabs } from "@/libs/types";
 import Spinner from "@/components/Spinner";
 import FetchFail from "@/components/FetchFail";
 import useMutation from "@/hooks/useMutation";
@@ -23,7 +23,7 @@ const tabs = ["정보", "게시판", "사진첩", "채팅"];
 export default function ClubDetail() {
   const navigate = useNavigate();
   const [like, setLike] = useState<boolean>(false);
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const params = useParams();
   const { user } = useUser();
   const {
@@ -172,12 +172,13 @@ export default function ClubDetail() {
             0: (
               <ClubDetailInfo
                 like={like}
-                members={members?.data as Member[]}
+                members={members.data as Member[]}
                 isMember={isMember}
                 isManager={isManager}
                 membersBoundMutate={membersBoundMutate}
-                club={club?.data}
+                club={club.data as Club}
                 handleClick={handleClick}
+                user={user}
               />
             ),
             1: <ClubBoard isMember={isMember} isManager={isManager} />,

@@ -12,7 +12,7 @@ import { API_ENDPOINT } from "@/App";
 const FavoriteClubPage = () => {
   const [favoriteClubList, setFavoriteClubList] = useState<any[]>([]);
 
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
 
   const {
     data: likeClub,

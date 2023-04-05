@@ -16,7 +16,7 @@ interface searchFormData {
 
 const ClubSearchPage = () => {
   const { user } = useUser();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const [focusOn, setFocusOn] = useState<boolean>(false);
   const [notSearch, setNotSearch] = useState<boolean>(false);
   const [filterList, setFilterList] = useState<any[]>([]);

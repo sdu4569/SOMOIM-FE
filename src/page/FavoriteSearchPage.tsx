@@ -18,7 +18,7 @@ interface searchFormData {
 export const FavoriteSearchPage = () => {
   const params = useParams();
   const { user } = useUser();
-  const token = useAccessToken();
+  const { token, tokenExpiration } = useAccessToken();
   const favorite = FavoriteList.filter(
     (item) => item.favorite == params.favorite
   );
