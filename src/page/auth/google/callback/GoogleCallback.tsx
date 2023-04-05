@@ -15,7 +15,7 @@ export default function GoogleCallback() {
 
   useEffect(() => {
     const code = new URLSearchParams(location.search).get("code");
-    fetch("http://43.200.191.33:8080/users/oauth/google", {
+    fetch(`${API_ENDPOINT}/users/oauth/google`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

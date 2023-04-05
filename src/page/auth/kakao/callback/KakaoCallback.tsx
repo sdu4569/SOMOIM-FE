@@ -15,7 +15,7 @@ export default function KakaoCallback() {
 
   useEffect(() => {
     const code = new URLSearchParams(location.search).get("code");
-    fetch("http://43.200.191.33:8080/users/oauth/kakao", {
+    fetch(`${API_ENDPOINT}/users/oauth/kakao`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
