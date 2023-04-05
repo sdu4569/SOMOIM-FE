@@ -39,10 +39,6 @@ export default function useMutation(
     if (tokenExpiration - Date.now() < 5000) {
       fetch(`${API_ENDPOINT}/users/auth/reissue`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
         credentials: "include",
       })
         .then((res) => res.json())
