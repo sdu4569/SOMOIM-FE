@@ -64,6 +64,7 @@ export default function UpdateComment({
         body: JSON.stringify({
           comment: commentForm.comment,
         }),
+        credentials: "include",
       }
     );
 

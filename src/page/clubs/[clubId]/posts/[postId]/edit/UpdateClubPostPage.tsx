@@ -48,6 +48,7 @@ export default function UpdateClubPostPage() {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
+      credentials: "include",
       body: JSON.stringify({
         category: postForm.category,
         title: postForm.title,

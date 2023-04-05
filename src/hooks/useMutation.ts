@@ -43,6 +43,7 @@ export default function useMutation(
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => console.log(data));
@@ -59,6 +60,7 @@ export default function useMutation(
             Authorization: "Bearer " + token,
           }),
         },
+        credentials: "include",
         body: data && JSON.stringify(data),
       });
     } catch (error) {

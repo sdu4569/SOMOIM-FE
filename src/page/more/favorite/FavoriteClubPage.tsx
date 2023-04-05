@@ -35,6 +35,7 @@ const FavoriteClubPage = () => {
       body: JSON.stringify({
         clubId: id,
       }),
+      credentials: "include",
     });
 
     if (response.ok) {

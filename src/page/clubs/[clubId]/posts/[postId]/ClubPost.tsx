@@ -182,6 +182,7 @@ export default function ClubPost() {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
+      credentials: "include",
     });
     navigate(-1);
   };
@@ -198,6 +199,7 @@ export default function ClubPost() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        credentials: "include",
       }
     );
 

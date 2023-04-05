@@ -20,6 +20,7 @@ export default function KakaoCallback() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         code,
       }),
@@ -51,6 +52,7 @@ export default function KakaoCallback() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
+            credentials: "include",
           })
         ).json();
 

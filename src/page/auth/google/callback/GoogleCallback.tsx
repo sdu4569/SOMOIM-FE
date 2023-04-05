@@ -23,6 +23,7 @@ export default function GoogleCallback() {
       body: JSON.stringify({
         code,
       }),
+      credentials: "include",
     })
       .then((res) => {
         if (!res.ok) {
@@ -51,6 +52,7 @@ export default function GoogleCallback() {
               "Content-Type": "application/json",
               Authorization: `Bearer ${accessToken}`,
             },
+            credentials: "include",
           })
         ).json();
 

@@ -23,6 +23,7 @@ export default function Layout({ children, className }: LayoutProps) {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
               },
+              credentials: "include",
             })
               .then((res) => res.json())
               .then((data) => console.log(data));
@@ -33,6 +34,7 @@ export default function Layout({ children, className }: LayoutProps) {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
+            credentials: "include",
           }).then((res) => res.json());
         },
       }}

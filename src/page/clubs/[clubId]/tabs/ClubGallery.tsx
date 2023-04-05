@@ -71,6 +71,7 @@ export default function ClubGallery({
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      credentials: "include",
     }).then(() => {
       mutate();
       onDismiss();
@@ -84,6 +85,7 @@ export default function ClubGallery({
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        credentials: "include",
       })
         .then((res) => res.json())
         .then((data) => {
@@ -119,6 +121,7 @@ export default function ClubGallery({
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        credentials: "include",
       });
     } else {
       await fetch(`${API_ENDPOINT}/albums/${albumId}/likes`, {
@@ -127,6 +130,7 @@ export default function ClubGallery({
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
         },
+        credentials: "include",
       });
     }
 
@@ -135,6 +139,7 @@ export default function ClubGallery({
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
       },
+      credentials: "include",
     })
       .then((res) => res.json())
       .then((data) => {
