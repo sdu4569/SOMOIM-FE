@@ -176,7 +176,7 @@ export default function ClubPost() {
 
   //글 삭제
   const postDelete = async () => {
-    const response = await fetch(`${API_ENDPOINT}/boards/${post?.id}`, {
+    await fetch(`${API_ENDPOINT}/boards/${post?.id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -260,7 +260,7 @@ export default function ClubPost() {
       <section className="p-4 py-16">
         <header className="flex w-full items-center justify-between py-2">
           <div className="flex space-x-2 items-center">
-            <div className="w-10 aspect-square rounded-full bg-blue-500">
+            <div className={`first-line:w-10 aspect-square rounded-full`}>
               <Avatar src={post?.userImg} size="md" />
             </div>
             <div className="flex flex-col h-full justify-between  text-sm">
