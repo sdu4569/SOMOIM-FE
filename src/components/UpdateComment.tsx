@@ -21,13 +21,6 @@ export default function UpdateComment({
   closeModal,
   refreshComment,
 }: CommentProps) {
-  // const { mutate: updateComment } = useMutation(
-  //   `boards/comments/${selectComment.id}`,
-  //   {
-  //     authorized: true,
-  //   }
-  // );
-
   const { token, tokenExpiration } = useAccessToken();
   const {
     register,
@@ -60,9 +53,6 @@ export default function UpdateComment({
   };
 
   const onUpdate = async (commentForm: commentFormData) => {
-    // const response = await updateComment({
-    //   comment: commentForm.comment,
-    // });
     const response = await fetch(
       `${API_ENDPOINT}/boards/comments/${selectComment.id}`,
       {

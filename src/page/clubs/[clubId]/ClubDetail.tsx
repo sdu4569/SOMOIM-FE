@@ -72,7 +72,7 @@ export default function ClubDetail() {
       if (getData !== null) {
         array = JSON.parse(getData);
         //최근 본 클럽에 이미 클럽이 들어가 있는지 체크
-        if (!array.some((item: any) => item.id == params.clubId)) {
+        if (!array.some((item: any) => item?.id == params.clubId)) {
           array.unshift(clubInfo);
           localStorage.setItem("recentClub", JSON.stringify(array));
         }
@@ -89,23 +89,25 @@ export default function ClubDetail() {
   useEffect(() => {
     if (members && members.data && user) {
       setIsMember(
-        members.data.some((member: any) => member.userId === user.id)
+        members.data.some((member: any) => member.userId === user?.id)
       );
     }
   }, [members, user]);
 
   useEffect(() => {
     if (club && club.data && user) {
-      setIsManager(club.data.managerId === user.id);
+      setIsManager(club.data.managerId === user?.id);
     }
   }, [club, user]);
 
-  // useEffect(() => {
-  //   console.log(club, members);
-  // }, [club, members]);
+  useEffect(() => {
+    console.log(club, members);
+  }, [club, members]);
 
   useEffect(() => {
-    const check = likeClub?.data?.some((item: any) => item.id == params.clubId);
+    const check = likeClub?.data?.some(
+      (item: any) => item?.id == params.clubId
+    );
     likeClub && setLike(check);
   }, [likeClub]);
 

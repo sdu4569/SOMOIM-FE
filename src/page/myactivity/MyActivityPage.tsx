@@ -106,7 +106,7 @@ const MyActivityPage = () => {
         <section className="flex flex-col">
           <h2 className="text-[14px] font-semibold mb-4">클럽찾기</h2>
           <ClubSearch />
-          <UpdateFavoriteButton />
+          <UpdateFavoriteButton user={user} />
         </section>
 
         <section className="flex flex-col space-y-8">

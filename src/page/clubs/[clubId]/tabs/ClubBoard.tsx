@@ -39,7 +39,7 @@ export default function ClubBoard({
       </div>
       <div className="absolute bottom-8 right-8">
         {isMember && (
-          <FloatButton to="write">
+          <FloatButton to="write" isManager={isManager}>
             <FontAwesomeIcon icon={faPlus} />
             <p className="text-sm">작성</p>
           </FloatButton>

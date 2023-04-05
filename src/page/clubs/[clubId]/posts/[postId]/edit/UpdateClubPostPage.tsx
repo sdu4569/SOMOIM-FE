@@ -42,7 +42,6 @@ export default function UpdateClubPostPage() {
   }, [state]);
 
   const onSubmit = async (postForm: postFormData) => {
-    console.log(postForm);
     const response = await fetch(`${API_ENDPOINT}/boards/${state.post.id}`, {
       method: "PATCH",
       headers: {
@@ -58,7 +57,7 @@ export default function UpdateClubPostPage() {
     });
     const data = await response.json();
 
-    navigate(`/clubs/${params.clubId}/post/${params.postId}`, {
+    navigate(`/clubs/${params.clubId}/posts/${params.postId}`, {
       state: { post: data.data },
     });
   };
